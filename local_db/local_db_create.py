@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy_utils import database_exists, create_database
-from db_user_info import username, password
+from local_db.db_user_info import username, password
 
 DB_NAME = "eplekake"
 

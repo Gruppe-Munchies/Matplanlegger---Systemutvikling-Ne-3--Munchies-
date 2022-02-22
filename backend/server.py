@@ -11,3 +11,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # stops warning
 @app.route('/')
 def hello_world():  # put application's code here
     return 'Hello Munchies!'
+
+if __name__ == '__main__':
+    app.run()
