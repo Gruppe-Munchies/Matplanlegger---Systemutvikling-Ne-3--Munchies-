@@ -1,5 +1,5 @@
 from database import db
-from server import app
+from backend.server import app
 
 
 class User(db.Model):
@@ -12,9 +12,9 @@ class User(db.Model):
         return '<User %r>' % self.username
 
 
-# with app.app_context(): # alternative solution?
 with app.test_request_context():
     db.init_app(app)
     db.drop_all()
     db.create_all()
+    db.session.commit()
     print("Local db updated!")

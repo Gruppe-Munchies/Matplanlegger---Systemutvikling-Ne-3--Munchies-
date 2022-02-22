@@ -4,7 +4,7 @@
 
 https://www.jetbrains.com/pycharm/download/#section=windows
 
-Registrer deg med uit-epost og be til gudene om at du har fått gratis tilgang
+Registrer deg med uit-epost for å få gratis tilgang 
 
 #### Last ned og installer mariadb
 
@@ -20,9 +20,6 @@ Behold alt som default her
 
 Installer requirements med pip ved hjelp av requirements.txt
 
-#### Oppdater database med kolonen "Users" fra terminalen i pycharm:
-
-```flask create_db```
 
 #### Kjør sysut_template
 
