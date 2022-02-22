@@ -23,7 +23,7 @@ Installer requirements med pip ved hjelp av requirements.txt
 
 #### Kjør sysut_template
 
-Kjør sysut_template ved å klikke på den grønne pilen oppe til høyre i Pycharm.
+Kjør server.py i backend-modulen
 
 Du får da opp en link som peker til 127.0.0.1:5000/
 
