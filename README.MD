@@ -23,8 +23,14 @@ Installer requirements med pip ved hjelp av requirements.txt
 
 #### Kjør sysut_template
 
-Kjør sysut_template ved å klikke på den grønne pilen oppe til høyre i Pycharm.
+Kjør server.py i backend-modulen
 
 Du får da opp en link som peker til 127.0.0.1:5000/
 
 Klikk på linken og verifiser at du får opp "Hello Munchies" i nettleseren din
+
+#### Opprett database
+Opprett database ved å kjøre local_db_create.py
+
+#### Oppdater lokale verdier i database
+Oppdater lokale verdier i database ved å kjøre local_db_update.py
