@@ -15,5 +15,5 @@ def loadSession():
 
 # Test quieries
 session = loadSession()
-res = session.query(User).where('username', 'Melvin')
+res = session.query(User).all()
 print(res[0].email)
