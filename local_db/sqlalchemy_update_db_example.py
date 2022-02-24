@@ -1,6 +1,8 @@
 from database import db
 from backend.server import app
 
+# Hvis man trenger å oppdatere databasen ved hjelp av SQLAlchemy og samtidig
+# generere ORM-klasser kan man klippe og lime fra koden i denne filen
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -18,3 +20,4 @@ with app.test_request_context():
     db.create_all()
     db.session.commit()
     print("Local db updated!")
+    print(print("ORM created for new updates!"))
