@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session, declarative_base, sessionmaker
 
 Base = declarative_base(engine)
 
-
 class User(Base):
     """"""
     __tablename__ = 'user'
@@ -74,14 +73,3 @@ class WeeklyMenu(Base):
     """"""
 
 
-def loadSession():
-    metadata = Base.metadata
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    return session
-
-
-if __name__ == "__main__":
-    session = loadSession()
-    res = session.query(User).where('username', 'Melvin')
-    print(res[0].email)
