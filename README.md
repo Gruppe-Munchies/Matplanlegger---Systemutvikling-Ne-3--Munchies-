@@ -3,6 +3,7 @@
 Table of contents
 =================
 * [Database](#mariadb-database)
+  * [Bilde av EER Diagram]
   * [Ved endringer i selve databasen](#ved-endringer-i-selve-databasen)
   * [Fremgangsmåte for å kjøre prosjekt lokalt](#fremgangsmåte-for-å-kjøre-prosjekt-lokalt)
 
@@ -54,3 +55,6 @@ Opprett database ved å kjøre local_db_create.py
 
 #### Oppdater lokale verdier i database
 Oppdater lokale verdier i database ved å kjøre local_db_update.py
+
+## EER Diagram
+![](https://github.com/Gruppe-Munchies/meta_project/blob/main/Database/Screenshot%202022-02-24%20at%2016.17.34.png?raw)
