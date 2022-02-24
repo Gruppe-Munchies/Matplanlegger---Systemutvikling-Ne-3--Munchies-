@@ -4,7 +4,7 @@ from local_db.local_db_create import engine
 
 
 def loadSession():
-    metadata = Base.metadata
+    metadata = Base.metadata # Ikke sikker på hva denne brukes til enda, men den var med i eksempelet 😎
     Session = sessionmaker(bind=engine)
     session = Session()
     return session
