@@ -6,6 +6,8 @@ DB_NAME = "munchbase"
 
 # Create database
 engine = create_engine(f"mysql+pymysql://{username}:{password}@localhost/{DB_NAME}")
+
+
 # database_exists: bool = database_exists(engine.url)
 # if not database_exists:
 #     create_database(engine.url)
