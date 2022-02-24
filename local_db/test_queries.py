@@ -1,6 +1,3 @@
-from flask import Flask
-from sqlalchemy import create_engine, MetaData, Table
-from sqlalchemy.orm import mapper, sessionmaker
 from local_db.orm import User, Ingredient, Recipe, RecipeHasIngredient, RecipeHasWeeklyMenu, RecipeAvailability, \
     Usergroup, Usertype, WeeklyMenu, Base, sessionmaker
 from local_db.local_db_create import engine
