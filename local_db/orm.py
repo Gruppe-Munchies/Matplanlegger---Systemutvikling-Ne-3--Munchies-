@@ -1,5 +1,5 @@
-from local_db_create import engine
-from sqlalchemy.orm import Session, declarative_base, sessionmaker
+from flask_alchemy_db_creation.local_db_create import engine
+from sqlalchemy.orm import declarative_base
 
 Base = declarative_base(engine)
 
