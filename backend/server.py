@@ -1,6 +1,5 @@
 from flask import Flask
-from local_db.local_db_create import DB_NAME
-from local_db.db_user_info import username, password
+from local_db.db_user_info import username, password, DB_NAME
 
 # Flask configuration
 app = Flask(__name__)

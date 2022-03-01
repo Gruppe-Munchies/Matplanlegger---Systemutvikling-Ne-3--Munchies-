@@ -1,0 +1,5 @@
+flask_alchemy_db_creation inneholder filer relatert til
+oppretting av database gjennom flask-alchemy.
+
+NB: Siden vi oppretter database gjennom SQL-filer er disse filene ikke i bruk.
+Vi lar de ligge som eksempel i tilfelle vi trenger noe lignende i fremtiden.
