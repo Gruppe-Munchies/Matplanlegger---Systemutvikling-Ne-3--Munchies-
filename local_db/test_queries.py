@@ -38,9 +38,9 @@ def insert_to_usertype():
 #Add default values to recipe availability
 def insert_to_recipeavalilability():
     session = loadSession()
-    avail1 = RecipeAvailability(availableFor="All")
-    avail2 = RecipeAvailability(availableFor="Group")
-    avail3 = RecipeAvailability(availableFor="User")
+    avail1 = RecipeAvailability(avilableFor="All")
+    avail2 = RecipeAvailability(avilableFor="Group")
+    avail3 = RecipeAvailability(avilableFor="User")
     session.add_all([avail1, avail2, avail3])
     session.commit()
 

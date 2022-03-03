@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from local_db.db_user_info import username, password, DB_NAME
 from local_db.test_queries import return_email_from_name, insert_to_user
+from local_db.db_testData import test_data
 
 # Flask configuration
 app = Flask(__name__, template_folder='C:/UiT/Python/Munchies/Matplanlegger---Systemutvikling-Ne-3--Munchies-/templates')
@@ -16,6 +17,10 @@ def hello_world():  # put application's code here
 @app.route('/insert')
 def insert():
     insert_to_user("brukernavn", "epost", "fornavn", "etternavn", "passord", "1", "1")
+
+@app.route('/blabla')
+def blabla():
+    test_data()
 
 if __name__ == '__main__':
     app.run()
