@@ -14,7 +14,7 @@ def test_data():
     db.insert_to_ingredients("Fløte")
 
     #Add users
-    db.insert_to_user("jebisseh", "bisseth@online.no", "Jan Erik", "Bisseth", "passord", "1", "1")
+    db.insert_to_user("Bob", "bob@burger.no", "Bob", "Bobsen", "passord", "1", "1")
     db.insert_to_user("testebruker", "test@test.no", "Test", "Bruker", "hemmeligegreier", "2", "2")
 
     #Add to weeklyMenu
