@@ -13,10 +13,6 @@ def loadSession():
     session = Session()
     return session
 
-def object_as_dict(obj):
-    return {c.key: getattr(obj, c.key)
-            for c in inspect(obj).mapper.column_attrs}
-
 # Test queries
 def return_email_from_name(name):
     session = loadSession()
