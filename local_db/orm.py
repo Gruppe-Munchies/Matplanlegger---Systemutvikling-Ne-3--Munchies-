@@ -26,7 +26,7 @@ class Recipe(Base):
 
 class RecipeHasIngredient(Base):
     """"""
-    __tablename__ = 'recipe'
+    __tablename__ = 'recipe_has_ingredient'
     __table_args__ = {'autoload': True}
     """"""
 

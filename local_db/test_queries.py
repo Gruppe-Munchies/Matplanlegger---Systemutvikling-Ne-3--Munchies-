@@ -58,6 +58,13 @@ def insert_to_user(name, email, firstname, lastname, password, usertype, usergro
     session.add(new_user)
     session.commit()
 
+#Add to weeklyMenu
+def insert_to_weeklymenu(year, weekNum, day, name, description, usergroup):
+    session = loadSession()
+    new_weeklyMenu = WeeklyMenu(year=year, weekNum=weekNum, day=day, name=name, description=description, userGroup_iduserGroup=usergroup)
+    session.add(new_weeklyMenu)
+    session.commit()
+
 #Add recipe
 def insert_to_recipe(name, shortDescription, description, image, userGroup, recipeAvailability, weeklymenu):
     session = loadSession()
@@ -65,12 +72,6 @@ def insert_to_recipe(name, shortDescription, description, image, userGroup, reci
     session.add(new_recipe)
     session.commit()
 
-#Add to weeklyMenu --- NEEDS CONNECTION TO USERGROUP
-def insert_to_weeklymenu(weekNum, day, name, description):
-    session = loadSession()
-    new_weeklyMenu = WeeklyMenu(weekNum=weekNum, day=day, name=name, description=description)
-    session.add(new_weeklyMenu)
-    session.commit()
 
 #Add to recipe_has_ingredient
 def insert_to_recipe_has_ingredient(recipe, ingredient, quantity):
