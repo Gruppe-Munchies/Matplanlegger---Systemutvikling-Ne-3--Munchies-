@@ -19,3 +19,4 @@ SQLAlchemy-Utils==0.38.2
 urllib3==1.26.8
 Werkzeug==2.0.3
 yarg==0.1.9
+WTForms~=3.0.1
