@@ -8,6 +8,10 @@ from backend.auth.forms import LoginForm, RegisterForm
 
 routes = Blueprint('auth', __name__, template_folder='templates')
 
+@routes.route('/login', methods=['GET', 'POST'])
+def login():
+    return render_template('index.html')
+
 @routes.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm(request.form)
