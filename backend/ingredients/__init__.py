@@ -1,0 +1,1 @@
+from backend.ingredients.views import ingredient
