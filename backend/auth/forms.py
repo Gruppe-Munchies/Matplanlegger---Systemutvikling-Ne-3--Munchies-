@@ -40,15 +40,15 @@ class RegisterForm(FlaskForm):
     confirm = PasswordField(
         label=('Gjenta passord'),
         validators=[DataRequired(message='*Required'),
-                    EqualTo('passord',
+                    EqualTo('password',
                             message='Passordene må være like')])
 
     usergroup = StringField(
-        label=('Usergroup'),
+        label=('Brukergruppe'),
         validators=[DataRequired()])
 
     usertype = StringField(
-        label=('Usertype'),
+        label=('Brukertype'),
         validators=[DataRequired()])
 
     submit = SubmitField(label=('Registrer'))

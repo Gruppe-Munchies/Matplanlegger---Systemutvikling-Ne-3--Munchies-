@@ -1,1 +1,1 @@
-from backend.auth.views import route
+from backend.auth.views import routes
