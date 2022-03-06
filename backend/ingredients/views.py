@@ -13,13 +13,13 @@ ingredient = Blueprint('ingredient', __name__, template_folder='templates', url_
 def new():
     form = RegisterForm(request.form)
     if request.method == 'POST' and form.validate():
-        ingreientName = form.ingredientname.data #TODO Check if ingredient already exists
+        ingredientName = form.ingredientName.data #TODO Check if ingredient already exists
         usergroup = form.usergroup.data
         ingredientID = form.ingredientID.data #TODO Fetch ingredientID from new or existing
         price = form.price.data
         unit = form.unit.data
 
-        db.insert_to_ingredients(ingreientName)
+        db.insert_to_ingredients(ingredientName)
         db.insert_to_usergroup_has_ingredient(usergroup, ingredientID, price, unit)
 
         flash('Ingrediensen er registrert!!')
