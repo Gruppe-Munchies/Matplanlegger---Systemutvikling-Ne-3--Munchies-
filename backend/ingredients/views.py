@@ -6,7 +6,7 @@ import local_db.insert_to_db as db
 
 from backend.ingredients.forms import RegisterForm
 
-ingredient = Blueprint('auth', __name__, template_folder='templates')
+ingredient = Blueprint('ingredient', __name__, template_folder='templates', url_prefix='/ingredient')
 
 
 @ingredient.route('/register', methods=['GET', 'POST'])
