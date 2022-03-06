@@ -10,8 +10,8 @@ from local_db.db_testData import test_data
 
 # Flask configuration
 app = Flask(__name__, template_folder='C:/UiT/Python/Munchies/Matplanlegger---Systemutvikling-Ne-3--Munchies-/templates')
-app.register_blueprint(backend.main.views.routes)
-app.register_blueprint(backend.auth.views.routes)
+app.register_blueprint(backend.main.views.mainpage)
+app.register_blueprint(backend.auth.views.auth)
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{username}:{password}@localhost/{DB_NAME}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # stops warning
 app.config['SECRET_KEY'] = "secretkey"

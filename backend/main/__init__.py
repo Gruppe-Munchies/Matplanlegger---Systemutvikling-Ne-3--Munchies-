@@ -1,1 +1,1 @@
-from backend.main.views import routes
+from backend.main.views import mainpage
