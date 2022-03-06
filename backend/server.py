@@ -4,7 +4,7 @@ from flask_wtf import csrf
 import backend.main.views
 import backend.auth.views
 from local_db.db_user_info import username, password, DB_NAME
-from local_db.test_queries import return_email_from_name, insert_to_user
+from local_db.insert_to_db import return_email_from_name, insert_to_user
 from local_db.db_testData import test_data
 
 

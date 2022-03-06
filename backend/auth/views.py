@@ -2,7 +2,7 @@ from urllib.parse import urljoin, urlparse
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 from flask_login import login_required, login_user, logout_user
 
-import local_db.test_queries as db
+import local_db.insert_to_db as db
 
 from backend.auth.forms import LoginForm, RegisterForm
 

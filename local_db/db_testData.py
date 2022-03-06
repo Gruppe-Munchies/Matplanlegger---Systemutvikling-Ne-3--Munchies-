@@ -1,4 +1,4 @@
-import local_db.test_queries as db
+import local_db.insert_to_db as db
 
 def test_data():
     #Default values
