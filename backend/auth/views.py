@@ -6,13 +6,13 @@ import local_db.test_queries as db
 
 from backend.auth.forms import LoginForm, RegisterForm
 
-routes = Blueprint('auth', __name__, template_folder='templates')
+auth = Blueprint('auth', __name__, template_folder='templates')
 
-@routes.route('/login', methods=['GET', 'POST'])
+@auth.route('/login', methods=['GET', 'POST'])
 def login():
     return render_template('index.html')
 
-@routes.route('/register', methods=['GET', 'POST'])
+@auth.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm(request.form)
     if request.method == 'POST' and form.validate():
