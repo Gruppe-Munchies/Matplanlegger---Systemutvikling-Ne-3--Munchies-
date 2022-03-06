@@ -9,7 +9,7 @@ from backend.ingredients.forms import RegisterForm
 ingredient = Blueprint('ingredient', __name__, template_folder='templates', url_prefix='/ingredient')
 
 
-@ingredient.route('/register', methods=['GET', 'POST'])
+@ingredient.route('/new', methods=['GET', 'POST'])
 def new():
     form = RegisterForm(request.form)
     if request.method == 'POST' and form.validate():
