@@ -1,0 +1,66 @@
+{% block body %}
+    <div class="container mt-5">
+
+        <div class="row align-items-center">
+
+            <div class="card p-3 m-auto" style="width: 50%;">
+                <form method="POST" action="{{ url_for('ingredient.new') }}">
+                    {{ form.csrf_token }}
+
+                    <div class="row mb-3 g-2 justify-content-center">
+                        <div class="col-sm-3">
+                            {{ form.ingredientName.label(class_="col-form-label") }}
+                        </div>
+                        <div class="col-sm-9">
+                            {{ form.ingredientName(class="form-control") }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 g-2 justify-content-center">
+                        <div class="col-sm-3">
+                            {{ form.usergroup.label(class_="col-form-label") }}
+                        </div>
+                        <div class="col-sm-9">
+                            {{ form.usergroup(class="form-control") }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 g-2 justify-content-center">
+                        <div class="col-sm-3">
+                            {{ form.ingredientID.label(class_="col-form-label") }}
+                        </div>
+                        <div class="col-sm-9">
+                            {{ form.ingredientID(class="form-control") }}
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-3 g-2 justify-content-center">
+                        <div class="col-sm-3">
+                            {{ form.price.label(class_="col-form-label") }}
+                        </div>
+                        <div class="col-sm-9">
+                            {{ form.price(class="form-control") }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 g-2 justify-content-center">
+                        <div class="col-sm-3">
+                            {{ form.unit.label(class_="col-form-label") }}
+                        </div>
+                        <div class="col-sm-9">
+                            {{ form.unit(class="form-control") }}
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-end">
+                        <div class="col-sm-2">
+                            {{ form.submit(class_="btn btn-success") }}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
