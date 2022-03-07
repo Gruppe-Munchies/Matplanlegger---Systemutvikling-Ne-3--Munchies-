@@ -19,7 +19,7 @@ class RegisterForm(FlaskForm):
         label=('Pris per enhet'),
         validators=[DataRequired()])
 
-    unit = PasswordField(
+    unit = StringField(
         label=('Enhet'),
         validators=[DataRequired()])
 
