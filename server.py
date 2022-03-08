@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from flask_wtf import csrf
 
+
 import backend.main.views as mainpage
 import backend.auth.views as auth
 import backend.ingredients.views as ingredients
@@ -28,6 +29,29 @@ def index():
 def testdata():
     test_data()
 
+@app.route('/oppskrift')
+def oppskrift():
+    return render_template('oppskrift.html')
+
+@app.route('/ingredienser')
+def ingredienser():
+    return render_template('ingredienser.html')
+
+@app.route('/handleliste')
+def handleliste():
+    return render_template('handleliste.html')
+
+@app.route('/ukesmeny')
+def ukesmeny():
+    return render_template('ukesmeny.html')
+
+@app.route('/legg-til-bruker')
+def legg_til_bruker():
+    return render_template('legg-til-bruker.html')
+
+@app.route('/legg-til-rett')
+def legg_til_rett():
+    return render_template('legg-til-rett.html')
 
 if __name__ == '__main__':
     app.run()
