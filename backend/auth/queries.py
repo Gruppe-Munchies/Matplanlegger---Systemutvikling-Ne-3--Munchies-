@@ -18,7 +18,7 @@ res = session.query(User).all()
 print(res[0].email)
 
 
-def userGrouo():
+def fetchAllUserGrouos():
     session = loadSession() # kobler til databasen
     res = session.query(Usergroup).all() #henter ut fra tabell Usergroup (via orm.py i local_db)
     return res #henter ut alle kolonnene i denne tabellen

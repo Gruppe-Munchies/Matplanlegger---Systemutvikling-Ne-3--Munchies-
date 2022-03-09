@@ -5,6 +5,7 @@ from flask_login import login_required, login_user, logout_user
 import local_db.insert_to_db as db
 
 from backend.auth.forms import LoginForm, RegisterForm
+from backend.auth.queries import fetchAllUserGrouos
 
 auth = Blueprint('auth', __name__, template_folder='templates')
 
@@ -15,6 +16,7 @@ def login():
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm(request.form)
+    user_group = fetchAllUserGrouos()
     if request.method == 'POST' and form.validate():
         username = form.username.data #TODO Check if username is taken
         email = form.email.data
@@ -33,7 +35,7 @@ def register():
         for error_message in error_messages:
             flash(f"{error_message}", "danger")
 
-    return render_template('register.html', form=form)
+    return render_template('register.html', form=form, ug = user_group)
 
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
