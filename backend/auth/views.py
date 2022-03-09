@@ -2,6 +2,7 @@ from urllib.parse import urljoin, urlparse
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 from flask_login import login_required, login_user, logout_user
 import local_db.insert_to_db as db
+from sqlalchemy import Column
 
 from backend.auth.forms import LoginForm, RegisterForm
 from backend.auth.queries import * #fetchAllUserGroups, fetchUser, fetchUserGroup
@@ -33,12 +34,14 @@ def register():
         db.insert_to_usergroup(usergroup)
 
         #Get userID from newly inserted user
-        userID = fetchUser(username)
+        fetchedUser = fetchUser(username)
+        userID = fetchedUser.userId
         #Fetch userGroupID from newly inserted usergroup
-        userGroupID = fetchUserGroup(usergroup)
+        fetchedUserGroup = fetchUserGroup(usergroup)
+        userGroupId = fetchedUserGroup.iduserGroup
 
         #Insert userID, userGroupID and userType to "user_has_userGroup"
-        db.insert_to_user_has_userGroup(userID, userGroupID, usertype)
+        db.insert_to_user_has_userGroup(int(userID), int(userGroupId), int(usertype))
 
         flash('Registreringen var vellykket!')
         return redirect(url_for("auth.login"))

@@ -13,9 +13,9 @@ def loadSession(): #denne bruker vi
 
 
 # Test quieries
-session = loadSession()
-res = session.query(User).all()
-print(res[0].email)
+#session = loadSession()
+#res = session.query(User).all()
+#print(res[0].email)
 
 
 def fetchAllUserGroups():

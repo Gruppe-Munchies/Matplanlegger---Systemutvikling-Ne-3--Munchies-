@@ -13,7 +13,7 @@ def test_data():
     db.insert_to_ingredients("Fløte")
 
     #Add to a usergroup
-    db.insert_to_usergroup("matmons")
+    db.insert_to_usergroup("MatMons")
     db.insert_to_usergroup("Familien Hansen")
 
     #Add users
