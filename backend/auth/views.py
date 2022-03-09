@@ -5,7 +5,6 @@ import local_db.insert_to_db as db
 
 from backend.auth.forms import LoginForm, RegisterForm
 from backend.auth.queries import * #fetchAllUserGroups, fetchUser, fetchUserGroup
-from sqlalchemy.sql import column
 
 auth = Blueprint('auth', __name__, template_folder='templates')
 
