@@ -26,13 +26,16 @@ def register():
         usergroup = form.usergroup.data #TODO Import usergroups from DB
         usertype = form.usertype.data #TODO Import usertypes from DB
 
+        #Insert user to database
         db.insert_to_user(username, email, firstname, lastname, password)
-
-        user = fetchUser(username)
+        #Get userID from newly inserted user
+        userID = fetchUser(username)
+        #Insert userGroup to database
         db.insert_to_usergroup(usergroup)
-
-        fetchedUsergroup = fetchUserGroup(usergroup)
-        db.insert_to_user_has_userGroup(user, fetchedUsergroup, usertype)
+        #Fetch userGroupID from newly inserted usergroup
+        userGroupID = fetchUserGroup(usergroup)
+        #Insert userID, userGroupID and userType to "user_has_userGroup"
+        db.insert_to_user_has_userGroup(userID, userGroupID, usertype)
 
         flash('Registreringen var vellykket!')
         return redirect(url_for("auth.login"))
