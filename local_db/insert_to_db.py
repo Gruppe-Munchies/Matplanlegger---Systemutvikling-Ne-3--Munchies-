@@ -22,8 +22,8 @@ def return_email_from_name(name):
 #Add default usergroups
 def insert_to_usergroup():
     session = loadSession()
-    usergroup1 = Usergroup(groupName="Restaurant")
-    usergroup2 = Usergroup(groupName="Familie")
+    usergroup1 = Usergroup(groupName="Restaurant MatMons")
+    usergroup2 = Usergroup(groupName="Familien Hansen")
     session.add_all([usergroup1, usergroup2])
     session.commit()
 
