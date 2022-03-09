@@ -4,7 +4,7 @@ from flask_login import login_required, login_user, logout_user
 import local_db.insert_to_db as db
 
 from backend.auth.forms import LoginForm, RegisterForm
-from backend.auth.queries import * #fetchAllUserGrouos, fetchUser, fetchUserGroup
+from backend.auth.queries import * #fetchAllUserGroups, fetchUser, fetchUserGroup
 from sqlalchemy.sql import column
 
 auth = Blueprint('auth', __name__, template_folder='templates')
@@ -16,7 +16,7 @@ def login():
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm(request.form)
-    user_group = fetchAllUserGrouos()
+    user_group = fetchAllUserGroups()
     if request.method == 'POST' and form.validate():
         username = form.username.data #TODO Check if username is taken
         email = form.email.data
