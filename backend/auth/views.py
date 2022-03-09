@@ -5,7 +5,7 @@ from flask_login import login_required, login_user, logout_user
 import local_db.insert_to_db as db
 
 from backend.auth.forms import LoginForm, RegisterForm
-from backend.auth.queries import fetchAllUserGrouos
+from backend.auth.queries import * #fetchAllUserGrouos, fetchUser, fetchUserGroup
 
 auth = Blueprint('auth', __name__, template_folder='templates')
 
@@ -26,7 +26,11 @@ def register():
         usergroup = form.usergroup.data #TODO Import usergroups from DB
         usertype = form.usertype.data #TODO Import usertypes from DB
 
-        db.insert_to_user(username, email, firstname, lastname, password, usergroup, usertype)
+        db.insert_to_user(username, email, firstname, lastname, password)
+        user = fetchUser(username)
+        db.insert_to_usergroup(usergroup)
+        fetchedUsergroup = fetchUserGroup(usergroup)
+        db.insert_to_user_has_userGroup(user, fetchedUsergroup, usertype)
 
         flash('Registreringen var vellykket!')
         return redirect(url_for("auth.login"))
@@ -35,7 +39,7 @@ def register():
         for error_message in error_messages:
             flash(f"{error_message}", "danger")
 
-    return render_template('register.html', form=form, ug = user_group)
+    return render_template('register.html', form=form, ug=user_group)
 
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)

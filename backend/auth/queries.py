@@ -23,3 +23,13 @@ def fetchAllUserGrouos():
     res = session.query(Usergroup).all() #henter ut fra tabell Usergroup (via orm.py i local_db)
     return res #henter ut alle kolonnene i denne tabellen
 
+def fetchUser(user_name):
+    session = loadSession()
+    res = session.query(User).filter(username=user_name).values("userId").all()
+    return res
+
+def fetchUserGroup(group_name):
+    session = loadSession()
+    res = session.query(Usergroup).filter(groupName=group_name).values("iduserGroup").all()
+    return res
+
