@@ -1,11 +1,11 @@
 from urllib.parse import urljoin, urlparse
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 from flask_login import login_required, login_user, logout_user
-
 import local_db.insert_to_db as db
 
 from backend.auth.forms import LoginForm, RegisterForm
 from backend.auth.queries import * #fetchAllUserGrouos, fetchUser, fetchUserGroup
+from sqlalchemy.sql import column
 
 auth = Blueprint('auth', __name__, template_folder='templates')
 
@@ -27,8 +27,10 @@ def register():
         usertype = form.usertype.data #TODO Import usertypes from DB
 
         db.insert_to_user(username, email, firstname, lastname, password)
+
         user = fetchUser(username)
         db.insert_to_usergroup(usergroup)
+
         fetchedUsergroup = fetchUserGroup(usergroup)
         db.insert_to_user_has_userGroup(user, fetchedUsergroup, usertype)
 
