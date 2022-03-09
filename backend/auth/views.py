@@ -22,8 +22,10 @@ def register():
         firstname = form.firstname.data
         lastname = form.lastname.data
         password = form.password.data #TODO Hash password
-        usergroup = form.usergroup.data #TODO Import usergroups from DB
-        usertype = form.usertype.data #TODO Import usertypes from DB
+        usergroup = form.usergroup.data
+        usertype = form.usertype.data
+
+        #TODO Usertype should be 1 (admin) as standard when usergroup is created, else 2 (normal user)
 
         #Insert user to database
         db.insert_to_user(username, email, firstname, lastname, password)
