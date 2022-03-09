@@ -2,7 +2,7 @@ from flask import render_template
 from sqlalchemy import inspect
 
 from local_db.orm import User, Ingredient, Recipe, RecipeHasIngredient, RecipeHasWeeklyMenu, RecipeAvailability, \
-    Usertype, Usergroup, UsergroupHasIngredient, WeeklyMenu, Base
+    Usertype, Usergroup, UsergroupHasIngredient, WeeklyMenu, Base, UserHasUsergroup
 from sqlalchemy.orm import Session, declarative_base, sessionmaker
 from flask_alchemy_db_creation.local_db_create import engine
 
@@ -20,11 +20,10 @@ def return_email_from_name(name):
     return res
 
 #Add default usergroups
-def insert_to_usergroup():
+def insert_to_usergroup(name):
     session = loadSession()
-    usergroup1 = Usergroup(groupName="Restaurant")
-    usergroup2 = Usergroup(groupName="Familie")
-    session.add_all([usergroup1, usergroup2])
+    usergroup = Usergroup(groupName=name)
+    session.add(usergroup)
     session.commit()
 
 #Add default usertypes
@@ -51,10 +50,17 @@ def insert_to_ingredients(name):
     session.add(ingredient)
     session.commit()
 
-#Add user
-def insert_to_user(name, email, firstname, lastname, password, usertype, usergroup):
+#Add user Id, name of user group, and user type in group
+def insert_to_user_has_userGroup(user_id, usergroup_id, user_type_id):
     session = loadSession()
-    new_user = User(username=name, email=email, firstname=firstname, lastname=lastname, password=password, userType_iduserType=usertype, userGroup_iduserGroup=usergroup)
+    new_insertion = UserHasUsergroup(user_userId=user_id, userGroup_iduserGroup=usergroup_id, userType_iduserType=user_type_id)
+    session.add(new_insertion)
+    session.commit()
+
+#Add user
+def insert_to_user(name, email, firstname, lastname, password):
+    session = loadSession()
+    new_user = User(username=name, email=email, firstname=firstname, lastname=lastname, password=password)
     session.add(new_user)
     session.commit()
 

@@ -2,7 +2,6 @@ import local_db.insert_to_db as db
 
 def test_data():
     #Default values
-    db.insert_to_usergroup()
     db.insert_to_usertype()
     db.insert_to_recipeavalilability()
 
@@ -13,9 +12,17 @@ def test_data():
     db.insert_to_ingredients("Mel")
     db.insert_to_ingredients("Fløte")
 
+    #Add to a usergroup
+    db.insert_to_usergroup("matmons")
+    db.insert_to_usergroup("Familien Hansen")
+
     #Add users
-    db.insert_to_user("Bob", "bob@burger.no", "Bob", "Bobsen", "passord", "1", "1")
-    db.insert_to_user("testebruker", "test@test.no", "Test", "Bruker", "hemmeligegreier", "2", "2")
+    db.insert_to_user("Bob", "bob@burger.no", "Bob", "Bobsen", "passord")
+    db.insert_to_user("testebruker", "test@test.no", "Test", "Bruker", "hemmeligegreier")
+
+    #Add to user has user_group
+    db.insert_to_user_has_userGroup("1", "1", "1")
+    db.insert_to_user_has_userGroup("2", "2", "1")
 
     #Add to weeklyMenu
     db.insert_to_weeklymenu("2022", "9", "1", "Rulleuke", "En uke full av ruller", "1")

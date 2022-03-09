@@ -33,43 +33,50 @@ class RecipeHasIngredient(Base):
 
 class RecipeHasWeeklyMenu(Base):
     """"""
-    __tablename__ = 'recipe_has_weeklymenu'
+    __tablename__ = 'recipe_has_weeklyMenu'
     __table_args__ = {'autoload': True}
     """"""
 
 
 class RecipeAvailability(Base):
     """"""
-    __tablename__ = 'recipeavailability'
+    __tablename__ = 'recipeAvailability'
     __table_args__ = {'autoload': True}
     """"""
 
 
 class Usergroup(Base):
     """"""
-    __tablename__ = 'usergroup'
+    __tablename__ = 'userGroup'
     __table_args__ = {'autoload': True}
     """"""
 
 
 class UsergroupHasIngredient(Base):
     """"""
-    __tablename__ = 'usergroup_has_ingredient'
+    __tablename__ = 'userGroup_has_ingredient'
     __table_args__ = {'autoload': True}
     """"""
 
+class UserHasUsergroup(Base):
+    """"""
+    __tablename__ = 'user_has_userGroup'
+    __table_args__ = {'autoload': True}
+    """"""
 
 class Usertype(Base):
     """"""
-    __tablename__ = 'usertype'
+    __tablename__ = 'userType'
     __table_args__ = {'autoload': True}
     """"""
 
 
 class WeeklyMenu(Base):
     """"""
-    __tablename__ = 'weeklymenu'
+    __tablename__ = 'weeklyMenu'
     __table_args__ = {'autoload': True}
     """"""
+
+
 
 
