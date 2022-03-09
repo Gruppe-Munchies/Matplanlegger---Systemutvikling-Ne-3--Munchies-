@@ -28,12 +28,14 @@ def register():
 
         #Insert user to database
         db.insert_to_user(username, email, firstname, lastname, password)
-        #Get userID from newly inserted user
-        userID = fetchUser(username)
         #Insert userGroup to database
         db.insert_to_usergroup(usergroup)
+
+        #Get userID from newly inserted user
+        userID = fetchUser(username)
         #Fetch userGroupID from newly inserted usergroup
         userGroupID = fetchUserGroup(usergroup)
+
         #Insert userID, userGroupID and userType to "user_has_userGroup"
         db.insert_to_user_has_userGroup(userID, userGroupID, usertype)
 
