@@ -1,7 +1,7 @@
 from urllib.parse import urljoin, urlparse
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 from flask_login import login_required, login_user, logout_user
-import local_db.insert_to_db as db
+import backend.auth.queries as auth_queries
 from sqlalchemy import Column
 
 from backend.auth.forms import LoginForm, RegisterForm
@@ -33,9 +33,9 @@ def register():
         #TODO Usertype should be 1 (admin) as standard when usergroup is created, else 2 (normal user)
 
         #Insert user to database
-        db.insert_to_user(username, email, firstname, lastname, password)
+        auth_queries.insert_to_user(username, email, firstname, lastname, password)
         #Insert userGroup to database
-        db.insert_to_usergroup(usergroup)
+        auth_queries.insert_to_usergroup(usergroup)
 
         #Get userID from newly inserted user
         fetchedUser = fetchUser(username)
@@ -45,7 +45,7 @@ def register():
         userGroupId = fetchedUserGroup.iduserGroup
 
         #Insert userID, userGroupID and userType to "user_has_userGroup"
-        db.insert_to_user_has_userGroup(int(userID), int(userGroupId), int(usertype))
+        auth_queries.insert_to_user_has_userGroup(int(userID), int(userGroupId), int(usertype))
 
         flash('Registreringen var vellykket!')
         return redirect(url_for("auth.login"))
