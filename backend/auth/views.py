@@ -18,11 +18,10 @@ def register():
     form = RegisterForm(request.form)
     user_group = fetchAllUserGroups()
     if request.method == 'POST' and form.validate():
-        username = form.username.data #TODO Check if username is taken
+        username = form.username.data
         bruker = fetchUser(username)
         if bruker:
             flash("Brukernavn er allerede tatt", "danger")
-            print("Brukernavn er allerede tatt")
             return render_template('register.html', form=form, heading="Registrer ny bruker")
         email = form.email.data
         firstname = form.firstname.data
