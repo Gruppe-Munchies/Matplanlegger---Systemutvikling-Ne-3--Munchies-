@@ -5,7 +5,7 @@
 
 
 ################################################################################
-# DENNE FILEN SKAL SLETTES OG ERSTATTES MED queries.py I RESPEKTIVE BLUEPRINTS #
+# DENNE FILEN SKAL SLETTES OG ERSTATTES MED auth_queries.py I RESPEKTIVE BLUEPRINTS #
 ################################################################################
 
 
