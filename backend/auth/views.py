@@ -16,7 +16,6 @@ def login():
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm(request.form)
-    user_group = fetchAllUserGroups()
     if request.method == 'POST' and form.validate():
         username = form.username.data #TODO Check if username is taken
         email = form.email.data
@@ -50,7 +49,7 @@ def register():
         for error_message in error_messages:
             flash(f"{error_message}", "danger")
 
-    return render_template('register.html', form=form, ug=user_group)
+    return render_template('register.html', form=form)
 
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
