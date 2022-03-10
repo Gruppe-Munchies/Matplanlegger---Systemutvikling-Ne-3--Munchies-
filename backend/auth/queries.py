@@ -10,14 +10,6 @@ def loadSession(): #denne bruker vi
     session = Session()
     return session
 
-
-
-# Test quieries
-#session = loadSession()
-#res = session.query(User).all()
-#print(res[0].email)
-
-
 def fetchAllUserGroups():
     session = loadSession() # kobler til databasen
     res = session.query(Usergroup).all() #henter ut fra tabell Usergroup (via orm.py i local_db)

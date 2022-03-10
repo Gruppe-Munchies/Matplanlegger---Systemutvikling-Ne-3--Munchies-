@@ -5,7 +5,7 @@ from local_db.orm import User, Ingredient, Recipe, RecipeHasIngredient, RecipeHa
     Usertype, Usergroup, UsergroupHasIngredient, WeeklyMenu, Base, UserHasUsergroup
 from sqlalchemy.orm import Session, declarative_base, sessionmaker, column_property
 from flask_alchemy_db_creation.local_db_create import engine
-
+from werkzeug.security import generate_password_hash, check_password_hash
 
 def loadSession():
     metadata = Base.metadata  # Ikke sikker på hva denne brukes til enda, men den var med i eksempelet 😎
@@ -60,7 +60,8 @@ def insert_to_user_has_userGroup(user_id, usergroup_id, user_type_id):
 #Add user
 def insert_to_user(name, email, firstname, lastname, password):
     session = loadSession()
-    new_user = User(username=name, email=email, firstname=firstname, lastname=lastname, password=password)
+    hashedPassword = generate_password_hash(password)
+    new_user = User(username=name, email=email, firstname=firstname, lastname=lastname, password=hashedPassword)
     session.add(new_user)
     session.commit()
 
