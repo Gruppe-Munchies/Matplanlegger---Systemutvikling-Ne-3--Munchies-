@@ -2,9 +2,8 @@ from urllib.parse import urljoin, urlparse
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 from flask_login import login_required, login_user, logout_user
 
-import local_db.insert_to_db as db
-import backend.ingredients.ingredient_queries as ingredient_queries
-import backend.auth.auth_queries as auth_queries
+import backend.ingredients.queries as ingredient_queries
+import backend.auth.queries as auth_queries
 
 from backend.ingredients.forms import RegisterForm
 

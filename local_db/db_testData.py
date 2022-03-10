@@ -1,8 +1,8 @@
 # import local_db.insert_to_db as db
-import backend.ingredients.ingredient_queries as ingredient_queries
-import backend.recipies.recipe_queries as recipe_queries
-import backend.auth.auth_queries as auth_queries
-import backend.weekly_menu.menu_queries as menu_queries
+import backend.ingredients.queries as ingredient_queries
+import backend.recipies.queries as recipe_queries
+import backend.auth.queries as auth_queries
+import backend.weekly_menu.queries as menu_queries
 
 def test_data():
     #Default values

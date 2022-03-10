@@ -1,11 +1,11 @@
 from urllib.parse import urljoin, urlparse
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 from flask_login import login_required, login_user, logout_user
-import backend.auth.auth_queries as auth_queries
+import backend.auth.queries as auth_queries
 from sqlalchemy import Column
 
 from backend.auth.forms import LoginForm, RegisterForm
-from backend.auth.auth_queries import * #fetchAllUserGroups, fetchUser, fetchUserGroup
+from backend.auth.queries import * #fetchAllUserGroups, fetchUser, fetchUserGroup
 
 auth = Blueprint('auth', __name__, template_folder='templates')
 
