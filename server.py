@@ -6,7 +6,6 @@ import backend.main.views as mainpage
 import backend.auth.views as auth
 import backend.ingredients.views as ingredients
 from local_db.db_user_info import username, password, DB_NAME
-from local_db.insert_to_db import return_email_from_name, insert_to_user
 from local_db.db_testData import test_data
 
 # Flask configuration
