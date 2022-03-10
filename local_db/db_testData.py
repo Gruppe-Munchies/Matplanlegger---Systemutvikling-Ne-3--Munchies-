@@ -1,6 +1,6 @@
 # import local_db.insert_to_db as db
 import backend.ingredients.queries as ingredient_queries
-import backend.recipies.queries as recipe_queries
+import backend.recipes.queries as recipe_queries
 import backend.auth.queries as auth_queries
 import backend.weekly_menu.queries as menu_queries
 
