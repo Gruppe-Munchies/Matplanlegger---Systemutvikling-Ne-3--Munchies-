@@ -43,6 +43,10 @@ def insert_to_user(name, email, firstname, lastname, password):
 # Usergroup #
 #############
 
+def fetchAllUsers():
+    session = loadSession()  # kobler til databasen
+    res = session.query(User).all()  # henter ut fra tabell User (via orm.py i local_db)
+    return res  # henter ut alle kolonnene i denne tabellen
 
 def fetchAllUserGroups():
     session = loadSession()  # kobler til databasen
