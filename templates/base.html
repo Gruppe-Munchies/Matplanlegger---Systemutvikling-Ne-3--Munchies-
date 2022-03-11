@@ -29,7 +29,7 @@
 
 
 
-        <title>{% block title %}{% endblock %} - My Webpage</title>
+        <title>{% block title %}{% endblock %} - Munchies</title>
 
         <style>
               .bd-placeholder-img {
@@ -53,7 +53,15 @@
   <body>
 <div style="background: linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.7)), url(https://images.unsplash.com/photo-1471193945509-9ad0617afabf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80);background-size:cover;background-position:center;">
 {% include 'nav.html' %}
-{% include 'header.html' %}
+
+    <div class="p-5 text-light">
+      <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">{% block heading %}{% endblock %}</h1>
+        <p class="col-md-8 fs-4">{% block description %}{% endblock %}</p>
+      </div>
+    </div>
+
+
 {% include 'flash_messages.html' %}
 
 </div>
