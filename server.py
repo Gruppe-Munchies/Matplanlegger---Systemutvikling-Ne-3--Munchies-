@@ -43,9 +43,9 @@ def handleliste():
 def ukesmeny():
     return render_template('ukesmeny.html')
 
-@app.route('/legg-til-bruker')
-def legg_til_bruker():
-    return render_template('legg-til-bruker.html')
+@app.route('/user-administration')
+def userAdministration():
+    return render_template('user-administration.html')
 
 @app.route('/legg-til-rett')
 def legg_til_rett():

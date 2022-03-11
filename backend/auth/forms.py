@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 
 
@@ -43,12 +43,14 @@ class RegisterForm(FlaskForm):
                     EqualTo('password',
                             message='Passordene må være like')])
 
-    usergroup = StringField(
-        label=('Brukergruppe'),
-        validators=[DataRequired()])
+    usergroup = SelectField('Brukergruppe',
+        choices=[('MatMons'), ('Familien Hansen')], # Må kjøre en query fra usergroup for å hente verdier her
+        validate_choice=True)
 
-    usertype = StringField(
-        label=('Brukertype'),
-        validators=[DataRequired()])
+
+
+    usertype = SelectField('Brukertype',
+        choices=[('1', 'Admin'), ('2', 'Bruker')],# Må kjøre en query fra usertype for å hente verdier her
+        validate_choice=True)
 
     submit = SubmitField(label=('Registrer'))
