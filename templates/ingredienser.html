@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
-
+{% block title %}Navn på matrett{% endblock %}
+{% block heading %}Navn på matrett{% endblock %}
+{% block description %}Denne siden vil være malen til en matrett. Hva som vises må baseres på en SQL spørring. {% endblock %}
 {% block content %}
 
         <form method="post" class="row">
-            <h3 class="display-5">Ingredienser</h3>
             <div class="table-responsive">
                 <table class="table">
                     <thead>
