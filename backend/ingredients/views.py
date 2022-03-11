@@ -6,7 +6,7 @@ import backend.ingredients.queries as ingredient_queries
 import backend.auth.queries as auth_queries
 
 from backend.ingredients.forms import RegisterForm
-
+from backend.ingredients.queries import *
 ingredient = Blueprint('ingredient', __name__, template_folder='templates', url_prefix='/ingredient')
 
 
@@ -14,7 +14,12 @@ ingredient = Blueprint('ingredient', __name__, template_folder='templates', url_
 def new():
     form = RegisterForm(request.form)
     if request.method == 'POST' and form.validate():
-        ingredientName = form.ingredientName.data  # TODO Check if ingredient already exists
+        ingredientName = form.ingredientName.data
+        ingredient = fetchIngredient(ingredientName)
+        if ingredient: #Sjekker om ingrediens finnes.
+            flash("Ingrediens er allerede registrert", "danger")
+            print("Ingrediens er allerede registrert")
+            return render_template('newingredient.html', form=form, heading="Registrer ny ingrediens") #vet ikke om heading trengs?
         usergroup = form.usergroup.data
         ingredientID = form.ingredientID.data  # TODO Fetch ingredientID from new or existing
         price = form.price.data
