@@ -1,7 +1,7 @@
 from local_db.session import loadSession
 from local_db.orm import User, Ingredient, Recipe, RecipeHasIngredient, RecipeHasWeeklyMenu, RecipeAvailability, \
     Usertype, Usergroup, UsergroupHasIngredient, WeeklyMenu, Base, UserHasUsergroup
-
+from werkzeug.security import generate_password_hash, check_password_hash
 
 #############
 #    User   #
@@ -34,7 +34,8 @@ def insert_to_user_has_userGroup(user_id, usergroup_id, user_type_id):
 # Add user
 def insert_to_user(name, email, firstname, lastname, password):
     session = loadSession()
-    new_user = User(username=name, email=email, firstname=firstname, lastname=lastname, password=password)
+    hashedPassword = generate_password_hash(password)
+    new_user = User(username=name, email=email, firstname=firstname, lastname=lastname, password=hashedPassword)
     session.add(new_user)
     session.commit()
 
