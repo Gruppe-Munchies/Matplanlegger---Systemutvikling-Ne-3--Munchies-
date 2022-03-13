@@ -10,3 +10,9 @@ def insert_to_ingredients(name):
     ingredient = Ingredient(ingredientName=name)
     session.add(ingredient)
     session.commit()
+
+def fetchIngredient(ingredient):
+    session = loadSession()
+    res = session.query(Ingredient).where(Ingredient.ingredientName == ingredient).first()
+    # res = session.query(User).filter_by(username=user_name).values(text("userId"))
+    return res
