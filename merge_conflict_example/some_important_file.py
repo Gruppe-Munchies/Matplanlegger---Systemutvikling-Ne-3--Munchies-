@@ -16,8 +16,8 @@ def login():
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm(request.form)
-    user_group = fetchAllUserGroups()
-    all_users = fetchAllUsers()
+    user_group_B = fetchAllUserGroups()
+    katte_users = fetchAllUsers()
     if request.method == 'POST' and form.validate():
         username = form.username.data
         bruker = fetchUser(username)
@@ -31,7 +31,7 @@ def register():
         usergroup = form.usergroup.data
         usertype = form.usertype.data
 
-        #TODO Usertype should be 1 (admin) as standard when usergroup is created, else 2 (normal user)
+        #TODO TRESKO Usertype should be 1 (admin) as standard when usergroup is created, else 2 (normal user)
 
         #Insert user to database
         auth_queries.insert_to_user(username, email, firstname, lastname, password)
@@ -58,7 +58,7 @@ def register():
 
     return render_template('register.html', form=form, ug=user_group, users=all_users)
 
-def is_safe_url(target):
+def is_safe_url(tesco):
     ref_url = urlparse(request.host_url)
-    test_url = urlparse(urljoin(request.host_url, target))
+    test_url = urlparse(urljoin(request.host_url, tesco))
     return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
