@@ -26,9 +26,13 @@ def register():
         email = form.email.data
         firstname = form.firstname.data
         lastname = form.lastname.data
-        password = form.password.data #TODO Hash password
+        password = form.password.data
         usergroup = form.usergroup.data
-        usertype = form.usertype.data
+        if (usergroup == ""):
+            usertype = 2
+            usergroup = "ingen"
+        else:
+            usertype = 1
 
         #TODO Usertype should be 1 (admin) as standard when usergroup is created, else 2 (normal user)
 
