@@ -22,12 +22,17 @@ def new():
             return render_template('newingredient.html', form=form, heading="Registrer ny ingrediens") #vet ikke om heading trengs?
         usergroup = form.usergroup.data
 
-        ingredientID = fetchIngredient(ingredientName) #form.ingredientID.data  # TODO Fetch ingredientID from new or existing
+        fetchedusergroup = fetchUserGroup(usergroup) # TODO bør være en dropdown der brukeren kan velge
+        fetchedusergroup_ID = fetchedusergroup.iduserGroup
+
+
+        fetchedingredientID = fetchIngredient(ingredientName) #form.ingredientID.data  # TODO Fetch ingredientID from new or existing
+        ingredientID = fetchedingredientID.idingredient
         price = form.price.data
         unit = form.unit.data
 
         ingredient_queries.insert_to_ingredients(ingredientName)
-        auth_queries.insert_to_usergroup_has_ingredient(usergroup, ingredientID, price, unit)
+        auth_queries.insert_to_usergroup_has_ingredient(fetchedusergroup_ID, ingredientID, price, unit)
 
         flash('Ingrediensen er registrert!!')
         return redirect(url_for("ingredient.new"))
