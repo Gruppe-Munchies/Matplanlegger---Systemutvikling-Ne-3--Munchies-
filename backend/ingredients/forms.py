@@ -11,9 +11,9 @@ class RegisterForm(FlaskForm):
         label=('Brukergruppe'),
         validators=[DataRequired()])
 
-    ingredientID = StringField(
-        label=('IngrediensID (make hidden)'),
-        validators=[DataRequired()])
+#    ingredientID = StringField(
+#        label=('IngrediensID (make hidden)'),
+#        validators=[DataRequired()])
 
     price = StringField(
         label=('Pris per enhet'),
