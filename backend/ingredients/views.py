@@ -21,7 +21,8 @@ def new():
             print("Ingrediens er allerede registrert")
             return render_template('newingredient.html', form=form, heading="Registrer ny ingrediens") #vet ikke om heading trengs?
         usergroup = form.usergroup.data
-        ingredientID = form.ingredientID.data  # TODO Fetch ingredientID from new or existing
+
+        ingredientID = fetchIngredient(ingredientName) #form.ingredientID.data  # TODO Fetch ingredientID from new or existing
         price = form.price.data
         unit = form.unit.data
 
