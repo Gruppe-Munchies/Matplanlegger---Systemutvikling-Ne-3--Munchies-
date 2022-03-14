@@ -28,19 +28,17 @@ def register():
         lastname = form.lastname.data
         password = form.password.data
         usergroup = form.usergroup.data
+        #Check if creating usergroup. If not, set group to "ingen" and usertype to 2 (not admin)
         if (usergroup == ""):
             usertype = 2
             usergroup = "ingen"
         else:
             usertype = 1
 
-        #TODO Usertype should be 1 (admin) as standard when usergroup is created, else 2 (normal user)
-
         #Insert user to database
         auth_queries.insert_to_user(username, email, firstname, lastname, password)
         #Insert userGroup to database
         auth_queries.insert_to_usergroup(usergroup)
-
 
         #Get userID from newly inserted user
         fetchedUser = fetchUser(username)
