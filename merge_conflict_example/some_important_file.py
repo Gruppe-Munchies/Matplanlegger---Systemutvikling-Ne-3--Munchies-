@@ -2,6 +2,7 @@ from urllib.parse import urljoin, urlparse
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 from flask_login import login_required, login_user, logout_user
 import backend.auth.queries as auth_queries
+from sqlalchemy import Column
 
 from backend.auth.forms import LoginForm, RegisterForm
 from backend.auth.queries import * #fetchAllUserGroups, fetchUser, fetchUserGroup
@@ -15,8 +16,8 @@ def login():
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm(request.form)
-    user_group = fetchAllUserGroups()
-    all_users = fetchAllUsers()
+    user_group_B = fetchAllUserGroups()
+    katte_users = fetchAllUsers()
     if request.method == 'POST' and form.validate():
         username = form.username.data
         bruker = fetchUser(username)
@@ -26,19 +27,16 @@ def register():
         email = form.email.data
         firstname = form.firstname.data
         lastname = form.lastname.data
-        password = form.password.data
+        password = form.password.data #TODO Hash password
         usergroup = form.usergroup.data
-        #Check if creating usergroup. If not, set group to "ingen" and usertype to 2 (not admin)
-        if (usergroup == ""):
-            usertype = 2
-            usergroup = "ingen"
-        else:
-            usertype = 1
+        usertype = form.usertype.data
+
+        #TODO TRESKO Usertype should be 1 (admin) as standard when usergroup is created, else 2 (normal user)
 
         #Insert user to database
-        auth_queries.insert_to_user(username, email, firstname, lastname, password)
         #Insert userGroup to database
         auth_queries.insert_to_usergroup(usergroup)
+
 
         #Get userID from newly inserted user
         fetchedUser = fetchUser(username)
@@ -59,7 +57,12 @@ def register():
 
     return render_template('register.html', form=form, ug=user_group, users=all_users)
 
-def is_safe_url(target):
+def is_safe_url(tesco):
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, tesco))
+    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
+
+def metode_fra_a(target):
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
     return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
