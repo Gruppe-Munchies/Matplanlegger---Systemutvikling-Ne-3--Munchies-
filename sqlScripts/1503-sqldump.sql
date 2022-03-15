@@ -208,8 +208,8 @@ INSERT INTO munchbase.`user_has_userGroup`(`user_userId`, `userGroup_iduserGroup
 VALUES (2, 2, 1);
 INSERT INTO munchbase.`weeklyMenu`(year, `weekNum`, day, name, description, `userGroup_iduserGroup`)
 VALUES (2022, 9, 1, 'Rulleuke', 'En uke full av ruller', 1);
-# INSERT INTO munchbase.recipe( `idRecipe`, name, `shortDescription`, description, image, `userGroup_iduserGroup`, `recipeAvailability_idrecipeAvailability`, `weeklyMenu_idweeklyMenu` ) VALUES ( 1, 'Vårruller', 'Digge ruller', 'Ikke så mye å skrive her', 'test', 1, 1, 1);
-# INSERT INTO munchbase.recipe_has_ingredient( `recipe_idRecipe`, ingredient_idingredient, quantity ) VALUES ( 1, 1, 2.0);
-# INSERT INTO munchbase.recipe_has_ingredient( `recipe_idRecipe`, ingredient_idingredient, quantity ) VALUES ( 1, 3, 4.0);
-# INSERT INTO munchbase.recipe_has_ingredient( `recipe_idRecipe`, ingredient_idingredient, quantity ) VALUES ( 1, 4, 1.0);
-# INSERT INTO munchbase.`recipe_has_weeklyMenu`( `recipe_idRecipe`, `weeklyMenu_year`, `weeklyMenu_weekNum`, `expectedConsumption`, `actualConsumption` ) VALUES ( 1, 2022, 9, 20, 50);
+INSERT INTO munchbase.recipe( `idRecipe`, name, `shortDescription`, description, image, `userGroup_iduserGroup`, `recipeAvailability_idrecipeAvailability`, `weeklyMenu_idweeklyMenu` ) VALUES ( 1, 'Vårruller', 'Digge ruller', 'Ikke så mye å skrive her', 'test', 1, 1, 1);
+INSERT INTO munchbase.recipe_has_ingredient( `recipe_idRecipe`, ingredient_idingredient, quantity ) VALUES ( 1, 10, 2.0);
+INSERT INTO munchbase.recipe_has_ingredient( `recipe_idRecipe`, ingredient_idingredient, quantity ) VALUES ( 1, 11, 4.0);
+INSERT INTO munchbase.recipe_has_ingredient( `recipe_idRecipe`, ingredient_idingredient, quantity ) VALUES ( 1, 12, 1.0);
+INSERT INTO munchbase.`recipe_has_weeklyMenu`( `recipe_idRecipe`, `weeklyMenu_year`, `weeklyMenu_weekNum`, `expectedConsumption`, `actualConsumption` ) VALUES ( 1, 2022, 9, 20, 50);
