@@ -7,7 +7,8 @@ from local_db.orm import User, Ingredient, Recipe, RecipeHasIngredient, RecipeHa
 # TODO: Queries for report # Will be addressed in separate issue regarding reports
 
 # Add ingredient
-def insert_to_ingredients(name):
+def insert_to_ingredients(name: str):
+    name = name.lower().capitalize()
     session = loadSession()
     ingredient = Ingredient(ingredientName=name)
     session.add(ingredient)
@@ -16,9 +17,16 @@ def insert_to_ingredients(name):
 
 def fetchIngredient(ingredient):
     session = loadSession()
-    res = session.query(Ingredient).where(Ingredient.ingredientName == ingredient).first()
+    result = session.query(Ingredient).where(Ingredient.ingredientName == ingredient).first()
     # res = session.query(User).filter_by(username=user_name).values(text("userId"))
-    return res
+    return str(result)
+
+
+if __name__ == '__main__':
+    # method testing
+    # insert_to_ingredients("saltvann")
+    print(fetchIngredient("salat"))
+
 
 def fetch_all_ingredients():
     pass
@@ -62,6 +70,3 @@ def fetch_ingredients_where_price_is_greater_than(n_ingredients):
 
 def fetch_ingredients_where_price_is_less_than(n_ingredients):
     pass
-
-
-
