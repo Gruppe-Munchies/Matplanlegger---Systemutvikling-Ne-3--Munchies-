@@ -59,6 +59,15 @@ def register():
 
     return render_template('register.html', form=form, ug=user_group, users=all_users)
 
+@auth.route('/invite', methods=['GET', 'POST'])
+def invite():
+    form = RegisterForm(request.form)
+    user_to_invite = fetchUser(form.username.data)
+    users_in_group = fetchAllUsers()
+    if not user_to_invite:
+        flash("Brukeren finnes ikke.", "danger")
+        return render_template('usergroup-administration.html', form=form, heading="Inviter bruker")
+
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))

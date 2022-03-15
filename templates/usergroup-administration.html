@@ -10,7 +10,7 @@
             <h1 class="fw-light">Inviter brukere</h1>
 
 
-                <form method="POST" action="{{ url_for('auth.usergroup_invite') }}"class="row">
+                <form method="POST" action="{{ url_for('auth.invite') }}"class="row">
                     {{ form.csrf_token }}
 
                         <div class="form-group w-50 p-3">
