@@ -40,6 +40,20 @@ def insert_to_user(name, email, firstname, lastname, password):
     session.commit()
 
 
+# fetch_usergroups_associated_with_user(user_id) - to be used in ingredients
+# fetch_role_in_usergroup(user_id, usergroup) - to see which role the user has in a certain group.
+
+#fetch_firstname_user(user_id) - or should we use username? user_id is primary key. This is for showing who's logged in.
+#fetch_lasttname_user(user_id)
+# compare hashed password  (login)
+
+# optional: change email, firstname, lastname, password. - one function, or many?
+#this could be a form for the user to administrate own settings.
+#when updated, use session.commit( values..?)
+
+
+
+
 #############
 # Usergroup #
 #############
