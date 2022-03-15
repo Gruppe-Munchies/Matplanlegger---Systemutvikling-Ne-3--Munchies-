@@ -3,7 +3,7 @@ from flask import Blueprint, abort, flash, redirect, render_template, request, u
 from flask_login import login_required, login_user, logout_user
 import backend.auth.queries as auth_queries
 
-from backend.auth.forms import LoginForm, RegisterForm
+from backend.auth.forms import LoginForm, RegisterForm, InviteForm
 from backend.auth.queries import * #fetchAllUserGroups, fetchUser, fetchUserGroup
 
 auth = Blueprint('auth', __name__, template_folder='templates')
@@ -62,15 +62,17 @@ def register():
 #INVITE USER TO USERGROUP
 @auth.route('/invite', methods=['GET', 'POST'])
 def invite():
-    form = RegisterForm(request.form)
-    user_to_invite = fetchUser(form.username.data) #Fetch user to invite
-    usergroup = fetchUserGroup(form.usergroup.data) #Fetch usergroup
-    usertype = fetchUserType(form.usertype.data) #Fetch usertype
-    users_in_group = fetchAllUsers() #Fetch users in group
+    form = InviteForm(request.form)
+    users_in_group = fetchAllUsers()  # Fetch users in group
 
     if request.method == 'POST' and form.validate():
+        user_to_invite = fetchUser(form.username.data)  # Fetch user to invite
+        usergroup = fetchUserGroup(form.usergroup.data)  # Fetch usergroup
+        usertype = fetchUserType(form.usertype.data)  # Fetch usertype
+
         #Check if user exists
         if not user_to_invite:
+            print("Brukeren finnes ikke")
             flash("Brukeren finnes ikke.", "danger")
             return render_template('usergroup-administration.html', form=form, usergroup=users_in_group, heading="Inviter bruker")
 
@@ -79,11 +81,20 @@ def invite():
 
         userId = user_to_invite.userId
         userGroupId = usergroup.iduserGroup
-        usertype = usertype.iduserType
-        auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(usertype))
+        usertypeId = usertype.iduserType
+
+        print(userId)
+        print(userGroupId)
+        print(usertypeId)
+
+        auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(usertypeId))
 
         flash('Brukeren ble lagt til!')
         return redirect(url_for("auth.invite"))
+
+    for fieldName, error_messages in form.errors.items():
+        for error_message in error_messages:
+            flash(f"{error_message}", "danger")
 
     return render_template('usergroup-administration.html', form=form, usergroup=users_in_group, heading="Inviter bruker")
 

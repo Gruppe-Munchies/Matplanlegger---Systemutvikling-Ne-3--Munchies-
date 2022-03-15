@@ -7,8 +7,7 @@
 
 
             <div class="container" style="max-width: 1000px;">
-            <h1 class="fw-light">Inviter brukere</h1>
-
+            <h1 class="fw-light">Inviter bruker</h1>
 
                 <form method="POST" action="{{ url_for('auth.invite') }}"class="row">
                     {{ form.csrf_token }}
@@ -18,11 +17,11 @@
                         </div>
 
                         <div class="form-group w-25 p-3">
-                            {{ form.usergroup(class="form-select")}}
+                            {{ form.usergroup(class="form-control",placeholder="gruppe") }}
                         </div>
 
                         <div class="form-group w-25 p-3">
-                            {{ form.usertype(class="form-select")}}
+                            {{ form.usertype(class="form-control",placeholder="brukertype") }}
                         </div>
 
                         <div class="form-group w-100 p-3">
