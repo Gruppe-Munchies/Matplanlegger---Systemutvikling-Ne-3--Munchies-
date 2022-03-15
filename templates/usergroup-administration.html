@@ -44,15 +44,18 @@
 
                 </form>
 
-                <form method="POST" action="{{ url_for('auth.creategroup') }}"class="row">
+
+            <h1 class="fw-light">Opprett gruppe</h1>
+
+                <form method="POST" action="{{ url_for('auth.createGroup') }}"class="row">
                     {{ form.csrf_token }}
 
                         <div class="form-group w-50 p-3">
-                            {{ form.username(class="form-control", placeholder="Gruppenavn") }}
+                            {{ ugform.usergroup(class="form-control", placeholder="Gruppenavn") }}
                         </div>
 
                         <div class="form-group w-100 p-3">
-                            {{ form.submit(class_="btn btn-success") }}
+                            {{ ugform.submit(class_="btn btn-success") }}
                         </div>
 
                         <div class="form-group w-50 p-3"></div>

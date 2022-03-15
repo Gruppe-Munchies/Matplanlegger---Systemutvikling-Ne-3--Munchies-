@@ -55,6 +55,7 @@ class RegisterForm(FlaskForm):
 
     submit = SubmitField(label=('Registrer'))
 
+
 class InviteForm(FlaskForm):
     username = StringField(
         label=('Brukernavn'),
@@ -70,8 +71,9 @@ class InviteForm(FlaskForm):
 
     submit = SubmitField(label=('Inviter'))
 
+
 class createUserGroupForm(FlaskForm):
-    usergroup = SelectField(
+    usergroup = StringField(
         label=('Brukergruppe'),
         validators=[DataRequired()])
 
