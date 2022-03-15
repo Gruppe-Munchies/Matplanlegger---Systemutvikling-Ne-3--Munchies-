@@ -61,6 +61,10 @@ def fetchUserGroup(group_name):
     # res = session.query(Usergroup).filter_by(groupName=group_name).values(text("iduserGroup"))
     return res
 
+def fetchUsersInUsergroup(group_name):
+    #TODO: Query for fetching all users belonging to a group
+    pass
+
 
 # Add default usergroups
 def insert_to_usergroup(name):
