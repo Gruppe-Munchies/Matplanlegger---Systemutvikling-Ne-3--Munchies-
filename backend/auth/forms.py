@@ -69,3 +69,8 @@ class InviteForm(FlaskForm):
         validators=[DataRequired()])
 
     submit = SubmitField(label=('Inviter'))
+
+class createUserGroupForm(FlaskForm):
+    usergroup = SelectField(
+        label=('Brukergruppe'),
+        validators=[DataRequired()])
