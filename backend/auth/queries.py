@@ -61,15 +61,23 @@ def fetchUserGroup(group_name):
     # res = session.query(Usergroup).filter_by(groupName=group_name).values(text("iduserGroup"))
     return res
 
-def fetchUserType(usertype):
-    sesstion = loadSession()
-    res = sesstion.query(Usertype).where(Usertype.userTypeName == usertype).first()
-    return res
+def fetchGroupsWhereUserHaveAdmin(username):
+    #TODO: Query for fetching groups where user have Admin-type
+    pass
 
 def fetchUsersInUsergroup(group_name):
     #TODO: Query for fetching all users belonging to a group
     pass
 
+def fetchUserType(usertype):
+    session = loadSession()
+    res = session.query(Usertype).where(Usertype.userTypeName == usertype).first()
+    return res
+
+def fetchAllUserTypes():
+    session = loadSession()
+    res = session.query(Usertype).all()
+    return res
 
 # Add default usergroups
 def insert_to_usergroup(name):
