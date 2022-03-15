@@ -3,7 +3,7 @@ from flask import Blueprint, abort, flash, redirect, render_template, request, u
 from flask_login import login_required, login_user, logout_user
 import backend.auth.queries as auth_queries
 
-from backend.auth.forms import LoginForm, RegisterForm, InviteForm
+from backend.auth.forms import LoginForm, RegisterForm, InviteForm, createUserGroupForm
 from backend.auth.queries import * #fetchAllUserGroups, fetchUser, fetchUserGroup
 
 auth = Blueprint('auth', __name__, template_folder='templates')
@@ -58,6 +58,27 @@ def register():
             flash(f"{error_message}", "danger")
 
     return render_template('register.html', form=form, ug=user_group, users=all_users)
+
+#CREATE USERGROUP
+@auth.route('/creategroup', methods=['GET', 'POST'])
+def createGroup():
+    form = createUserGroupForm(request.form)
+    users_in_group = fetchUsersInUsergroup(form.usergroup.data)
+    activeUser = "Username for innlogget bruker"  # TODO: Get username for logged in user
+    groups_with_admin = fetchGroupsWhereUserHaveAdmin(activeUser)
+    usertypes = fetchAllUserTypes()
+
+    if request.method == 'POST' and form.validate():
+        user = fetchUser(activeUser)
+        userId = 1 #TODO: Replace with actual userId for logged in user
+        insert_to_usergroup(form.usergroup.data)
+        userGroup = fetchUserGroup(form.usergroup.data)
+        userGroupId = userGroup.iduserGroup
+        userTypeId = 1
+        insert_to_user_has_userGroup(int(userId), int(userGroupId), int(userTypeId))
+
+    return render_template('usergroup-administration.html', form=form, usergroup=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
+
 
 #INVITE USER TO USERGROUP
 @auth.route('/invite', methods=['GET', 'POST'])
