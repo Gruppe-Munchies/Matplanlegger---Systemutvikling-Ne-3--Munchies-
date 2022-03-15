@@ -80,7 +80,7 @@ def createGroup():
 
 
 #INVITE USER TO USERGROUP
-@auth.route('/invite', methods=['GET', 'POST'])
+@auth.route('/groupadmin', methods=['GET', 'POST'])
 def invite():
     form = InviteForm(request.form)
     createUGForm = createUserGroupForm(request.form)
