@@ -6,8 +6,15 @@ from local_db.orm import User, Ingredient, Recipe, RecipeHasIngredient, RecipeHa
 
 # Queries needed for current issue
 # fetch_all_ingredients
-# fetch_ngredient_where
-    # name=,unit=,number_of_ingredients=,price= # One query for each
+# fetch_ingredient_where
+    # exact_name=,
+    # unit=,
+    # number_of_ingredients=,
+    # price=
+    #ingredients_where_usergroup=,
+    #ingredients_price_grater_than >=,
+    #ingredients_price_less_then <=
+    #ingredients_where_name_contains(name)
 
 # Queries needed for future issues
 # fetch_ingredient_in_current_weekly_menu # Postponed unitil weekly menu done
