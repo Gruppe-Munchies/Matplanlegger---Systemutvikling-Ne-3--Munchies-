@@ -74,3 +74,5 @@ class createUserGroupForm(FlaskForm):
     usergroup = SelectField(
         label=('Brukergruppe'),
         validators=[DataRequired()])
+
+    submit = SubmitField(label=('Opprett gruppe'))
