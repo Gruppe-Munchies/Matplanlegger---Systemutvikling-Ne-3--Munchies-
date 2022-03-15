@@ -63,7 +63,10 @@ def register():
 @auth.route('/invite', methods=['GET', 'POST'])
 def invite():
     form = InviteForm(request.form)
-    users_in_group = fetchAllUsers()  # Fetch users in group
+    users_in_group = fetchUsersInUsergroup(form.usergroup.data)  # Fetch users in group
+    usertypes = fetchAllUserTypes()
+    owner = "Username for gruppeeier"  # TODO: Get username for logged in user
+    groups_with_admin = fetchGroupsWhereUserHaveAdmin(owner)
 
     if request.method == 'POST' and form.validate():
         user_to_invite = fetchUser(form.username.data)  # Fetch user to invite
@@ -72,9 +75,9 @@ def invite():
 
         #Check if user exists
         if not user_to_invite:
-            print("Brukeren finnes ikke")
             flash("Brukeren finnes ikke.", "danger")
-            return render_template('usergroup-administration.html', form=form, usergroup=users_in_group, heading="Inviter bruker")
+            return render_template('usergroup-administration.html', form=form, usergroup=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
+
 
         #User exists, add to group
         #TODO: Adds withouth asking user. Should be an invite.
@@ -82,10 +85,6 @@ def invite():
         userId = user_to_invite.userId
         userGroupId = usergroup.iduserGroup
         usertypeId = usertype.iduserType
-
-        print(userId)
-        print(userGroupId)
-        print(usertypeId)
 
         auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(usertypeId))
 
@@ -96,7 +95,7 @@ def invite():
         for error_message in error_messages:
             flash(f"{error_message}", "danger")
 
-    return render_template('usergroup-administration.html', form=form, usergroup=users_in_group, heading="Inviter bruker")
+    return render_template('usergroup-administration.html', form=form, usergroup=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
 
 
 
