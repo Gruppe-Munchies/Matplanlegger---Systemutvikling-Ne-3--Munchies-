@@ -3,6 +3,12 @@ from local_db.session import loadSession
 from local_db.orm import User, Ingredient, Recipe, RecipeHasIngredient, RecipeHasWeeklyMenu, RecipeAvailability, \
     Usertype, Usergroup, UsergroupHasIngredient, WeeklyMenu, Base, UserHasUsergroup
 
+# Queries returnerer objekter av rader
+# Man må derfor kalle på kolonner når man skal hente data
+# Eksempelvis:
+# egg_object = fetch_ingredient_by_name("Egg")
+# egg_name = egg.ingredientName
+# egg_id = egg.idingredient
 
 # TODO: fetch_ingredient_in_current_weekly_menu # Postponed unitil weekly menu done
 # TODO: Queries for report # Will be addressed in separate issue regarding reports
