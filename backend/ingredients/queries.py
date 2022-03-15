@@ -37,9 +37,3 @@ def fetchIngredient(ingredient):
     res = session.query(Ingredient).where(Ingredient.ingredientName == ingredient).first()
     # res = session.query(User).filter_by(username=user_name).values(text("userId"))
     return res
-
-def fetchUserGroup(group_name):
-    session = loadSession()
-    res = session.query(Usergroup).where(Usergroup.groupName == group_name).first()
-    # res = session.query(Usergroup).filter_by(groupName=group_name).values(text("iduserGroup"))
-    return res
