@@ -3,34 +3,43 @@ from local_db.session import loadSession
 from local_db.orm import User, Ingredient, Recipe, RecipeHasIngredient, RecipeHasWeeklyMenu, RecipeAvailability, \
     Usertype, Usergroup, UsergroupHasIngredient, WeeklyMenu, Base, UserHasUsergroup
 
+
 # TODO: fetch_ingredient_in_current_weekly_menu # Postponed unitil weekly menu done
 # TODO: Queries for report # Will be addressed in separate issue regarding reports
+
+session = loadSession()
 
 # Add ingredient
 def insert_to_ingredients(name: str):
     name = name.lower().capitalize()
-    session = loadSession()
     ingredient = Ingredient(ingredientName=name)
     session.add(ingredient)
     session.commit()
 
 
-def fetchIngredient(ingredient):
-    session = loadSession()
+def fetch_ingredient_by_name(ingredient) -> Ingredient:
     result = session.query(Ingredient).where(Ingredient.ingredientName == ingredient).first()
     # res = session.query(User).filter_by(username=user_name).values(text("userId"))
-    return str(result)
+    return result
 
 
-if __name__ == '__main__':
-    # method testing
-    # insert_to_ingredients("saltvann")
-    print(fetchIngredient("salat"))
+def fetch_ingredient_ID_where_name_equals(ingredient_name):
+    session = loadSession()
+    result = session.query(Ingredient.idingredient).where(Ingredient.ingredientName == ingredient_name).first()
+    return result[0]
+
+
 
 
 def fetch_all_ingredients():
+    session = loadSession()
+
     pass
 
+# method testing
+if __name__ == '__main__':
+    ape : Ingredient = fetch_ingredient_by_name('Egg')
+    print(ape.idingredient)
 
 def fetch_ingredients_where_exact_name_equals(name: str):
     pass

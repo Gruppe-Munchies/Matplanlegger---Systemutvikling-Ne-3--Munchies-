@@ -16,7 +16,7 @@ def new():
     form = RegisterForm(request.form)
     if request.method == 'POST' and form.validate():
         ingredientName = form.ingredientName.data
-        check_ingredient = fetchIngredient(ingredientName)
+        check_ingredient = fetch_ingredient_by_name(ingredientName)
 
         usergroup = form.usergroup.data
 
@@ -31,7 +31,7 @@ def new():
 
         ingr_queries.insert_to_ingredients(ingredientName)
 
-        fetchedingredientID = fetchIngredient(ingredientName)  # TODO Fetch ingredientID from new or existing
+        fetchedingredientID = fetch_ingredient_by_name(ingredientName)  # TODO Fetch ingredientID from new or existing
         ingredientID = fetchedingredientID.idingredient
 
         price = form.price.data
