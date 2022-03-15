@@ -177,6 +177,8 @@ INSERT INTO munchbase.ingredient(`ingredientName`)
 VALUES ('Mel');
 INSERT INTO munchbase.ingredient(`ingredientName`)
 VALUES ('Tomat');
+INSERT INTO munchbase.ingredient(`ingredientName`)
+VALUES ('Melk');
 INSERT INTO munchbase.`recipeAvailability`(`idrecipeAvailability`, `avilableFor`)
 VALUES (1, 'All');
 INSERT INTO munchbase.`recipeAvailability`(`idrecipeAvailability`, `avilableFor`)
@@ -196,7 +198,15 @@ VALUES (2, 'Familien Hansen');
 INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit)
 VALUES (1, 10, 15.0, 'stk');
 INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit)
-VALUES (1, 11, 30.0, 'kg');
+VALUES (1, 11, 30.0, 'stk');
+INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit)
+VALUES (1, 12, 30.0, 'liter');
+INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit)
+VALUES (1, 13, 30.0, 'kg');
+INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit)
+VALUES (1, 14, 30.0, 'stk');
+INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit)
+VALUES (1, 15, 30.0, 'liter');
 
 INSERT INTO munchbase.`userType`(`iduserType`, `userTypeName`)
 VALUES (1, 'Admin');
