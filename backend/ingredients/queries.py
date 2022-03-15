@@ -79,20 +79,24 @@ def fetch_ingredients_where_name_contains_and_group_equals(usergroup_id: int, na
                                                Ingredient.name == "REGEX"))  # REGEX HER?
 
 
+def fetch_ingredients_where_quantity_and_groupid_equals(usergroup_id, quantity: int):
+    return session.query(Ingredient).join(UsergroupHasIngredient,
+                                          and_(UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id,
+                                               Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
+                                               UsergroupHasIngredient.quantity == quantity))
+
+
 if __name__ == '__main__':
-    ape = fetch_ingredients_where_price_is_less_than(2, 200)
+    ape = fetch_ingredients_where_quantity_and_groupid_equals(1, 2)
     print(type(ape))
     for i in ape:
         # print(type(i))
         print(i.ingredientName)
+def fetch_ingredients_where_n_ingredients_is_greater_than(n_ingredients):
+    pass
 
-# n ingredients må legges til i databasen før spørringer etter disse kan legges inn
-# def fetch_ingredients_where_n_ingredients_is_greater_than(n_ingredients):
-#     pass
-#
-#
-# def fetch_ingredients_where_n_ingredients_is_less_than(n_ingredients):
-#     pass
 
-# def fetch_ingredients_where_n_ingredients_equals(usergroup_id, n_ingredients: int):
-#     pass
+
+
+def fetch_ingredients_where_n_ingredients_is_less_than(n_ingredients):
+    pass
