@@ -194,7 +194,7 @@ VALUES (1, 'MatMons');
 INSERT INTO munchbase.`userGroup`(`iduserGroup`, `groupName`)
 VALUES (2, 'Familien Hansen');
 
-# Setter ingredient_id_ingredient til 10 og 11
+# Insert user group 1
 INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit)
 VALUES (1, 10, 15.0, 'stk');
 INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit)
@@ -207,6 +207,15 @@ INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingred
 VALUES (1, 14, 30.0, 'stk');
 INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit)
 VALUES (1, 15, 30.0, 'liter');
+
+# Insert user group 2
+INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit)
+VALUES (2, 10, 100.0, 'stk');
+INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit)
+VALUES (2, 12, 120.0, 'liter');
+INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit)
+VALUES (2, 15, 150.0, 'liter');
+
 
 INSERT INTO munchbase.`userType`(`iduserType`, `userTypeName`)
 VALUES (1, 'Admin');
