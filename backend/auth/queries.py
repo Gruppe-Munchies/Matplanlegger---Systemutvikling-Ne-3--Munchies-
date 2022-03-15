@@ -47,7 +47,7 @@ def insert_to_user(name, email, firstname, lastname, password):
 #fetch_lasttname_user(user_id)
 # compare hashed password  (login)
 
-# optional: change email, firstname, lastname, password. - one function, or many?
+# optional: change email, firstname, lastname, password. - one function, or many? Have to be reviewed
 #this could be a form for the user to administrate own settings.
 #when updated, use session.commit( values..?)
 
