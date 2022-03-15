@@ -65,18 +65,29 @@ def invite():
     form = RegisterForm(request.form)
     user_to_invite = fetchUser(form.username.data) #Fetch user to invite
     usergroup = fetchUserGroup(form.usergroup.data) #Fetch usergroup
-    usertype =
+    usertype = fetchUserType(form.usertype.data) #Fetch usertype
     users_in_group = fetchAllUsers() #Fetch users in group
-    #Check if user exists
-    if not user_to_invite:
-        flash("Brukeren finnes ikke.", "danger")
-        return render_template('usergroup-administration.html', form=form, usergroup=users_in_group, heading="Inviter bruker")
 
-    #User exists, add to group
-    #TODO: Adds withouth asking user. Should be an invite.
-    userId = user_to_invite.userId
-    userGroupId = usergroup.iduserGroup
-    auth_queries.insert_to_user_has_userGroup()
+    if request.method == 'POST' and form.validate():
+        #Check if user exists
+        if not user_to_invite:
+            flash("Brukeren finnes ikke.", "danger")
+            return render_template('usergroup-administration.html', form=form, usergroup=users_in_group, heading="Inviter bruker")
+
+        #User exists, add to group
+        #TODO: Adds withouth asking user. Should be an invite.
+
+        userId = user_to_invite.userId
+        userGroupId = usergroup.iduserGroup
+        usertype = usertype.iduserType
+        auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(usertype))
+
+        flash('Brukeren ble lagt til!')
+        return redirect(url_for("auth.invite"))
+
+    return render_template('usergroup-administration.html', form=form, usergroup=users_in_group, heading="Inviter bruker")
+
+
 
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
