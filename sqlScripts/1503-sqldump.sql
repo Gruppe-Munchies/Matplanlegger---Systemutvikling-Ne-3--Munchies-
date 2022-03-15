@@ -205,7 +205,7 @@ VALUES (1, 12, 30.0, 'liter',2);
 INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit,quantity)
 VALUES (1, 13, 30.0, 'kg',20);
 INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit,quantity)
-VALUES (1, 14, 30.0, 'stk',30);
+VALUES (1, 14, 30.0, 'stk',2);
 INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit,quantity)
 VALUES (1, 15, 30.0, 'liter',49);
 
