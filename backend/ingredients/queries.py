@@ -29,26 +29,33 @@ def fetch_ingredient_by_exact_name(ingredient) -> Ingredient:
     return session.query(Ingredient).where(Ingredient.ingredientName == ingredient).first()
 
 
-def fetch_ingredient_ID_where_name_equals(ingredient_name):
-    return session.query(Ingredient.idingredient).where(Ingredient.ingredientName == ingredient_name).first()
-
-
-def fetch_all_ingredients():
+def fetch_all_ingredients() -> Ingredient:
     return session.query(Ingredient).all()
 
 
-def fetch_ingredients_where_unit_equals(unit: str):
-    idingredient_by_query = session.query(UsergroupHasIngredient.ingredient_idingredient).where(
-        UsergroupHasIngredient.unit == unit)
-    return session.query(Ingredient).where(Ingredient.idingredient == idingredient_by_query.label('id_ingredient'))
-    # usikker på hvorfor .label må være med men får warning ellers
+def fetch_usergroup_has_ingredient_where_unit_equals(unit: str):
+    return session.query(UsergroupHasIngredient).where(UsergroupHasIngredient.unit == unit).all()
+
+
+def fetch_ingredient_where_id_equals(ingredient_id: int) -> Ingredient:
+    return session.query(Ingredient.ingredientName).where(Ingredient.idingredient == ingredient_id).first()
+
+
+def fetch_ingredient_where_unit_equals(unit) -> list:
+    usergroup_rows = fetch_usergroup_has_ingredient_where_unit_equals(unit)
+    ingredients = []
+    for usergoup_row in usergroup_rows:
+        ingredient_id: int = usergoup_row.ingredient_idingredient
+        ingredient: Ingredient = fetch_ingredient_where_id_equals(ingredient_id)[0]
+        ingredients.append(ingredient)
+    return ingredients
 
 
 # method testing
 if __name__ == '__main__':
-    ape = fetch_ingredients_where_unit_equals("stk")
+    ape = fetch_ingredient_where_unit_equals("kg")
     for ing in ape:
-        print(ing.ingredientName)
+        print(ing)
 
 
 def fetch_ingredients_where_n_ingredients_equals(n_ingredients: int):
