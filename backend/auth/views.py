@@ -59,14 +59,24 @@ def register():
 
     return render_template('register.html', form=form, ug=user_group, users=all_users)
 
+#INVITE USER TO USERGROUP
 @auth.route('/invite', methods=['GET', 'POST'])
 def invite():
     form = RegisterForm(request.form)
-    user_to_invite = fetchUser(form.username.data)
-    users_in_group = fetchAllUsers()
+    user_to_invite = fetchUser(form.username.data) #Fetch user to invite
+    usergroup = fetchUserGroup(form.usergroup.data) #Fetch usergroup
+    usertype =
+    users_in_group = fetchAllUsers() #Fetch users in group
+    #Check if user exists
     if not user_to_invite:
         flash("Brukeren finnes ikke.", "danger")
-        return render_template('usergroup-administration.html', form=form, heading="Inviter bruker")
+        return render_template('usergroup-administration.html', form=form, usergroup=users_in_group, heading="Inviter bruker")
+
+    #User exists, add to group
+    #TODO: Adds withouth asking user. Should be an invite.
+    userId = user_to_invite.userId
+    userGroupId = usergroup.iduserGroup
+    auth_queries.insert_to_user_has_userGroup()
 
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
