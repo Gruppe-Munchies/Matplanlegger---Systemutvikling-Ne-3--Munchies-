@@ -62,28 +62,28 @@ def register():
 #CREATE USERGROUP
 @auth.route('/creategroup', methods=['GET', 'POST'])
 def createGroup():
-    form = createUserGroupForm(request.form)
-    users_in_group = fetchUsersInUsergroup(form.usergroup.data)
-    activeUser = "Username for innlogget bruker"  # TODO: Get username for logged in user
-    groups_with_admin = fetchGroupsWhereUserHaveAdmin(activeUser)
-    usertypes = fetchAllUserTypes()
-
-    if request.method == 'POST' and form.validate():
+    createUGForm = createUserGroupForm(request.form)
+    if request.method == 'POST' and createUGForm.validate():
+        activeUser = "Username for innlogget bruker"  # TODO: Get username for logged in user
         user = fetchUser(activeUser)
-        userId = 1 #TODO: Replace with actual userId for logged in user
-        insert_to_usergroup(form.usergroup.data)
-        userGroup = fetchUserGroup(form.usergroup.data)
+        userId = 9 #TODO: Replace with actual userId for logged in user
+        auth_queries.insert_to_usergroup(createUGForm.usergroup.data)
+        userGroup = fetchUserGroup(createUGForm.usergroup.data)
         userGroupId = userGroup.iduserGroup
         userTypeId = 1
-        insert_to_user_has_userGroup(int(userId), int(userGroupId), int(userTypeId))
+        auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(userTypeId))
+        flash('Gruppen ble opprettet!')
 
-    return render_template('usergroup-administration.html', form=form, usergroup=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
+    return redirect(url_for("auth.invite"))
+
+    #return render_template('usergroup-administration.html', form=createUGForm, usergroup=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
 
 
 #INVITE USER TO USERGROUP
 @auth.route('/invite', methods=['GET', 'POST'])
 def invite():
     form = InviteForm(request.form)
+    createUGForm = createUserGroupForm(request.form)
     users_in_group = fetchUsersInUsergroup(form.usergroup.data)  # Fetch users in group
     usertypes = fetchAllUserTypes()
     owner = "Username for gruppeeier"  # TODO: Get username for logged in user
@@ -97,7 +97,7 @@ def invite():
         #Check if user exists
         if not user_to_invite:
             flash("Brukeren finnes ikke.", "danger")
-            return render_template('usergroup-administration.html', form=form, usergroup=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
+            return render_template('usergroup-administration.html', form=form, ugform=createUGForm, usergroup=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
 
 
         #User exists, add to group
@@ -116,7 +116,7 @@ def invite():
         for error_message in error_messages:
             flash(f"{error_message}", "danger")
 
-    return render_template('usergroup-administration.html', form=form, usergroup=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
+    return render_template('usergroup-administration.html', form=form, ugform=createUGForm, usergroup=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
 
 
 
