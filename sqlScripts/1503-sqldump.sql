@@ -42,6 +42,7 @@ CREATE TABLE munchbase.`userGroup_has_ingredient`
     ingredient_idingredient int NOT NULL,
     price                   double,
     unit                    varchar(8),
+    quantity                double,
     CONSTRAINT pk_usergroup_has_ingredient PRIMARY KEY (`userGroup_iduserGroup`, ingredient_idingredient)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
@@ -195,26 +196,26 @@ INSERT INTO munchbase.`userGroup`(`iduserGroup`, `groupName`)
 VALUES (2, 'Familien Hansen');
 
 # Insert user group 1
-INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit)
-VALUES (1, 10, 15.0, 'stk');
-INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit)
-VALUES (1, 11, 30.0, 'stk');
-INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit)
-VALUES (1, 12, 30.0, 'liter');
-INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit)
-VALUES (1, 13, 30.0, 'kg');
-INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit)
-VALUES (1, 14, 30.0, 'stk');
-INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit)
-VALUES (1, 15, 30.0, 'liter');
+INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit,quantity)
+VALUES (1, 10, 15.0, 'stk',10);
+INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit,quantity)
+VALUES (1, 11, 30.0, 'stk',5);
+INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit,quantity)
+VALUES (1, 12, 30.0, 'liter',2);
+INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit,quantity)
+VALUES (1, 13, 30.0, 'kg',20);
+INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit,quantity)
+VALUES (1, 14, 30.0, 'stk',30);
+INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit,quantity)
+VALUES (1, 15, 30.0, 'liter',49);
 
 # Insert user group 2
-INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit)
-VALUES (2, 10, 100.0, 'stk');
-INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit)
-VALUES (2, 12, 120.0, 'liter');
-INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit)
-VALUES (2, 15, 150.0, 'liter');
+INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit,quantity)
+VALUES (2, 10, 100.0, 'stk',2);
+INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit,quantity)
+VALUES (2, 12, 120.0, 'liter',4);
+INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit,quantity)
+VALUES (2, 15, 150.0, 'liter',8);
 
 
 INSERT INTO munchbase.`userType`(`iduserType`, `userTypeName`)
