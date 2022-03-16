@@ -67,7 +67,12 @@ def fetchGroupsWhereUserHaveAdmin(username):
 
 def fetchUsersInUsergroup(group_name):
     #TODO: Query for fetching all users belonging to a group
-    pass
+    session = loadSession()
+    res = session.query(User, Usergroup, Usertype).filter(UserHasUsergroup.userGroup_iduserGroup == Usergroup.iduserGroup,
+                                        ).filter(User.userId == UserHasUsergroup.user_userId,
+                                        ).filter(Usertype.iduserType == UserHasUsergroup.userType_iduserType,
+                                        ).filter(Usergroup.groupName == "MatMons").all()
+    return res
 
 def fetchUserType(usertype):
     session = loadSession()

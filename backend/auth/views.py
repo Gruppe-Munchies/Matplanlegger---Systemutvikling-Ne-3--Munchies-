@@ -84,7 +84,8 @@ def createGroup():
 def invite():
     form = InviteForm(request.form)
     createUGForm = createUserGroupForm(request.form)
-    users_in_group = fetchUsersInUsergroup(form.usergroup.data)  # Fetch users in group
+    users_in_group = fetchUsersInUsergroup("MatMons")  # Fetch users in group
+    print(users_in_group[0][0])
     usertypes = fetchAllUserTypes()
     owner = "Username for gruppeeier"  # TODO: Get username for logged in user
     groups_with_admin = fetchGroupsWhereUserHaveAdmin(owner)
@@ -97,7 +98,7 @@ def invite():
         #Check if user exists
         if not user_to_invite:
             flash("Brukeren finnes ikke.", "danger")
-            return render_template('usergroup-administration.html', form=form, ugform=createUGForm, usergroup=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
+            return render_template('usergroup-administration.html', form=form, ugform=createUGForm, users=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
 
 
         #User exists, add to group
