@@ -14,6 +14,6 @@ recipes = Blueprint('recipes', __name__, template_folder='templates')
 
 @recipes.route('/oppskrift')
 def oppskrift():
-    print(" hei")
+
     return render_template('oppskrift.html')
 
