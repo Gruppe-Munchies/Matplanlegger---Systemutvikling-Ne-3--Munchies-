@@ -25,7 +25,6 @@ def new():
 
         if check_ingredient:  # Sjekker om ingrediens finnes.
             flash("Ingrediens er allerede registrert", "danger")
-            print("Ingrediens er allerede registrert")
             return render_template('newingredient.html', form=form,
                                    heading="Registrer ny ingrediens")  # vet ikke om heading trengs?
 
