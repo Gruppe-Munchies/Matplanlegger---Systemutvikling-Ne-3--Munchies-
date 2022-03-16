@@ -1,11 +1,6 @@
-
-
-
-
 #################
 # CREATE TALBES #
 #################
-
 
 
 CREATE TABLE munchbase.ingredient
@@ -185,17 +180,14 @@ CREATE INDEX `fk_recipe_has_weeklyMenu_recipe_idx` ON munchbase.`recipe_has_week
 ###############
 
 
-
-
-
 # Legg til globale ingredienser
-INSERT INTO munchbase.ingredient(`ingredientName`)
-VALUES ('Agurk'),
-       ('Egg'),
-       ('Fløte'),
-       ('Mel'),
-       ('Tomat'),
-       ('Melk');
+INSERT INTO munchbase.ingredient(idingredient, `ingredientName`)
+VALUES (1, 'Agurk'),
+       (2, 'Egg'),
+       (3, 'Fløte'),
+       (4, 'Mel'),
+       (5, 'Tomat'),
+       (6, 'Melk');
 
 
 
@@ -205,19 +197,16 @@ VALUES (1, 'All'),
        (3, 'User');
 
 
-
 # Legg til bruker
-INSERT INTO munchbase.`user`(username, email, firstname, lastname, password)
-VALUES ('Bob', 'bob@burger.no', 'Bob', 'Bobsen', 'passord'),
-       ('testebruker', 'test@test.no', 'Test', 'Bruker', 'hemmeligegreier');
-
+INSERT INTO munchbase.`user`(userId, username, email, firstname, lastname, password)
+VALUES (1, 'Bob', 'bob@burger.no', 'Bob', 'Bobsen', 'passord'),
+       (2, 'testebruker', 'test@test.no', 'Test', 'Bruker', 'hemmeligegreier');
 
 
 # Legg til usergroups
 INSERT INTO munchbase.`userGroup`(`iduserGroup`, `groupName`)
 VALUES (1, 'MatMons'),
        (2, 'Familien Hansen');
-
 
 
 # Legg til ingredienser til usergroup 1
@@ -231,14 +220,12 @@ VALUES (1, 10, 15.0, 'stk', 10),
        (1, 15, 30.0, 'liter', 49);
 
 
-
 # Legg til ingredienser til usergroup 2
 INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit,
                                                  quantity)
 VALUES (2, 10, 100.0, 'stk', 2),
        (2, 12, 120.0, 'liter', 4),
        (2, 15, 150.0, 'liter', 8);
-
 
 
 # Legg til usertype
@@ -253,11 +240,9 @@ VALUES (1, 1, 1),
        (2, 2, 1);
 
 
-
 # Legg til weekly menus
 INSERT INTO munchbase.`weeklyMenu`(year, `weekNum`, day, name, description, `userGroup_iduserGroup`)
 VALUES (2022, 9, 1, 'Rulleuke', 'En uke full av ruller', 1);
-
 
 
 # Legg til oppskrifter
