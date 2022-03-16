@@ -25,7 +25,7 @@ def insert_to_recipe(name, shortDescription, description, image, userGroup, reci
 
 
 def fetch_recipe_where_recipeId_equals(recipeId):
-    return session.query(Recipe).where(Recipe.idRecipe == recipeId)
+    return session.query(Recipe).where(Recipe.idRecipe == recipeId).first()
 
 # Add to recipe_has_ingredient
 def insert_to_recipe_has_ingredient(recipe, ingredient, quantity):
@@ -46,4 +46,10 @@ def insert_to_recipe_has_weeklymenu(recipe, year, week, expectedConsumption, act
 
 def fetch_all_recipes():
     return session.query(Recipe).all()
+
+
+def fetch_ingredients_where_recipeId_equals(recipeId):
+    #return session.query(RecipeHasIngredient).where(RecipeHasIngredient.recipe_idRecipe == recipeId)
+    return session.query(Ingredient).join(RecipeHasIngredient.recipe_idRecipe == recipeId)
+
 

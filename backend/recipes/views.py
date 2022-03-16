@@ -22,11 +22,20 @@ def oppskrifter():
 @recipes.route('/oppskrift/<recipe_id>', methods=["GET", "POST"])
 def oppskrift(recipe_id: int):
     #fetch_recipe_where_recipeId_equals
-    recipes = fetch_recipe_where_recipeId_equals(recipe_id)
+    rec = fetch_recipe_where_recipeId_equals(recipe_id)
 
+    return render_template('oppskrift.html', rec=rec)
 
-    return render_template('oppskrift.html', recipes=recipes)
+# Spørring som fungerte i Workbench. (hente ingrediens er pr oppskrift)
 
+#SELECT i.`ingredientName`, uhi.price, uhi.unit, uhi.quantity
+#FROM munchbase.recipe r
+#	INNER JOIN munchbase.recipe_has_ingredient rhi ON ( r.`idRecipe` = rhi.`recipe_idRecipe`  )
+#	INNER JOIN munchbase.ingredient i ON ( rhi.ingredient_idingredient = i.idingredient  )
+#	INNER JOIN munchbase.`userGroup_has_ingredient` uhi ON ( i.idingredient = uhi.ingredient_idingredient  )
+#WHERE r.`idRecipe` = 1 AND
+#	uhi.`userGroup_iduserGroup` = 1
+#GROUP BY i.idingredient
 
 
 

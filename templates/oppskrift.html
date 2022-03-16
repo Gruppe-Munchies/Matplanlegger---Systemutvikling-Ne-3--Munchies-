@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
-{% block title %}{% endblock %}
-{% block heading %}{% endblock %}
-{% block description %}Se alle ingredienser du har på lager {% endblock %}
+{% block title %}{{rec.name}}{% endblock %}
+{% block heading %}{{rec.name}}{% endblock %}
+{% block description %}{{rec.shortDescription}} {% endblock %}
 {% block content %}
+
+
 
         <form method="post" class="row">
             <div class="table-responsive">
@@ -17,25 +19,16 @@
                         </tr>
                     </thead>
                     <tbody>
+
                         <tr style="color:rgb(11,11,11);">
                             <td>
                                 <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1">Brød</label></div>
                             </td>
-                            <td>24</td>
-                            <td>stk</td>
+                            <td>{{rec.name}}</td>
+                            <td>{{rec.shortDescription}}</td>
                             <td>90</td>
                             <td>2 160</td>
                         </tr>
-                        <tr style="color:rgb(0,0,0);">
-                            <td>
-                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-2"><label class="form-check-label" for="formCheck-2">Fisk</label></div>
-                            </td>
-                            <td>1</td>
-                            <td>stk</td>
-                            <td>95</td>
-                            <td>95</td>
-                        </tr>
-                        <tr></tr>
                     </tbody>
                 </table>
             </div>
