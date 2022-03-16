@@ -1,17 +1,17 @@
 
-CREATE TABLE munchbase.ingredient ( 
+CREATE TABLE munchbase.ingredient (
 	idingredient         int  NOT NULL  AUTO_INCREMENT  PRIMARY KEY,
 	`ingredientName`     varchar(45)  NOT NULL    ,
 	CONSTRAINT `idingredient_UNIQUE` UNIQUE ( idingredient ) ,
-	CONSTRAINT `ingredientName_UNIQUE` UNIQUE ( `ingredientName` ) 
+	CONSTRAINT `ingredientName_UNIQUE` UNIQUE ( `ingredientName` )
  ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3;
 
-CREATE TABLE munchbase.`recipeAvailability` ( 
+CREATE TABLE munchbase.`recipeAvailability` (
 	`idrecipeAvailability` int  NOT NULL  AUTO_INCREMENT  PRIMARY KEY,
-	`avilableFor`        varchar(45)      
+	`avilableFor`        varchar(45)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
-CREATE TABLE munchbase.`user` ( 
+CREATE TABLE munchbase.`user` (
 	`userId`             int  NOT NULL  AUTO_INCREMENT  PRIMARY KEY,
 	username             varchar(45)  NOT NULL    ,
 	email                varchar(100)  NOT NULL    ,
@@ -19,15 +19,15 @@ CREATE TABLE munchbase.`user` (
 	lastname             varchar(45)  NOT NULL    ,
 	password             varchar(128)  NOT NULL    ,
 	CONSTRAINT `userId_UNIQUE` UNIQUE ( `userId` ) ,
-	CONSTRAINT `username_UNIQUE` UNIQUE ( username ) 
+	CONSTRAINT `username_UNIQUE` UNIQUE ( username )
  ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 
-CREATE TABLE munchbase.`userGroup` ( 
+CREATE TABLE munchbase.`userGroup` (
 	`iduserGroup`        int  NOT NULL  AUTO_INCREMENT  PRIMARY KEY,
-	`groupName`          varchar(45)  NOT NULL    
+	`groupName`          varchar(45)  NOT NULL
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
-CREATE TABLE munchbase.`userGroup_has_ingredient` ( 
+CREATE TABLE munchbase.`userGroup_has_ingredient` (
 	`userGroup_iduserGroup` int  NOT NULL    ,
 	ingredient_idingredient int  NOT NULL    ,
 	price                double      ,
@@ -35,19 +35,19 @@ CREATE TABLE munchbase.`userGroup_has_ingredient` (
 	CONSTRAINT pk_usergroup_has_ingredient PRIMARY KEY ( `userGroup_iduserGroup`, ingredient_idingredient )
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
-CREATE TABLE munchbase.`userType` ( 
+CREATE TABLE munchbase.`userType` (
 	`iduserType`         int  NOT NULL  AUTO_INCREMENT  PRIMARY KEY,
-	`userTypeName`       varchar(45)  NOT NULL    
+	`userTypeName`       varchar(45)  NOT NULL
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
-CREATE TABLE munchbase.`user_has_userGroup` ( 
+CREATE TABLE munchbase.`user_has_userGroup` (
 	`user_userId`        int  NOT NULL    ,
 	`userGroup_iduserGroup` int  NOT NULL    ,
 	`userType_iduserType` int  NOT NULL    ,
 	CONSTRAINT pk_user_has_usergroup PRIMARY KEY ( `user_userId`, `userGroup_iduserGroup` )
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
-CREATE TABLE munchbase.`weeklyMenu` ( 
+CREATE TABLE munchbase.`weeklyMenu` (
 	year                 int  NOT NULL  AUTO_INCREMENT  ,
 	`weekNum`            int  NOT NULL    ,
 	day                  int  NOT NULL    ,
@@ -57,7 +57,7 @@ CREATE TABLE munchbase.`weeklyMenu` (
 	CONSTRAINT pk_weeklymenu PRIMARY KEY ( year, `weekNum` )
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
-CREATE TABLE munchbase.recipe ( 
+CREATE TABLE munchbase.recipe (
 	`idRecipe`           int  NOT NULL  AUTO_INCREMENT  PRIMARY KEY,
 	name                 varchar(45)  NOT NULL    ,
 	`shortDescription`   varchar(100)      ,
@@ -65,17 +65,17 @@ CREATE TABLE munchbase.recipe (
 	image                varchar(200)      ,
 	`userGroup_iduserGroup` int  NOT NULL    ,
 	`recipeAvailability_idrecipeAvailability` int  NOT NULL    ,
-	`weeklyMenu_idweeklyMenu` int      
+	`weeklyMenu_idweeklyMenu` int
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
-CREATE TABLE munchbase.recipe_has_ingredient ( 
+CREATE TABLE munchbase.recipe_has_ingredient (
 	`recipe_idRecipe`    int  NOT NULL    ,
 	ingredient_idingredient int  NOT NULL    ,
 	quantity             double      ,
 	CONSTRAINT pk_recipe_has_ingredient PRIMARY KEY ( `recipe_idRecipe`, ingredient_idingredient )
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
-CREATE TABLE munchbase.`recipe_has_weeklyMenu` ( 
+CREATE TABLE munchbase.`recipe_has_weeklyMenu` (
 	`recipe_idRecipe`    int  NOT NULL    ,
 	`weeklyMenu_year`    int  NOT NULL    ,
 	`weeklyMenu_weekNum` int  NOT NULL    ,
