@@ -253,9 +253,9 @@ VALUES (1, 'Vårruller', 'Digge ruller', 'Ikke så mye å skrive her', 'test', 1
 
 
 INSERT INTO munchbase.recipe_has_ingredient(`recipe_idRecipe`, ingredient_idingredient, quantity)
-VALUES (1, 10, 2.0),
-       (1, 11, 4.0),
-       (1, 12, 1.0);
+VALUES (1, 1, 2.0),
+       (1, 2, 4.0),
+       (1, 3, 1.0);
 
 
 
