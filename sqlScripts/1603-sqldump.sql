@@ -181,7 +181,7 @@ CREATE INDEX `fk_recipe_has_weeklyMenu_recipe_idx` ON munchbase.`recipe_has_week
 
 
 # Legg til globale ingredienser
-INSERT INTO munchbase.ingredient(idingredient, `ingredientName`)
+INSERT INTO munchbase.ingredient(`idingredient`, `ingredientName`)
 VALUES (1, 'Agurk'),
        (2, 'Egg'),
        (3, 'Fløte'),
