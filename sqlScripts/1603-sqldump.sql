@@ -129,8 +129,8 @@ CREATE TABLE munchbase.recipe_has_ingredient
     ingredient_idingredient int NOT NULL,
     quantity                double,
     CONSTRAINT pk_recipe_has_ingredient PRIMARY KEY (`recipe_idRecipe`, ingredient_idingredient),
-    CONSTRAINT fk_recipe_has_ingredient_ingredient1 FOREIGN KEY (ingredient_idingredient) REFERENCES munchbase.ingredient (idingredient) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT fk_recipe_has_ingredient_recipe1 FOREIGN KEY (`recipe_idRecipe`) REFERENCES munchbase.recipe (`idRecipe`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT fk_recipe_has_ingredient_ingredient FOREIGN KEY (ingredient_idingredient) REFERENCES munchbase.ingredient (idingredient) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT fk_recipe_has_ingredient_recipe FOREIGN KEY (`recipe_idRecipe`) REFERENCES munchbase.recipe (`idRecipe`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
 
@@ -150,7 +150,33 @@ CREATE TABLE munchbase.`recipe_has_weeklyMenu`
   DEFAULT CHARSET = utf8mb3;
 
 
+##################
+# CREATE INDEXES #
+##################
 
+CREATE INDEX `fk_userGroup_has_ingredient_ingredient_idx` ON munchbase.`userGroup_has_ingredient` (ingredient_idingredient);
+
+CREATE INDEX `fk_userGroup_has_ingredient_userGroup_idx` ON munchbase.`userGroup_has_ingredient` (`userGroup_iduserGroup`);
+
+CREATE INDEX `fk_user_has_userGroup_userGroup_idx` ON munchbase.`user_has_userGroup` (`userGroup_iduserGroup`);
+
+CREATE INDEX `fk_user_has_userGroup_user_idx` ON munchbase.`user_has_userGroup` (`user_userId`);
+
+CREATE INDEX `fk_user_has_userGroup_userType_idx` ON munchbase.`user_has_userGroup` (`userType_iduserType`);
+
+CREATE INDEX `fk_weeklyMenu_userGroup_idx` ON munchbase.`weeklyMenu` (`userGroup_iduserGroup`);
+
+CREATE INDEX `fk_recipe_userGroup_idx` ON munchbase.recipe (`userGroup_iduserGroup`);
+
+CREATE INDEX `fk_recipe_recipeAvailability_idx` ON munchbase.recipe (`recipeAvailability_idrecipeAvailability`);
+
+CREATE INDEX fk_recipe_has_ingredient_ingredient_idx ON munchbase.recipe_has_ingredient (ingredient_idingredient);
+
+CREATE INDEX fk_recipe_has_ingredient_recipe_idx ON munchbase.recipe_has_ingredient (`recipe_idRecipe`);
+
+CREATE INDEX `fk_recipe_has_weeklyMenu_weeklyMenu_idx` ON munchbase.`recipe_has_weeklyMenu` (`weeklyMenu_year`, `weeklyMenu_weekNum`);
+
+CREATE INDEX `fk_recipe_has_weeklyMenu_recipe_idx` ON munchbase.`recipe_has_weeklyMenu` (`recipe_idRecipe`);
 
 
 
