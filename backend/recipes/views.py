@@ -23,7 +23,7 @@ def oppskrifter():
 def oppskrift(recipe_id: int):
     #fetch_recipe_where_recipeId_equals
     recipes = fetch_recipe_where_recipeId_equals(recipe_id)
-    print(recipe_id)
+
 
     return render_template('oppskrift.html', recipes=recipes)
 
