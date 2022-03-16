@@ -248,8 +248,10 @@ VALUES (2022, 9, 1, 'Rulleuke', 'En uke full av ruller', 1);
 # Legg til oppskrifter
 INSERT INTO munchbase.recipe(`idRecipe`, name, `shortDescription`, description, image, `userGroup_iduserGroup`,
                              `recipeAvailability_idrecipeAvailability`, `weeklyMenu_idweeklyMenu`)
-VALUES (1, 'Vårruller', 'Digge ruller', 'Ikke så mye å skrive her', 'test', 1, 1, 1);
-
+VALUES (1, 'Vårruller', 'Digge ruller', 'Ikke så mye å skrive her', 'test', 1, 1, 1),
+(2, 'Rullekebab', 'Digg rullekebab', 'Ikke så mye å skrive her', 'test', 1, 1, 1),
+(3, 'Tørrfisk', 'Digg tørrfisk', 'Ikke så mye å skrive her', 'test', 2, 1, 1),
+(4, 'Kanelsnurr', 'Digg kanelsnurr', 'Ikke så mye å skrive her', 'test', 2, 1, 1);
 
 
 INSERT INTO munchbase.recipe_has_ingredient(`recipe_idRecipe`, ingredient_idingredient, quantity)
