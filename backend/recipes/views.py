@@ -11,10 +11,20 @@ from backend import recipes
 #recipes = Blueprint('recipes', __name__, template_folder='templates', url_prefix='/oppskrift')
 recipes = Blueprint('recipes', __name__, template_folder='templates')
 
-@recipes.route('/oppskrift')
-def oppskrift():
+@recipes.route('/oppskrifter')
+def oppskrifter():
 
     recipes = ingr_queries.fetch_all_recipes()
 
+    return render_template('oppskrifter.html', recipes=recipes)
+
+
+@recipes.route('/oppskrift')
+def oppskrift():
+    recipes = ingr_queries.fetch_all_recipes()
+
     return render_template('oppskrift.html', recipes=recipes)
+
+
+
 

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Oppskrifter{% endblock %}
+{% block heading %}Oppskrifter{% endblock %}
+{% block description %}Se alle dine matretter og oppskrifter her. Legg til rett i ukesmenyen ved behov!{% endblock %}
+{% block content %}
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+      {% for recipe in recipes %}
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+
+            <div class="card-body">
+                <h5>{{ recipe.name }}</h5>
+              <p class="card-text">{{ recipe.shortDescription }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-secondary">add</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary">remove</button>
+                </div>
+                <small class="text-muted">9 items</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+
+  </div>
+
+
+{% endblock %}
