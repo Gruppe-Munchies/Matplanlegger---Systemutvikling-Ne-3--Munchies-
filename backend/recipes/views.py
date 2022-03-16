@@ -6,7 +6,7 @@ import backend.recipes.queries as recipes
 from backend import recipes
 
 #from backend.recipes.forms import RegisterForm
-#from backend.recipes.queries import *
+from backend.recipes.queries import *
 
 #recipes = Blueprint('recipes', __name__, template_folder='templates', url_prefix='/oppskrift')
 recipes = Blueprint('recipes', __name__, template_folder='templates')
@@ -19,9 +19,11 @@ def oppskrifter():
     return render_template('oppskrifter.html', recipes=recipes)
 
 
-@recipes.route('/oppskrift')
-def oppskrift():
-    recipes = ingr_queries.fetch_all_recipes()
+@recipes.route('/oppskrift/<recipe_id>', methods=["GET", "POST"])
+def oppskrift(recipe_id: int):
+    #fetch_recipe_where_recipeId_equals
+    recipes = fetch_recipe_where_recipeId_equals(recipe_id)
+    print(recipe_id)
 
     return render_template('oppskrift.html', recipes=recipes)
 

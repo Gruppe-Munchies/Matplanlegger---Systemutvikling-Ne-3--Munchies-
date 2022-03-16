@@ -24,6 +24,9 @@ def insert_to_recipe(name, shortDescription, description, image, userGroup, reci
     session.commit()
 
 
+def fetch_recipe_where_recipeId_equals(recipeId):
+    return session.query(Recipe).where(Recipe.idRecipe == recipeId)
+
 # Add to recipe_has_ingredient
 def insert_to_recipe_has_ingredient(recipe, ingredient, quantity):
     new_recipeIngredient = RecipeHasIngredient(recipe_idRecipe=recipe, ingredient_idingredient=ingredient,
