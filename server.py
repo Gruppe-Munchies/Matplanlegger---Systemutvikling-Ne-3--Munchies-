@@ -23,10 +23,6 @@ def index():
     return "noe annet"
 
 
-@app.route('/testdata')
-def testdata():
-    test_data()
-
 @app.route('/oppskrift')
 def oppskrift():
     return render_template('oppskrift.html')

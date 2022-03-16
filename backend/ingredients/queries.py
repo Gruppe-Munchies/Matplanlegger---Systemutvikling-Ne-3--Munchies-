@@ -1,34 +1,94 @@
+from sqlalchemy.orm import Query
+from sqlalchemy import and_
+
 from local_db.session import loadSession
 
 from local_db.orm import User, Ingredient, Recipe, RecipeHasIngredient, RecipeHasWeeklyMenu, RecipeAvailability, \
     Usertype, Usergroup, UsergroupHasIngredient, WeeklyMenu, Base, UserHasUsergroup
 
+# TODO: fetch_ingredient_in_current_weekly_menu # Postponed unitil weekly menu done
+# TODO: Queries for report # Will be addressed in separate issue regarding reports
 
-# Queries needed for current issue
-# fetch_all_ingredients
-# fetch_ingredient_where
-    # exact_name_equals(exact_name),
-    # unit_equals(unit)=,
-    # n_ingredients_equal(n_ingredients),
-    # price_equals(price)
-    #ingredients_where_usergroup_equals(usergroup),
-    #ingredients_where_name_contains(name)
-        # greater than & less than for unit, n_ingredients, price
+#####################################################
+# OBS RETURTYPER ER AV OBJEKT QUERY                 #
+# Bruk .<kolonnenavn> på retur for å få ut verdier  #
+#####################################################
 
-# Queries needed for future issues
-# fetch_ingredient_in_current_weekly_menu # Postponed unitil weekly menu done
-# Queries for report # Will be addressed in separate issue regarding reports
+session = loadSession()
 
-# Add ingredient
-def insert_to_ingredients(name):
-    session = loadSession()
+
+def insert_to_ingredients(name: str):
     ingredient = Ingredient(ingredientName=name)
     session.add(ingredient)
     session.commit()
 
 
-def fetchIngredient(ingredient):
-    session = loadSession()
-    res = session.query(Ingredient).where(Ingredient.ingredientName == ingredient).first()
-    # res = session.query(User).filter_by(username=user_name).values(text("userId"))
-    return res
+def fetch_ingredients_from_all_user_groups_where_ingredient_name_equals(ingredient) -> Ingredient:
+    return session.query(Ingredient).where(Ingredient.ingredientName == ingredient).first()
+
+
+def fetch_all_ingredients_from_all_usergroups() -> list:
+    return session.query(Ingredient).all()
+
+
+def fetch_all_ingredients_where_usergroup_equals(usergroup_id):
+    return session.query(Ingredient).join(UsergroupHasIngredient, and_(
+        Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
+        UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id))
+
+
+def fetch_ingredients_where_usergroup_and_unit_equals(usergroup_id: int, unit: str):
+    return session.query(Ingredient).join(UsergroupHasIngredient,
+                                          and_(UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id,
+                                               Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
+                                               UsergroupHasIngredient.unit == unit))
+
+
+def fetch_ingredients_in_usergroup_where_price_equals(usergroup_id, price: int):
+    return session.query(Ingredient).join(UsergroupHasIngredient,
+                                          and_(UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id,
+                                               Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
+                                               UsergroupHasIngredient.price == price))
+
+
+def fetch_ingredients_where_price_is_greater_than(usergroup_id, price):
+    return session.query(Ingredient).join(UsergroupHasIngredient,
+                                          and_(UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id,
+                                               Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
+                                               UsergroupHasIngredient.price > price))
+
+
+def fetch_ingredients_where_price_is_less_than(usergroup_id, price):
+    return session.query(Ingredient).join(UsergroupHasIngredient,
+                                          and_(UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id,
+                                               Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
+                                               UsergroupHasIngredient.price < price))
+
+
+def fetch_ingredients_where_quantity_and_groupid_equals(usergroup_id, quantity: int):
+    return session.query(Ingredient).join(UsergroupHasIngredient,
+                                          and_(UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id,
+                                               Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
+                                               UsergroupHasIngredient.quantity == quantity))
+
+
+def fetch_ingredients_where_group_id_equals_and_quantity_less_than(usergroup_id, quantity: int):
+    return session.query(Ingredient).join(UsergroupHasIngredient,
+                                          and_(UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id,
+                                               Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
+                                               UsergroupHasIngredient.quantity < quantity))
+
+
+def fetch_ingredients_where_group_id_equals_and_quantity_greater_than(usergroup_id, quantity: int):
+    return session.query(Ingredient).join(UsergroupHasIngredient,
+                                          and_(UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id,
+                                               Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
+                                               UsergroupHasIngredient.quantity > quantity))
+
+
+# TODO: IKKE OK  NOEN SOM KAN REGEX? :(((((
+def fetch_ingredients_where_name_contains_and_group_equals(usergroup_id: int, name: str, ):
+    return session.query(Ingredient).join(UsergroupHasIngredient,
+                                          and_(UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id,
+                                               Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
+                                               Ingredient.name == "REGEX"))  # REGEX HER?
