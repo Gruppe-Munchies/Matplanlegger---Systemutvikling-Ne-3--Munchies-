@@ -212,20 +212,20 @@ VALUES (1, 'MatMons'),
 # Legg til ingredienser til usergroup 1
 INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit,
                                                  quantity)
-VALUES (1, 10, 15.0, 'stk', 10),
-       (1, 11, 30.0, 'stk', 5),
-       (1, 12, 30.0, 'liter', 2),
-       (1, 13, 30.0, 'kg', 20),
-       (1, 14, 30.0, 'stk', 2),
-       (1, 15, 30.0, 'liter', 49);
+VALUES (1, 1, 15.0, 'stk', 10),
+       (1, 2, 30.0, 'stk', 5),
+       (1, 3, 30.0, 'liter', 2),
+       (1, 4, 30.0, 'kg', 20),
+       (1, 5, 30.0, 'stk', 2),
+       (1, 6, 30.0, 'liter', 49);
 
 
 # Legg til ingredienser til usergroup 2
 INSERT INTO munchbase.`userGroup_has_ingredient`(`userGroup_iduserGroup`, ingredient_idingredient, price, unit,
                                                  quantity)
-VALUES (2, 10, 100.0, 'stk', 2),
-       (2, 12, 120.0, 'liter', 4),
-       (2, 15, 150.0, 'liter', 8);
+VALUES (2, 1, 100.0, 'stk', 2),
+       (2, 2, 120.0, 'liter', 4),
+       (2, 5, 150.0, 'liter', 8);
 
 
 # Legg til usertype
