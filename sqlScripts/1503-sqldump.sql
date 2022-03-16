@@ -135,8 +135,8 @@ CREATE INDEX `fk_recipe_has_weeklyMenu_recipe1_idx` ON munchbase.`recipe_has_wee
 ALTER TABLE munchbase.recipe
     ADD CONSTRAINT `fk_recipe_recipeAvailability1` FOREIGN KEY (`recipeAvailability_idrecipeAvailability`) REFERENCES munchbase.`recipeAvailability` (`idrecipeAvailability`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE munchbase.recipe
-    ADD CONSTRAINT `fk_recipe_userGroup1` FOREIGN KEY (`userGroup_iduserGroup`) REFERENCES munchbase.`userGroup` (`iduserGroup`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+# ALTER TABLE munchbase.recipe
+#     ADD CONSTRAINT `fk_recipe_userGroup1` FOREIGN KEY (`userGroup_iduserGroup`) REFERENCES munchbase.`userGroup` (`iduserGroup`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE munchbase.recipe_has_ingredient
     ADD CONSTRAINT fk_recipe_has_ingredient_ingredient1 FOREIGN KEY (ingredient_idingredient) REFERENCES munchbase.ingredient (idingredient) ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -161,7 +161,7 @@ ALTER TABLE munchbase.`user_has_userGroup`
 
 ALTER TABLE munchbase.`user_has_userGroup`
     ADD CONSTRAINT fk_user_has_usergroup_usergroup1 FOREIGN KEY (`userGroup_iduserGroup`) REFERENCES munchbase.`userGroup` (`iduserGroup`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
+#
 ALTER TABLE munchbase.`user_has_userGroup`
     ADD CONSTRAINT fk_user_has_usergroup_usertype1 FOREIGN KEY (`userType_iduserType`) REFERENCES munchbase.`userType` (`iduserType`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
