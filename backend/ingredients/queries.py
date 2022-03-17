@@ -31,6 +31,12 @@ def fetch_all_ingredients_from_all_usergroups() -> list:
     return session.query(Ingredient).all()
 
 
+def fetch_ingredients_where_usergroup_and_ingredientName_equals(usergroup_id, ingredient_name):
+    return session.query(Ingredient, UsergroupHasIngredient).join(UsergroupHasIngredient, and_(
+        Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
+        Ingredient.ingredientName == ingredient_name,
+        UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id)).scalar()
+
 def fetch_all_ingredients_where_usergroup_equals(usergroup_id):
     return session.query(Ingredient, UsergroupHasIngredient).join(UsergroupHasIngredient, and_(
         Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,

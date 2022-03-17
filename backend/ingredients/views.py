@@ -12,7 +12,6 @@ ingredient = Blueprint('ingredient', __name__, template_folder='templates', url_
 
 
 @ingredient.route('/new', methods=['GET', 'POST'])
-
 #     ingredienser = fetch_all_ingredients_where_usergroup_equals(1)
 #     for ap in ingredienser:
 #         print(f"{ap[0].ingredientName} {round(ap[1].quantity, 2)} {ap[1].unit} {round(ap[1].price, 2)}")
@@ -20,36 +19,48 @@ ingredient = Blueprint('ingredient', __name__, template_folder='templates', url_
 def new():
     group_ingredients = fetch_all_ingredients_where_usergroup_equals(1)
 
-
-
-
     form = RegisterForm(request.form)
     if request.method == 'POST' and form.validate():
         ingredientName = form.ingredientName.data
-        check_ingredient = ingr_queries.fetch_ingredients_from_all_user_groups_where_ingredient_name_equals(ingredientName)
-
         usergroup = form.usergroup.data
+        price = form.price.data
+        unit = form.unit.data
+
+        check_ingredient = ingr_queries.fetch_ingredients_from_all_user_groups_where_ingredient_name_equals(
+            ingredientName)
 
         fetchedusergroup = auth_queries.fetchUserGroup(usergroup)  # TODO bør være en dropdown der brukeren kan velge
         fetchedusergroup_ID = fetchedusergroup.iduserGroup
 
+        check_ingredient_in_userGroup = fetch_ingredients_where_usergroup_and_ingredientName_equals(1,
+                                                                                                    ingredientName)  # First input: usergroupID
+
         if check_ingredient:  # Sjekker om ingrediens finnes.
             flash("Ingrediens er allerede registrert", "danger")
-            return render_template('newingredient.html', form=form,
-                                   heading="Registrer ny ingrediens")  # vet ikke om heading trengs?
+            if check_ingredient_in_userGroup:
+                flash("Ingrediens er allerede registrert i din gruppe", "danger")
+            else:
+                # legg til ingrediens i Usergroup, ikke ingrediens
+                fetchedingredientID = ingr_queries.fetch_ingredients_from_all_user_groups_where_ingredient_name_equals(
+                    ingredientName)  # TODO Fetch ingredientID from new or existing
+                ingredientID = fetchedingredientID.idingredient
 
-        ingr_queries.insert_to_ingredients(ingredientName)
+                auth_queries.insert_to_usergroup_has_ingredient(fetchedusergroup_ID, ingredientID, price, unit)
+                flash('Ingrediensen er registrert!!')
 
-        fetchedingredientID = ingr_queries.fetch_ingredients_from_all_user_groups_where_ingredient_name_equals(
-            ingredientName)  # TODO Fetch ingredientID from new or existing
-        ingredientID = fetchedingredientID.idingredient
+                # return render_template('newingredient.html', form=form,
+                                       # heading="Registrer ny ingrediens")  # vet ikke om heading trengs?
+        else:
+            ingr_queries.insert_to_ingredients(ingredientName)
+            fetchedingredientID = ingr_queries.fetch_ingredients_from_all_user_groups_where_ingredient_name_equals(
+                ingredientName)  # TODO Fetch ingredientID from new or existing
+            ingredientID = fetchedingredientID.idingredient
 
-        price = form.price.data
-        unit = form.unit.data
+            auth_queries.insert_to_usergroup_has_ingredient(fetchedusergroup_ID, ingredientID, price, unit)
+            flash('Ingrediensen er registrert!!')
 
-        auth_queries.insert_to_usergroup_has_ingredient(fetchedusergroup_ID, ingredientID, price, unit)
+            # TODO Render with new ingredient
 
-        flash('Ingrediensen er registrert!!')
         return redirect(url_for("ingredient.new"))
 
     for fieldName, error_messages in form.errors.items():
