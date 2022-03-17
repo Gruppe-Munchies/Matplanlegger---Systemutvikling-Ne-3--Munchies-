@@ -3,7 +3,7 @@
 {% block heading %}Ingredienser{% endblock %}
 {% block description %}Registrere ny ingrediens{% endblock %}
 {% block content %}
-{% include 'flash_messages.html' %}
+    {% include 'flash_messages.html' %}
     <div class="container mt-5">
 
 
@@ -49,35 +49,37 @@
                             {{ form.unit(class="form-control") }}
                         </div>
                     </div>
-                        <div class="col-sm-2">
-                            {{ form.submit(class_="btn btn-success") }}
-                        </div>
+                    <div class="col-sm-2">
+                        {{ form.submit(class_="btn btn-success") }}
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 
 
-<table class="table table-striped table-hover">
-      <thead>
+    <table class="table table-striped table-hover">
+        <thead>
         <tr>
-          <th>Ingrediens</th>
-          <th>Enhet</th>
-          <th>Mengde</th>
-          <th>Pris</th>
+            <th>Ingrediens</th>
+            <th>Mengde</th>
+            <th>Enhet</th>
+            <th>Pris</th>
         </tr>
-      </thead>
-      <tbody>
-      {% for ingredient in ingredients %}
-        <tr>
-            <td>{{ ingredient.ingredientName }}</td>
-            <td>-- todo --</td>
-            <td>-- todo --</td>
-            <td>-- todo --</td>
-            <td><button type="button" class="btn btn-outline-primary btn-sm"><i class="bi-trash"></i></button></td>
-        </tr>
-      {% endfor %}
-      </tbody>
+        </thead>
+        <tbody>
+        {% for ingredient in ingredients %}
+            <tr>
+                <td>{{ ingredient[0].ingredientName }}</td>
+                <td>{{ ingredient[1].quantity }}</td>
+                <td>{{ ingredient[1].unit }}</td>
+                <td>{{ ingredient[1].price }}</td>
+                <td>
+                    <button type="button" class="btn btn-outline-primary btn-sm"><i class="bi-trash"></i></button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
     </table>
 
 {% endblock %}

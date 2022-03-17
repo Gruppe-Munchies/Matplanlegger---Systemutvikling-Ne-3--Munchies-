@@ -55,7 +55,7 @@ CREATE TABLE munchbase.`userGroup_has_ingredient`
     ingredient_idingredient int NOT NULL,
     price                   decimal(5, 2),
     unit                    varchar(8),
-    quantity                decimal(5,2) DEFAULT 0,
+    quantity                decimal(5, 2) DEFAULT 0,
     CONSTRAINT pk_usergroup_has_ingredient PRIMARY KEY (`userGroup_iduserGroup`, ingredient_idingredient),
     CONSTRAINT `fk_userGroup_has_ingredient_ingredient` FOREIGN KEY (ingredient_idingredient) REFERENCES munchbase.ingredient (idingredient) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT `fk_userGroup_has_ingredient_userGroup` FOREIGN KEY (`userGroup_iduserGroup`) REFERENCES munchbase.`userGroup` (`iduserGroup`) ON DELETE NO ACTION ON UPDATE NO ACTION

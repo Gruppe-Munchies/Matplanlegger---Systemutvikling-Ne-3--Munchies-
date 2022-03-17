@@ -32,9 +32,14 @@ def fetch_all_ingredients_from_all_usergroups() -> list:
 
 
 def fetch_all_ingredients_where_usergroup_equals(usergroup_id):
-    return session.query(Ingredient).join(UsergroupHasIngredient, and_(
+    return session.query(Ingredient, UsergroupHasIngredient).join(UsergroupHasIngredient, and_(
         Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
-        UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id))
+        UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id)).all()
+
+    # if __name__ == '__main__':
+    #     ingredienser = fetch_all_ingredients_where_usergroup_equals(1)
+    #     for ap in ingredienser:
+    #         print(f"{ap[0].ingredientName} {round(ap[1].quantity, 2)} {ap[1].unit} {round(ap[1].price, 2)}")
 
 
 def fetch_ingredients_where_usergroup_and_unit_equals(usergroup_id: int, unit: str):
