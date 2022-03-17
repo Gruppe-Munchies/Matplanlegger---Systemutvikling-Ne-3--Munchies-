@@ -1,6 +1,11 @@
-{% block body %}
+{% extends 'base.html' %}
+{% block title %}Register ny ingrediens{% endblock %}
+{% block heading %}Ingredienser{% endblock %}
+{% block description %}Registrere ny ingrediens{% endblock %}
+{% block content %}
 {% include 'flash_messages.html' %}
     <div class="container mt-5">
+
 
         <div class="row align-items-center">
 
@@ -44,15 +49,36 @@
                             {{ form.unit(class="form-control") }}
                         </div>
                     </div>
-
-                    <div class="row justify-content-end">
                         <div class="col-sm-2">
                             {{ form.submit(class_="btn btn-success") }}
                         </div>
-                    </div>
                 </form>
             </div>
         </div>
     </div>
+
+
+<table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Ingrediens</th>
+          <th>Enhet</th>
+          <th>Mengde</th>
+          <th>Pris</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for ingredient in ingredients %}
+        <tr>
+            <td>{{ ingredient.ingredientName }}</td>
+            <td>-- todo --</td>
+            <td>-- todo --</td>
+            <td>-- todo --</td>
+            <td><button type="button" class="btn btn-outline-primary btn-sm"><i class="bi-trash"></i></button></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
 {% endblock %}
 
