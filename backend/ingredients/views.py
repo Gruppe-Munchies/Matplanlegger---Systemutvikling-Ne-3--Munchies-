@@ -13,6 +13,7 @@ ingredient = Blueprint('ingredient', __name__, template_folder='templates', url_
 
 @ingredient.route('/new', methods=['GET', 'POST'])
 def new():
+    ingredients = fetch_all_ingredients_from_all_usergroups()
     form = RegisterForm(request.form)
     if request.method == 'POST' and form.validate():
         ingredientName = form.ingredientName.data
@@ -46,4 +47,4 @@ def new():
         for error_message in error_messages:
             flash(f"{error_message}", "danger")
 
-    return render_template('newingredient.html', form=form)
+    return render_template('newingredient.html', form=form, ingredients=ingredients)
