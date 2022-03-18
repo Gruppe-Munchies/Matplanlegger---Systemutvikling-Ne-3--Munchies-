@@ -22,6 +22,12 @@ def insert_to_ingredients(name: str):
     session.add(ingredient)
     session.commit()
 
+def insert_to_usergroup_has_ingredient(userGroup, ingredient, price, unit):
+    new_userGroupIngredient = UsergroupHasIngredient(userGroup_iduserGroup=userGroup,
+                                                     ingredient_idingredient=ingredient, price=price, unit=unit)
+    session.add(new_userGroupIngredient)
+    session.commit()
+
 
 def fetch_ingredients_from_all_user_groups_where_ingredient_name_equals(ingredient) -> Ingredient:
     return session.query(Ingredient).where(Ingredient.ingredientName == ingredient).first()
@@ -31,10 +37,21 @@ def fetch_all_ingredients_from_all_usergroups() -> list:
     return session.query(Ingredient).all()
 
 
-def fetch_all_ingredients_where_usergroup_equals(usergroup_id):
-    return session.query(Ingredient).join(UsergroupHasIngredient, and_(
+def fetch_ingredients_where_usergroup_and_ingredientName_equals(usergroup_id, ingredient_name):
+    return session.query(Ingredient, UsergroupHasIngredient).join(UsergroupHasIngredient, and_(
         Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
-        UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id))
+        Ingredient.ingredientName == ingredient_name,
+        UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id)).scalar()
+
+def fetch_all_ingredients_where_usergroup_equals(usergroup_id):
+    return session.query(Ingredient, UsergroupHasIngredient).join(UsergroupHasIngredient, and_(
+        Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
+        UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id)).all()
+
+    # if __name__ == '__main__':
+    #     ingredienser = fetch_all_ingredients_where_usergroup_equals(1)
+    #     for ap in ingredienser:
+    #         print(f"{ap[0].ingredientName} {round(ap[1].quantity, 2)} {ap[1].unit} {round(ap[1].price, 2)}")
 
 
 def fetch_ingredients_where_usergroup_and_unit_equals(usergroup_id: int, unit: str):

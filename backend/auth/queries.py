@@ -84,13 +84,13 @@ def insert_to_usergroup(name):
     session.commit()
 
 
-# Add to usergroup_has_ingredient
-def insert_to_usergroup_has_ingredient(userGroup, ingredient, price, unit):
-    session = loadSession()
-    new_userGroupIngredient = UsergroupHasIngredient(userGroup_iduserGroup=userGroup,
-                                                     ingredient_idingredient=ingredient, price=price, unit=unit)
-    session.add(new_userGroupIngredient)
-    session.commit()
+# # Add to usergroup_has_ingredient
+# def insert_to_usergroup_has_ingredient(userGroup, ingredient, price, unit):
+#     session = loadSession()
+#     new_userGroupIngredient = UsergroupHasIngredient(userGroup_iduserGroup=userGroup,
+#                                                      ingredient_idingredient=ingredient, price=price, unit=unit)
+#     session.add(new_userGroupIngredient)
+#     session.commit()
 
 
 ############
