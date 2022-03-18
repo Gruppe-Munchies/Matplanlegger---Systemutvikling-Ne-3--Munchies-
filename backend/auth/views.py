@@ -4,6 +4,11 @@ from flask_login import login_required, login_user, logout_user
 import backend.auth.queries as auth_queries
 from sqlalchemy import inspect
 
+import backend
+import local_db.insert_to_db as db
+
+from backend.auth.forms import LoginForm, RegisterForm
+from backend.auth.queries import userGroup
 from backend.auth.forms import LoginForm, RegisterForm, InviteForm, createUserGroupForm
 from backend.auth.queries import * #fetchAllUserGroups, fetchUser, fetchUserGroup
 
@@ -18,6 +23,7 @@ def register():
     form = RegisterForm(request.form)
     user_group = fetchAllUserGroups()
     all_users = fetchAllUsers()
+    usergroup = userGroup()
     if request.method == 'POST' and form.validate():
         username = form.username.data
         bruker = fetchUser(username)
@@ -76,9 +82,6 @@ def createGroup():
         flash('Gruppen ble opprettet!')
 
     return redirect(url_for("auth.invite"))
-
-    #return render_template('usergroup-administration.html', form=createUGForm, usergroup=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
-
 
 #INVITE USER TO USERGROUP
 @auth.route('/groupadmin', methods=['GET', 'POST'])

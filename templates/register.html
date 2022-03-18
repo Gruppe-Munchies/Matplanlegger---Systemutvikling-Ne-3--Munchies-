@@ -44,9 +44,12 @@
                         <div class="form-group w-25 p-3">
                             {{ form.usertype(class="form-select") }}
                         </div>
-
-                        <div class="form-group w-50 p-3">
-                            {{ form.confirm(class="form-control",placeholder="gjenta passord") }}
+                        <div class="col-sm-9">
+                            <select class="form-select" aria-label="Usergroup">
+                                {% for ug in usergroup %}
+                                <option value="{{ ug.iduserGroup }}">{{ ug.groupName }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
 
                         <div class="form-group w-50 p-3"></div>

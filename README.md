@@ -43,3 +43,6 @@ Oppdater lokale verdier i database ved å kjøre local_db_update.py
 Download PyCharm: Python IDE for Professional Developers by JetBrains
 Download the latest version of PyCharm for Windows, macOS or Linux.
 
+Download PyCharm: Python IDE for Professional Developers by JetBrains
+Download the latest version of PyCharm for Windows, macOS or Linux.
+
