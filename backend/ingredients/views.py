@@ -37,10 +37,13 @@ def new():
         check_ingredient_in_userGroup = fetch_ingredients_where_usergroup_and_ingredientName_equals(1,
                                                                                                     ingredientName)  # First input: usergroupID
 
+        # Sjekk om ingrediens finnes i ingredienstabellen
         if check_ingredient_in_userGroup:
             flash("Ingrediens er allerede registrert", "danger")
+            # Sjekk om ingrediensen er i gitt gruppe
             if check_ingredient:
                     flash("Ingrediens er allerede registrert i din gruppe", "danger")
+            # Else
             else:
                 # legg til ingrediens i Usergroup, ikke ingrediens
                 fetchedingredientID = ingr_queries.fetch_ingredients_from_all_user_groups_where_ingredient_name_equals(
