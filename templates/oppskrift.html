@@ -1,128 +1,41 @@
 {% extends 'base.html' %}
-{% block title %}Oppskrifter{% endblock %}
-{% block heading %}Oppskrifter{% endblock %}
-{% block description %}Se alle dine matretter og oppskrifter her. Legg til rett i ukesmenyen ved behov!{% endblock %}
+{% block title %}{{rec.name}}{% endblock %}
+{% block heading %}{{rec.name}}{% endblock %}
+{% block description %}{{rec.shortDescription}} {% endblock %}
 {% block content %}
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
 
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
 
-            <div class="card-body">
-                <h5>matrett 1</h5>
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">add</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">remove</button>
-                </div>
-                <small class="text-muted">9 items</small>
-              </div>
+        <form method="post" class="row">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr style="color:rgb(0,0,0);">
+                            <th>Produkt</th>
+                            <th class="justify-content-end">Enhet</th>
+                            <th>Antall</th>
+                            <th>Enhets Pris</th>
+                            <th>Sum Pris</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr style="color:rgb(11,11,11);">
+                            <td>
+                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1">Brød</label></div>
+                            </td>
+                            <td>{{rec.name}}</td>
+                            <td>{{rec.shortDescription}}</td>
+                            <td>90</td>
+                            <td>2 160</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-          </div>
+        </form>
+        <div class="container"><input class="form-control-sm justify-content-center" type="email" name="email" value="1" placeholder="Legg in antall" style="height:35px;width:70px;margin-right:7px;">
+            <button class="btn btn-dark justify-content-center" type="submit">Antall</button>
+            <button class="btn btn-dark float-right" type="button">Legg til i ukesmeny</button>
+            <button class="btn btn-dark float-right" type="button">Legg til ingrediens</button>
         </div>
-
-                <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-
-            <div class="card-body">
-                <h5>matrett 1</h5>
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">add</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">remove</button>
-                </div>
-                <small class="text-muted">9 items</small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-                <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-
-            <div class="card-body">
-                <h5>matrett 1</h5>
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">add</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">remove</button>
-                </div>
-                <small class="text-muted">9 items</small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-
-                <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-
-            <div class="card-body">
-                <h5>matrett 1</h5>
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">add</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">remove</button>
-                </div>
-                <small class="text-muted">9 items</small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-                <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-
-            <div class="card-body">
-                <h5>matrett 1</h5>
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">add</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">remove</button>
-                </div>
-                <small class="text-muted">9 items</small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-                <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-
-            <div class="card-body">
-                <h5>matrett 1</h5>
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">add</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">remove</button>
-                </div>
-                <small class="text-muted">9 items</small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-
-
-  </div>
-
-
 {% endblock %}

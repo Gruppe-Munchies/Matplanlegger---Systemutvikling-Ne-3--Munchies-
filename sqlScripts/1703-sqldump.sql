@@ -53,9 +53,9 @@ CREATE TABLE munchbase.`userGroup_has_ingredient`
 (
     `userGroup_iduserGroup` int NOT NULL,
     ingredient_idingredient int NOT NULL,
-    price                   double,
+    price                   decimal(7, 2),
     unit                    varchar(8),
-    quantity                double DEFAULT 0,
+    quantity                decimal(7, 2) DEFAULT 0,
     CONSTRAINT pk_usergroup_has_ingredient PRIMARY KEY (`userGroup_iduserGroup`, ingredient_idingredient),
     CONSTRAINT `fk_userGroup_has_ingredient_ingredient` FOREIGN KEY (ingredient_idingredient) REFERENCES munchbase.ingredient (idingredient) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT `fk_userGroup_has_ingredient_userGroup` FOREIGN KEY (`userGroup_iduserGroup`) REFERENCES munchbase.`userGroup` (`iduserGroup`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -248,10 +248,8 @@ VALUES (2022, 9, 1, 'Rulleuke', 'En uke full av ruller', 1);
 # Legg til oppskrifter
 INSERT INTO munchbase.recipe(`idRecipe`, name, `shortDescription`, description, image, `userGroup_iduserGroup`,
                              `recipeAvailability_idrecipeAvailability`, `weeklyMenu_idweeklyMenu`)
-VALUES (1, 'Vårruller', 'Digge ruller', 'Ikke så mye å skrive her', 'test', 1, 1, 1),
-(2, 'Rullekebab', 'Digg rullekebab', 'Ikke så mye å skrive her', 'test', 1, 1, 1),
-(3, 'Tørrfisk', 'Digg tørrfisk', 'Ikke så mye å skrive her', 'test', 2, 1, 1),
-(4, 'Kanelsnurr', 'Digg kanelsnurr', 'Ikke så mye å skrive her', 'test', 2, 1, 1);
+VALUES (1, 'Vårruller', 'Digge ruller', 'Ikke så mye å skrive her', 'test', 1, 1, 1);
+
 
 
 INSERT INTO munchbase.recipe_has_ingredient(`recipe_idRecipe`, ingredient_idingredient, quantity)
