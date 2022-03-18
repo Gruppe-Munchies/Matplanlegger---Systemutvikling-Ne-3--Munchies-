@@ -3,34 +3,53 @@ from local_db.session import loadSession
 from local_db.orm import User, Ingredient, Recipe, RecipeHasIngredient, RecipeHasWeeklyMenu, RecipeAvailability, \
     Usertype, Usergroup, UsergroupHasIngredient, WeeklyMenu, Base, UserHasUsergroup
 
+session = loadSession()
 
-#Add default values to recipe availability
+
+# Add default values to recipe availability
 def insert_to_recipeavalilability():
-    session = loadSession()
     avail1 = RecipeAvailability(avilableFor="All")
     avail2 = RecipeAvailability(avilableFor="Group")
     avail3 = RecipeAvailability(avilableFor="User")
     session.add_all([avail1, avail2, avail3])
     session.commit()
 
-#Add recipe
+
+# Add recipe
 def insert_to_recipe(name, shortDescription, description, image, userGroup, recipeAvailability, weeklymenu):
-    session = loadSession()
-    new_recipe = Recipe(name=name, shortDescription=shortDescription, description=description, image=image, userGroup_iduserGroup=userGroup, recipeAvailability_idrecipeAvailability=recipeAvailability, weeklyMenu_idweeklyMenu=weeklymenu)
+    new_recipe = Recipe(name=name, shortDescription=shortDescription, description=description, image=image,
+                        userGroup_iduserGroup=userGroup, recipeAvailability_idrecipeAvailability=recipeAvailability,
+                        weeklyMenu_idweeklyMenu=weeklymenu)
     session.add(new_recipe)
     session.commit()
 
 
-#Add to recipe_has_ingredient
+def fetch_recipe_where_recipeId_equals(recipeId):
+    return session.query(Recipe).where(Recipe.idRecipe == recipeId).first()
+
+# Add to recipe_has_ingredient
 def insert_to_recipe_has_ingredient(recipe, ingredient, quantity):
-    session = loadSession()
-    new_recipeIngredient = RecipeHasIngredient(recipe_idRecipe=recipe, ingredient_idingredient=ingredient, quantity=quantity)
+    new_recipeIngredient = RecipeHasIngredient(recipe_idRecipe=recipe, ingredient_idingredient=ingredient,
+                                               quantity=quantity)
     session.add(new_recipeIngredient)
     session.commit()
 
-#Add to recipe_has_weeklyMenu
+
+# Add to recipe_has_weeklyMenu
 def insert_to_recipe_has_weeklymenu(recipe, year, week, expectedConsumption, actualConsumption):
-    session = loadSession()
-    new_recipeWeeklymenu = RecipeHasWeeklyMenu(recipe_idRecipe=recipe, weeklyMenu_year=year, weeklyMenu_weekNum=week, expectedConsumption=expectedConsumption, actualConsumption=actualConsumption)
+    new_recipeWeeklymenu = RecipeHasWeeklyMenu(recipe_idRecipe=recipe, weeklyMenu_year=year, weeklyMenu_weekNum=week,
+                                               expectedConsumption=expectedConsumption,
+                                               actualConsumption=actualConsumption)
     session.add(new_recipeWeeklymenu)
     session.commit()
+
+
+def fetch_all_recipes():
+    return session.query(Recipe).all()
+
+
+def fetch_ingredients_where_recipeId_equals(recipeId):
+    #return session.query(RecipeHasIngredient).where(RecipeHasIngredient.recipe_idRecipe == recipeId)
+    return session.query(Ingredient).join(RecipeHasIngredient.recipe_idRecipe == recipeId)
+
+

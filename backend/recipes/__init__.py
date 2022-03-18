@@ -1,0 +1,1 @@
+from backend.recipes.views import recipes
