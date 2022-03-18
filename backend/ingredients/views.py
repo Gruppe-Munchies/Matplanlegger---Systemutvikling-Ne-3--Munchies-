@@ -18,6 +18,8 @@ ingredient = Blueprint('ingredient', __name__, template_folder='templates', url_
 
 def new():
     group_ingredients = fetch_all_ingredients_where_usergroup_equals(1)
+    for i in group_ingredients:
+        print(i)
 
     form = RegisterForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -35,10 +37,10 @@ def new():
         check_ingredient_in_userGroup = fetch_ingredients_where_usergroup_and_ingredientName_equals(1,
                                                                                                     ingredientName)  # First input: usergroupID
 
-        if check_ingredient:  # Sjekker om ingrediens finnes.
+        if check_ingredient_in_userGroup:
             flash("Ingrediens er allerede registrert", "danger")
-            if check_ingredient_in_userGroup:
-                flash("Ingrediens er allerede registrert i din gruppe", "danger")
+            if check_ingredient:
+                    flash("Ingrediens er allerede registrert i din gruppe", "danger")
             else:
                 # legg til ingrediens i Usergroup, ikke ingrediens
                 fetchedingredientID = ingr_queries.fetch_ingredients_from_all_user_groups_where_ingredient_name_equals(
@@ -48,10 +50,10 @@ def new():
                 auth_queries.insert_to_usergroup_has_ingredient(fetchedusergroup_ID, ingredientID, price, unit)
                 flash('Ingrediensen er registrert!!')
 
+                # return render_template('newingredient.html', form=form, ingredients=group_ingredients)
                 # return render_template('newingredient.html', form=form,
                                        # heading="Registrer ny ingrediens")  # vet ikke om heading trengs?
         else:
-            ingr_queries.insert_to_ingredients(ingredientName)
             fetchedingredientID = ingr_queries.fetch_ingredients_from_all_user_groups_where_ingredient_name_equals(
                 ingredientName)  # TODO Fetch ingredientID from new or existing
             ingredientID = fetchedingredientID.idingredient
