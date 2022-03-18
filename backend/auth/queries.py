@@ -58,6 +58,11 @@ def insert_to_user(name, email, firstname, lastname, password):
 # Usergroup #
 #############
 
+def userGroup():
+    session = loadSession() # kobler til databasen
+    res = session.query(Usergroup).all() #henter ut fra tabell Usergroup (via orm.py i local_db)
+    return res #henter ut alle kolonnene i denne tabellen
+
 def fetchAllUsers():
     session = loadSession()  # kobler til databasen
     res = session.query(User).all()  # henter ut fra tabell User (via orm.py i local_db)
@@ -75,6 +80,29 @@ def fetchUserGroup(group_name):
     # res = session.query(Usergroup).filter_by(groupName=group_name).values(text("iduserGroup"))
     return res
 
+def fetchGroupsWhereUserHaveAdmin(username):
+    #TODO: Query for fetching groups where user have Admin-type
+    pass
+
+def fetchUsersInUsergroup(group_name):
+    #TODO: Query for fetching all users belonging to a group
+    session = loadSession()
+    res = session.query(Usergroup, User, Usertype).join(UserHasUsergroup,
+                                                        Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(User,
+                                                        User.userId == UserHasUsergroup.user_userId).join(Usertype,
+                                                        Usertype.iduserType == UserHasUsergroup.userType_iduserType).filter(
+                                                        Usergroup.groupName == group_name).all()
+    return res
+
+def fetchUserType(usertype):
+    session = loadSession()
+    res = session.query(Usertype).where(Usertype.userTypeName == usertype).first()
+    return res
+
+def fetchAllUserTypes():
+    session = loadSession()
+    res = session.query(Usertype).all()
+    return res
 
 # Add default usergroups
 def insert_to_usergroup(name):

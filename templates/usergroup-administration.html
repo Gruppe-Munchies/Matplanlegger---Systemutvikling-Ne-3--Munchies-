@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}Administrer gruppe{% endblock %}
+{% block heading %}Administrer gruppe{% endblock %}
+{% block description %}Inviter eller fjern brukere i gruppen her!{% endblock %}
+{% block content %}
+{% include 'flash_messages.html' %}
+
+
+            <div class="container" style="max-width: 1000px;">
+            <h1 class="fw-light">Inviter bruker</h1>
+
+                <form method="POST" action="{{ url_for('auth.invite') }}"class="row">
+                    {{ form.csrf_token }}
+
+                        <div class="form-group w-50 p-3">
+                            {{ form.username(class="form-control", placeholder="Brukernavn") }}
+                        </div>
+
+                        <div class="form-group w-25 p-3">
+                            <select>
+                            {% if ownedgroups  %}
+                                {% for group in ownedgroups %}
+                                    <option value = "{{ group.iduserGroup }}">{{ group.groupName }}</option>
+                                {% endfor %}
+                            {% else %}
+                                <option value = "0">Ingen grupper</option>
+                            {% endif %}
+                            </select>
+                        </div>
+
+                        <div class="form-group w-25 p-3">
+                            <select class="usertype" name="usertype" id="usertype">
+                            {% for type in usertypes %}
+                            <option value = "{{ type.iduserType }}">{{ type.userTypeName }}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group w-100 p-3">
+                            {{ form.submit(class_="btn btn-success") }}
+                        </div>
+
+                        <div class="form-group w-50 p-3"></div>
+
+                </form>
+
+
+            <h1 class="fw-light">Opprett gruppe</h1>
+
+                <form method="POST" action="{{ url_for('auth.createGroup') }}"class="row">
+                    {{ form.csrf_token }}
+
+                        <div class="form-group w-50 p-3">
+                            {{ ugform.usergroup(class="form-control", placeholder="Gruppenavn") }}
+                        </div>
+
+                        <div class="form-group w-100 p-3">
+                            {{ ugform.submit(class_="btn btn-success") }}
+                        </div>
+
+                        <div class="form-group w-50 p-3"></div>
+
+                </form>
+
+                <h1 class="fw-light pb-3 pt-5">Brukere i gruppen:</h1>
+                {% include 'user-administration2.html' %}
+
+            </div>
+
+
+{% endblock %}
+
