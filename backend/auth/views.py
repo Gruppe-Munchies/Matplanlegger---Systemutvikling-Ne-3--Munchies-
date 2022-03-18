@@ -2,6 +2,7 @@ from urllib.parse import urljoin, urlparse
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 from flask_login import login_required, login_user, logout_user
 import backend.auth.queries as auth_queries
+from sqlalchemy import inspect
 
 from backend.auth.forms import LoginForm, RegisterForm, InviteForm, createUserGroupForm
 from backend.auth.queries import * #fetchAllUserGroups, fetchUser, fetchUserGroup
@@ -85,7 +86,7 @@ def invite():
     form = InviteForm(request.form)
     createUGForm = createUserGroupForm(request.form)
     users_in_group = fetchUsersInUsergroup("MatMons")  # Fetch users in group
-    print(users_in_group[0][0])
+
     usertypes = fetchAllUserTypes()
     owner = "Username for gruppeeier"  # TODO: Get username for logged in user
     groups_with_admin = fetchGroupsWhereUserHaveAdmin(owner)
@@ -117,7 +118,7 @@ def invite():
         for error_message in error_messages:
             flash(f"{error_message}", "danger")
 
-    return render_template('usergroup-administration.html', form=form, ugform=createUGForm, usergroup=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
+    return render_template('usergroup-administration.html', form=form, ugform=createUGForm, users=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
 
 
 
