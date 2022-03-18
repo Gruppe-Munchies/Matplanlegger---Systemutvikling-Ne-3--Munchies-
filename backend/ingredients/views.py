@@ -47,7 +47,8 @@ def new():
                     ingredientName)  # TODO Fetch ingredientID from new or existing
                 ingredientID = fetchedingredientID.idingredient
 
-                auth_queries.insert_to_usergroup_has_ingredient(fetchedusergroup_ID, ingredientID, price, unit)
+                ingr_queries.insert_to_usergroup_has_ingredient(fetchedusergroup_ID, ingredientID, price, unit)
+                ingr_queries.insert_to_ingredients(ingredientName)
                 flash('Ingrediensen er registrert!!')
 
                 # return render_template('newingredient.html', form=form,
@@ -58,7 +59,7 @@ def new():
                 ingredientName)  # TODO Fetch ingredientID from new or existing
             ingredientID = fetchedingredientID.idingredient
 
-            auth_queries.insert_to_usergroup_has_ingredient(fetchedusergroup_ID, ingredientID, price, unit)
+            ingr_queries.insert_to_usergroup_has_ingredient(fetchedusergroup_ID, ingredientID, price, unit)
             flash('Ingrediensen er registrert!!')
 
             # TODO Render with new ingredient

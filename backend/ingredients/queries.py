@@ -22,6 +22,12 @@ def insert_to_ingredients(name: str):
     session.add(ingredient)
     session.commit()
 
+def insert_to_usergroup_has_ingredient(userGroup, ingredient, price, unit):
+    new_userGroupIngredient = UsergroupHasIngredient(userGroup_iduserGroup=userGroup,
+                                                     ingredient_idingredient=ingredient, price=price, unit=unit)
+    session.add(new_userGroupIngredient)
+    session.commit()
+
 
 def fetch_ingredients_from_all_user_groups_where_ingredient_name_equals(ingredient) -> Ingredient:
     return session.query(Ingredient).where(Ingredient.ingredientName == ingredient).first()
