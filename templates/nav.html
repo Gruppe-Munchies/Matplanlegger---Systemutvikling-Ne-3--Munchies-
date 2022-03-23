@@ -1,12 +1,11 @@
-
 <nav class="navbar navbar-expand-lg navbar-dark p-3 mb-4">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
 
-        <a class="navbar-brand" href="{{ url_for('index') }}">Munchbase</a>
+    <a class="navbar-brand" href="{{ url_for('index') }}">Munchbase</a>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
@@ -19,9 +18,14 @@
             <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">Brukeradministrasjon</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('legg_til_rett') }}">Legg til rett</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.invite') }}">Gruppeadministrasjon</a></li>
-    </ul>
+            <select>
+                <option value="1">Gruppe 1</option>
+                <option value="2">Gruppe 2</option>
+                <option value="3">Gruppe 3</option>
+            </select>
+        </ul>
 
-        </div>
-    </nav>
+    </div>
+</nav>
 
 
