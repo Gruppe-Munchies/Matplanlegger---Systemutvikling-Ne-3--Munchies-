@@ -3,33 +3,34 @@
 {% block heading %}Munchbase{% endblock %}
 {% block description %}Din digitale matplanlegger :-){% endblock %}
 {% block content %}
+    {% include 'flash_messages.html' %}
 
     <div class="container" style="max-width: 1000px;">
-    <h1 class="fw-light">Legg til brukere</h1>
+        <h1 class="fw-light">Legg til brukere</h1>
 
-    <form method="POST" action="{{ url_for('auth.login') }}" class="row">
+        <form method="POST" action="{{ url_for('auth.login') }}" class="row">
 
-        <img class="mb-4" src="https://www.svgrepo.com/show/115503/burger.svg" alt="" width="72" height="57">
-        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+            <img class="mb-4" src="https://www.svgrepo.com/show/115503/burger.svg" alt="" width="72" height="57">
+            <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
-        <div class="form-floating">
-            <input type="text" class="form-control" id="floatingInput" placeholder="username">
-            <label for="floatingInput">Username</label>
-        </div>
-        <div class="form-floating">
-            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-            <label for="floatingPassword">Password</label>
-        </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingInput" placeholder="username">
+                <label for="floatingInput">Username</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <label for="floatingPassword">Password</label>
+            </div>
 
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
-        </div>
-        {#            <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>#}
-        <div class="form-group w-100 p-3">
-            {{ form.submit(class_="btn btn-success") }}
-        </div>
-        {#            <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>#}
-    </form>
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>
+            <div class="form-floating">
+                {{ form.submit(class_="btn btn-success") }}
+            </div>
+            {#            <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>#}
+        </form>
+    </div>
 {% endblock %}

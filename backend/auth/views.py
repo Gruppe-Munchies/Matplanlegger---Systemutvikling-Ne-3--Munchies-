@@ -12,10 +12,10 @@ auth = Blueprint('auth', __name__, template_folder='templates')
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm(request.form)
-    print(form.username.data)
     if request.method == 'POST' and form.validate():
+        print("LYKKE")
         username = form.username.data
-    return render_template('index.html')
+    return render_template('index.html', form=form)
 
 
 @auth.route('/register', methods=['GET', 'POST'])
