@@ -2,7 +2,7 @@ from urllib.parse import urljoin, urlparse
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 import backend.auth.queries as auth_queries
 from flask_login import login_required, login_user, logout_user
-
+from werkzeug.security import generate_password_hash, check_password_hash
 from backend.auth.forms import LoginForm, RegisterForm, InviteForm, createUserGroupForm
 from backend.auth.queries import *  # fetchAllUserGroups, fetchUser, fetchUserGroup
 
@@ -12,9 +12,17 @@ auth = Blueprint('auth', __name__, template_folder='templates')
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm(request.form)
-    if request.method == 'POST' and form.validate():
-        print("LYKKE")
-        username = form.username.data
+    if request.method == 'POST':
+        input_username = form.username.data
+        input_password = form.password.data
+
+        user_from_db = fetchUser(input_username)
+        stored_hashed_password = user_from_db.password
+
+        if check_password_hash(stored_hashed_password, input_password):
+            print("bruker og hashet passord stemmer")
+
+
     return render_template('index.html', form=form)
 
 
