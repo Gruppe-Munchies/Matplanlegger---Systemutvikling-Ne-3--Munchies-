@@ -1,10 +1,9 @@
 from urllib.parse import urljoin, urlparse
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 import backend.auth.queries as auth_queries
-from flask_login import login_required, login_user, logout_user
-from werkzeug.security import generate_password_hash, check_password_hash
 from backend.auth.forms import LoginForm, RegisterForm, InviteForm, createUserGroupForm
 from backend.auth.queries import *  # fetchAllUserGroups, fetchUser, fetchUserGroup
+from flask_login import login_required, login_user, logout_user, current_user
 
 auth = Blueprint('auth', __name__, template_folder='templates')
 
@@ -13,10 +12,11 @@ auth = Blueprint('auth', __name__, template_folder='templates')
 def login():
     form = LoginForm(request.form)
     if request.method == 'POST':
-        input_username =form.username.data
+        input_username = form.username.data
         input_password = form.password.data
 
         user_from_db = fetchUser(input_username)
+
         # Er brukeren i databasen
         if user_from_db:
             stored_hashed_password = user_from_db.password
@@ -24,12 +24,19 @@ def login():
             # Sjekker om brukernavn og hashet passord stemmer overens med databasen
             if check_password_hash(stored_hashed_password, input_password):
                 flash("Login vellykket!")
+                login_user(user_from_db)
+                flash("Velkommen " + current_user.username)
         else:
             flash("Brukernavn eller passord er feil")
             return redirect(url_for("auth.login"))
 
-    return render_template('index.html', form=form)
+    return render_template('index.html', form=form, current_user=current_user)
 
+@auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("auth.login"))
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -62,7 +69,7 @@ def register():
 
         # Get userID from newly inserted user
         fetchedUser = fetchUser(username)
-        userID = fetchedUser.userId
+        userID = fetchedUser.id
         # Fetch userGroupID from newly inserted usergroup
         fetchedUserGroup = fetchUserGroup(usergroup)
         userGroupId = fetchedUserGroup.iduserGroup
@@ -87,7 +94,7 @@ def createGroup():
     if request.method == 'POST' and createUGForm.validate():
         activeUser = "Username for innlogget bruker"  # TODO: Get username for logged in user
         user = fetchUser(activeUser)
-        userId = 9  # TODO: Replace with actual userId for logged in user
+        userId = 9  # TODO: Replace with actual "id for logged in user
         auth_queries.insert_to_usergroup(createUGForm.usergroup.data)
         userGroup = fetchUserGroup(createUGForm.usergroup.data)
         userGroupId = userGroup.iduserGroup

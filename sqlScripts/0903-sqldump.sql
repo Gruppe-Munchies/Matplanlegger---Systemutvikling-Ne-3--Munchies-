@@ -18,14 +18,14 @@ USE `munchbase` ;
 -- Table `munchbase`.`user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `munchbase`.`user` (
-  `userId` INT NOT NULL AUTO_INCREMENT,
+  `"id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(45) NOT NULL,
   `email` VARCHAR(100) NOT NULL,
   `firstname` VARCHAR(45) NOT NULL,
   `lastname` VARCHAR(45) NOT NULL,
   `password` VARCHAR(75) NOT NULL,
-  PRIMARY KEY (`userId`),
-  UNIQUE INDEX `userId_UNIQUE` (`userId` ASC),
+  PRIMARY KEY (`"id`),
+  UNIQUE INDEX `userId_UNIQUE` (`"id` ASC),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC))
 ENGINE = InnoDB;
 
@@ -205,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `munchbase`.`user_has_userGroup` (
   INDEX `fk_user_has_userGroup_userType1_idx` (`userType_iduserType` ASC),
   CONSTRAINT `fk_user_has_userGroup_user1`
     FOREIGN KEY (`user_userId`)
-    REFERENCES `munchbase`.`user` (`userId`)
+    REFERENCES `munchbase`.`user` (`"id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_has_userGroup_userGroup1`

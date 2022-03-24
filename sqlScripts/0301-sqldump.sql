@@ -133,7 +133,7 @@ DELETE FROM `recipe_has_weeklymenu`;
 -- Dumping structure for table munchbase.user
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
-  `userId` int(11) NOT NULL AUTO_INCREMENT,
+  `"id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(45) NOT NULL,
   `email` varchar(100) NOT NULL,
   `firstname` varchar(45) NOT NULL,
@@ -141,8 +141,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password` varchar(75) NOT NULL,
   `userType_iduserType` int(11) NOT NULL,
   `userGroup_iduserGroup` int(11) NOT NULL,
-  PRIMARY KEY (`userId`),
-  UNIQUE KEY `userId_UNIQUE` (`userId`),
+  PRIMARY KEY (`"id`),
+  UNIQUE KEY `userId_UNIQUE` (`"id`),
   UNIQUE KEY `username_UNIQUE` (`username`),
   KEY `fk_user_userType_idx` (`userType_iduserType`),
   KEY `fk_user_userGroup1_idx` (`userGroup_iduserGroup`),
@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Dumping data for table munchbase.user: ~5 rows (approximately)
 DELETE FROM `user`;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` (`userId`, `username`, `email`, `firstname`, `lastname`, `password`, `userType_iduserType`, `userGroup_iduserGroup`) VALUES
+INSERT INTO `user` (id, `username`, `email`, `firstname`, `lastname`, `password`, `userType_iduserType`, `userGroup_iduserGroup`) VALUES
 	(1, 'malvinz@mail.com', 'Malvin', 'Khan', 'qwert', '1', 1, 1),
 	(2, 'erna@stortinget.no', 'Erna', 'Solberg', 'ffsd', '2', 1, 1),
 	(3, 'jostor@ap.no', 'Jonas', 'Støre', 'sdhgsd6', '2', 1, 1),
