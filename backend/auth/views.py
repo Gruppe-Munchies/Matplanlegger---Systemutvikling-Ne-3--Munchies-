@@ -18,6 +18,7 @@ def login():
         input_password = form.password.data
 
         user_from_db = fetchUser(input_username)
+        user_from_db = models.User.get
         # Er brukeren i databasen
         if user_from_db:
             stored_hashed_password = user_from_db.password

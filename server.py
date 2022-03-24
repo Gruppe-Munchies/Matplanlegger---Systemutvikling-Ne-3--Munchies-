@@ -1,7 +1,8 @@
 from flask import Flask, render_template
+from flask_login import LoginManager
 from flask_wtf import csrf
 
-
+import backend.auth.queries
 import backend.main.views as mainpage
 import backend.auth.views as auth
 import backend.recipes.views as recipes
@@ -24,25 +25,41 @@ app.config['WTF_CSRF_SECRET_KEY'] = "secretkey"
 def index():
     return render_template('index.html')
 
+
 @app.route('/ingredienser')
 def ingredienser():
     return render_template('ingredienser.html')
+
 
 @app.route('/handleliste')
 def handleliste():
     return render_template('handleliste.html')
 
+
 @app.route('/ukesmeny')
 def ukesmeny():
     return render_template('ukesmeny.html')
+
 
 @app.route('/user-administration')
 def userAdministration():
     return render_template('user-administration.html')
 
+
 @app.route('/legg-til-rett')
 def legg_til_rett():
     return render_template('legg-til-rett.html')
 
+
 if __name__ == '__main__':
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        res = backend.auth.queries.fetchUser(user_id)
+        return res
+        # return User.get(user_id)
+
+
     app.run()
