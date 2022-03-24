@@ -69,7 +69,7 @@ def register():
 
         # Get userID from newly inserted user
         fetchedUser = fetchUser(username)
-        userID = fetchedUser.userId
+        userID = fetchedUser.id
         # Fetch userGroupID from newly inserted usergroup
         fetchedUserGroup = fetchUserGroup(usergroup)
         userGroupId = fetchedUserGroup.iduserGroup
