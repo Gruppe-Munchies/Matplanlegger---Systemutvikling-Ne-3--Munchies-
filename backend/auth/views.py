@@ -13,15 +13,20 @@ auth = Blueprint('auth', __name__, template_folder='templates')
 def login():
     form = LoginForm(request.form)
     if request.method == 'POST':
-        input_username = form.username.data
+        input_username =form.username.data
         input_password = form.password.data
 
         user_from_db = fetchUser(input_username)
-        stored_hashed_password = user_from_db.password
+        # Er brukeren i databasen
+        if user_from_db:
+            stored_hashed_password = user_from_db.password
 
-        if check_password_hash(stored_hashed_password, input_password):
-            print("bruker og hashet passord stemmer")
-
+            # Sjekker om brukernavn og hashet passord stemmer overens med databasen
+            if check_password_hash(stored_hashed_password, input_password):
+                flash("Login vellykket!")
+        else:
+            flash("Brukernavn eller passord er feil")
+            return redirect(url_for("auth.login"))
 
     return render_template('index.html', form=form)
 
