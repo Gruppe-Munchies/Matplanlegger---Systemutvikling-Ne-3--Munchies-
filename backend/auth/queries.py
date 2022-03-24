@@ -11,7 +11,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 def fetchUser(user_name):
     session = loadSession()
     res = session.query(User).where(User.username == user_name).first()
-    # res = session.query(User).filter_by(username=user_name).values(text(""id"))
     return res
 
 def fetchUserById(user_id):
