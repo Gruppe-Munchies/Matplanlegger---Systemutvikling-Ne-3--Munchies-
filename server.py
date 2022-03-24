@@ -22,7 +22,7 @@ app.config['WTF_CSRF_SECRET_KEY'] = "secretkey"
 
 @app.route('/')
 def index():
-    return "noe annet"
+    return render_template('index.html')
 
 @app.route('/ingredienser')
 def ingredienser():

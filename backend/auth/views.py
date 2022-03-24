@@ -1,19 +1,20 @@
 from urllib.parse import urljoin, urlparse
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 import backend.auth.queries as auth_queries
-from flask_login import login_required, login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from backend.auth.forms import LoginForm, RegisterForm, InviteForm, createUserGroupForm
 from backend.auth.queries import *  # fetchAllUserGroups, fetchUser, fetchUserGroup
+from flask_login import login_required, login_user, logout_user, current_user
 
 auth = Blueprint('auth', __name__, template_folder='templates')
 
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
+    # print(f"current user: {current_user}")
     form = LoginForm(request.form)
     if request.method == 'POST':
-        input_username =form.username.data
+        input_username = form.username.data
         input_password = form.password.data
 
         user_from_db = fetchUser(input_username)
@@ -24,11 +25,18 @@ def login():
             # Sjekker om brukernavn og hashet passord stemmer overens med databasen
             if check_password_hash(stored_hashed_password, input_password):
                 flash("Login vellykket!")
+                login_user(user_from_db)
         else:
             flash("Brukernavn eller passord er feil")
             return redirect(url_for("auth.login"))
 
     return render_template('index.html', form=form)
+
+
+@auth.route('/logout')
+# @login_required
+def logout():
+    return "LOGIN REQUIRED"
 
 
 @auth.route('/register', methods=['GET', 'POST'])
