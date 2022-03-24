@@ -5,7 +5,7 @@
 {% block content %}
     {% include 'flash_messages.html' %}
 
-    {% if current_user.is_authenticated %}
+    {% if  not current_user.is_authenticated %}
         <div class="container" style="max-width: 1000px;">
             <h1 class="fw-light">Legg til brukere</h1>
 
@@ -33,6 +33,6 @@
             </form>
         </div>
     {% else %}
-        <p>DU ER INNLOGGET</p>
+        <p>Velkommen {{ current_user.username }}</p>
     {% endif %}
 {% endblock %}

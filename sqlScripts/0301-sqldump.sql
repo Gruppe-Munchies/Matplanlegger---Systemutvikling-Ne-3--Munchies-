@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Dumping data for table munchbase.user: ~5 rows (approximately)
 DELETE FROM `user`;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` (`userId`, `username`, `email`, `firstname`, `lastname`, `password`, `userType_iduserType`, `userGroup_iduserGroup`) VALUES
+INSERT INTO `user` (id, `username`, `email`, `firstname`, `lastname`, `password`, `userType_iduserType`, `userGroup_iduserGroup`) VALUES
 	(1, 'malvinz@mail.com', 'Malvin', 'Khan', 'qwert', '1', 1, 1),
 	(2, 'erna@stortinget.no', 'Erna', 'Solberg', 'ffsd', '2', 1, 1),
 	(3, 'jostor@ap.no', 'Jonas', 'Støre', 'sdhgsd6', '2', 1, 1),

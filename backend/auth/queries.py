@@ -14,6 +14,11 @@ def fetchUser(user_name):
     # res = session.query(User).filter_by(username=user_name).values(text(""id"))
     return res
 
+def fetchUserById(user_id):
+    session = loadSession()
+    res = session.query(User).where(User.id == user_id).first()
+    return res
+
 # Fetch email from username
 def return_email_from_name(name):
     session = loadSession()

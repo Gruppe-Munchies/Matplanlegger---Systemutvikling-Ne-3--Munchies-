@@ -124,7 +124,7 @@ ALTER TABLE munchbase.`userGroup_has_ingredient` ADD CONSTRAINT `fk_userGroup_ha
 
 ALTER TABLE munchbase.`userGroup_has_ingredient` ADD CONSTRAINT `fk_userGroup_has_ingredient_userGroup1` FOREIGN KEY ( `userGroup_iduserGroup` ) REFERENCES munchbase.`userGroup`( `iduserGroup` ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE munchbase.`user_has_userGroup` ADD CONSTRAINT fk_user_has_usergroup_user1 FOREIGN KEY ( `user_userId` ) REFERENCES munchbase.`user`( `userId` ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE munchbase.`user_has_userGroup` ADD CONSTRAINT fk_user_has_usergroup_user1 FOREIGN KEY ( `user_userId` ) REFERENCES munchbase.`user`( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE munchbase.`user_has_userGroup` ADD CONSTRAINT fk_user_has_usergroup_usergroup1 FOREIGN KEY ( `userGroup_iduserGroup` ) REFERENCES munchbase.`userGroup`( `iduserGroup` ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
@@ -140,8 +140,8 @@ INSERT INTO munchbase.ingredient( idingredient, `ingredientName` ) VALUES ( 2, '
 INSERT INTO munchbase.`recipeAvailability`( `idrecipeAvailability`, `avilableFor` ) VALUES ( 1, 'All');
 INSERT INTO munchbase.`recipeAvailability`( `idrecipeAvailability`, `avilableFor` ) VALUES ( 2, 'Group');
 INSERT INTO munchbase.`recipeAvailability`( `idrecipeAvailability`, `avilableFor` ) VALUES ( 3, 'User');
-INSERT INTO munchbase.`user`( `userId`, username, email, firstname, lastname, password ) VALUES ( 1, 'Bob', 'bob@burger.no', 'Bob', 'Bobsen', 'passord');
-INSERT INTO munchbase.`user`( `userId`, username, email, firstname, lastname, password ) VALUES ( 2, 'testebruker', 'test@test.no', 'Test', 'Bruker', 'hemmeligegreier');
+INSERT INTO munchbase.`user`( id, username, email, firstname, lastname, password ) VALUES ( 1, 'Bob', 'bob@burger.no', 'Bob', 'Bobsen', 'passord');
+INSERT INTO munchbase.`user`( id, username, email, firstname, lastname, password ) VALUES ( 2, 'testebruker', 'test@test.no', 'Test', 'Bruker', 'hemmeligegreier');
 INSERT INTO munchbase.`userGroup`( `iduserGroup`, `groupName` ) VALUES ( 1, 'MatMons');
 INSERT INTO munchbase.`userGroup`( `iduserGroup`, `groupName` ) VALUES ( 2, 'Familien Hansen');
 INSERT INTO munchbase.`userGroup_has_ingredient`( `userGroup_iduserGroup`, ingredient_idingredient, price, unit ) VALUES ( 1, 1, 15.0, 'stk');

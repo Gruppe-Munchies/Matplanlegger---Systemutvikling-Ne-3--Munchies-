@@ -1,6 +1,5 @@
 from flask import Flask, render_template
 from flask_login import LoginManager
-from flask_wtf import csrf
 
 import backend.auth.queries
 import backend.main.views as mainpage
@@ -51,23 +50,15 @@ def legg_til_rett():
     return render_template('legg-til-rett.html')
 
 
+login_manager = LoginManager(app)
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    res = backend.auth.queries.fetchUserById(user_id)
+    return res
+
+
 if __name__ == '__main__':
-    login_manager = LoginManager()
-    login_manager.init_app(app)
-
-    @login_manager.user_loader
-    def load_user(user_id):
-        res = backend.auth.queries.fetchUser(user_id)
-        return res
-        # return User.get(user_id)
-
-
 
     app.run()
-
-# """
-# class User(Usermixin, db.Model):
-#     id = db.Columb(db.Integer, primary_key=True)
-#     username = db.Colum(db.String(30)
-#
-# """

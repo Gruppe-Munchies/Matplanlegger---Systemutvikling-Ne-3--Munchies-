@@ -1,4 +1,5 @@
 from flask_login import UserMixin
+from flask_sqlalchemy import SQLAlchemy
 
 from flask_alchemy_db_creation.local_db_create import engine
 from sqlalchemy.orm import declarative_base

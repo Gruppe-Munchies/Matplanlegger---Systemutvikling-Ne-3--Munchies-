@@ -79,7 +79,7 @@ CREATE TABLE munchbase.`user_has_userGroup`
     `userGroup_iduserGroup` int NOT NULL,
     `userType_iduserType`   int NOT NULL,
     CONSTRAINT pk_user_has_usergroup PRIMARY KEY (`user_userId`, `userGroup_iduserGroup`),
-    CONSTRAINT fk_user_has_usergroup_user FOREIGN KEY (`user_userId`) REFERENCES munchbase.`user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT fk_user_has_usergroup_user FOREIGN KEY (`user_userId`) REFERENCES munchbase.`user` (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT fk_user_has_usergroup_usergroup FOREIGN KEY (`userGroup_iduserGroup`) REFERENCES munchbase.`userGroup` (`iduserGroup`) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT fk_user_has_usergroup_usertype FOREIGN KEY (`userType_iduserType`) REFERENCES munchbase.`userType` (`iduserType`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB
