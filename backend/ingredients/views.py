@@ -12,6 +12,7 @@ ingredient = Blueprint('ingredient', __name__, template_folder='templates', url_
 
 
 @ingredient.route('/new', methods=['GET', 'POST'])
+@login_required
 #     ingredienser = fetch_all_ingredients_where_usergroup_equals(1)
 #     for ap in ingredienser:
 #         print(f"{ap[0].ingredientName} {round(ap[1].quantity, 2)} {ap[1].unit} {round(ap[1].price, 2)}")

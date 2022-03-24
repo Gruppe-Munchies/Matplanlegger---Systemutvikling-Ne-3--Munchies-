@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from backend.auth.forms import LoginForm, RegisterForm, InviteForm, createUserGroupForm
 from backend.auth.queries import *  # fetchAllUserGroups, fetchUser, fetchUserGroup
 from flask_login import login_required, login_user, logout_user, current_user
+from backend.models import User
 
 auth = Blueprint('auth', __name__, template_folder='templates')
 
@@ -18,7 +19,7 @@ def login():
         input_password = form.password.data
 
         user_from_db = fetchUser(input_username)
-        user_from_db = models.User.get
+
         # Er brukeren i databasen
         if user_from_db:
             stored_hashed_password = user_from_db.password
@@ -96,7 +97,7 @@ def createGroup():
     if request.method == 'POST' and createUGForm.validate():
         activeUser = "Username for innlogget bruker"  # TODO: Get username for logged in user
         user = fetchUser(activeUser)
-        userId = 9  # TODO: Replace with actual userId for logged in user
+        userId = 9  # TODO: Replace with actual "id for logged in user
         auth_queries.insert_to_usergroup(createUGForm.usergroup.data)
         userGroup = fetchUserGroup(createUGForm.usergroup.data)
         userGroupId = userGroup.iduserGroup

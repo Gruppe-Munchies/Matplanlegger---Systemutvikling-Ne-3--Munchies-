@@ -10,6 +10,5 @@ mainpage = Blueprint('mainpage', __name__, static_folder="static", template_fold
 def index():
     form = LoginForm()
     # print(f"current user: {current_user}")
-    brukernavn = current_user.b
     is_logged_in = False
     return render_template('index.html', form=form )

@@ -1,9 +1,11 @@
+from flask_login import UserMixin
+
 from flask_alchemy_db_creation.local_db_create import engine
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base(engine)
 
-class User(Base):
+class User(Base, UserMixin):
     """"""
     __tablename__ = 'user'
     __table_args__ = {'autoload': True}

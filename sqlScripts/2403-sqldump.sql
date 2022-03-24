@@ -26,13 +26,13 @@ CREATE TABLE munchbase.`recipeAvailability`
 
 CREATE TABLE munchbase.`user`
 (
-    `userId`  int          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id  int          NOT NULL AUTO_INCREMENT PRIMARY KEY,
     username  varchar(45)  NOT NULL,
     email     varchar(100) NOT NULL,
     firstname varchar(45)  NOT NULL,
     lastname  varchar(45)  NOT NULL,
     password  varchar(128) NOT NULL,
-    CONSTRAINT `userId_UNIQUE` UNIQUE (`userId`),
+    CONSTRAINT `userId_UNIQUE` UNIQUE (id),
     CONSTRAINT `username_UNIQUE` UNIQUE (username)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 6
@@ -53,9 +53,9 @@ CREATE TABLE munchbase.`userGroup_has_ingredient`
 (
     `userGroup_iduserGroup` int NOT NULL,
     ingredient_idingredient int NOT NULL,
-    price                   double,
+    price                   decimal(7, 2),
     unit                    varchar(8),
-    quantity                double DEFAULT 0,
+    quantity                decimal(7, 2) DEFAULT 0,
     CONSTRAINT pk_usergroup_has_ingredient PRIMARY KEY (`userGroup_iduserGroup`, ingredient_idingredient),
     CONSTRAINT `fk_userGroup_has_ingredient_ingredient` FOREIGN KEY (ingredient_idingredient) REFERENCES munchbase.ingredient (idingredient) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT `fk_userGroup_has_ingredient_userGroup` FOREIGN KEY (`userGroup_iduserGroup`) REFERENCES munchbase.`userGroup` (`iduserGroup`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -79,7 +79,7 @@ CREATE TABLE munchbase.`user_has_userGroup`
     `userGroup_iduserGroup` int NOT NULL,
     `userType_iduserType`   int NOT NULL,
     CONSTRAINT pk_user_has_usergroup PRIMARY KEY (`user_userId`, `userGroup_iduserGroup`),
-    CONSTRAINT fk_user_has_usergroup_user FOREIGN KEY (`user_userId`) REFERENCES munchbase.`user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT fk_user_has_usergroup_user FOREIGN KEY (`user_userId`) REFERENCES munchbase.`user` (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT fk_user_has_usergroup_usergroup FOREIGN KEY (`userGroup_iduserGroup`) REFERENCES munchbase.`userGroup` (`iduserGroup`) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT fk_user_has_usergroup_usertype FOREIGN KEY (`userType_iduserType`) REFERENCES munchbase.`userType` (`iduserType`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB
@@ -198,7 +198,7 @@ VALUES (1, 'All'),
 
 
 # Legg til bruker
-INSERT INTO munchbase.`user`("id, username, email, firstname, lastname, password)
+INSERT INTO munchbase.`user`(id, username, email, firstname, lastname, password)
 VALUES (1, 'Bob', 'bob@burger.no', 'Bob', 'Bobsen', 'passord'),
        (2, 'testebruker', 'test@test.no', 'Test', 'Bruker', 'hemmeligegreier');
 
@@ -248,10 +248,8 @@ VALUES (2022, 9, 1, 'Rulleuke', 'En uke full av ruller', 1);
 # Legg til oppskrifter
 INSERT INTO munchbase.recipe(`idRecipe`, name, `shortDescription`, description, image, `userGroup_iduserGroup`,
                              `recipeAvailability_idrecipeAvailability`, `weeklyMenu_idweeklyMenu`)
-VALUES (1, 'Vårruller', 'Digge ruller', 'Ikke så mye å skrive her', 'test', 1, 1, 1),
-(2, 'Rullekebab', 'Digg rullekebab', 'Ikke så mye å skrive her', 'test', 1, 1, 1),
-(3, 'Tørrfisk', 'Digg tørrfisk', 'Ikke så mye å skrive her', 'test', 2, 1, 1),
-(4, 'Kanelsnurr', 'Digg kanelsnurr', 'Ikke så mye å skrive her', 'test', 2, 1, 1);
+VALUES (1, 'Vårruller', 'Digge ruller', 'Ikke så mye å skrive her', 'test', 1, 1, 1);
+
 
 
 INSERT INTO munchbase.recipe_has_ingredient(`recipe_idRecipe`, ingredient_idingredient, quantity)

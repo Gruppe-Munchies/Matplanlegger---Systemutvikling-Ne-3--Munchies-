@@ -62,4 +62,12 @@ if __name__ == '__main__':
         # return User.get(user_id)
 
 
+
     app.run()
+
+# """
+# class User(Usermixin, db.Model):
+#     id = db.Columb(db.Integer, primary_key=True)
+#     username = db.Colum(db.String(30)
+#
+# """

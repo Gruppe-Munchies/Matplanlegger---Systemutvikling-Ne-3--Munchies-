@@ -11,7 +11,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 def fetchUser(user_name):
     session = loadSession()
     res = session.query(User).where(User.username == user_name).first()
-    # res = session.query(User).filter_by(username=user_name).values(text("userId"))
+    # res = session.query(User).filter_by(username=user_name).values(text(""id"))
     return res
 
 # Fetch email from username
@@ -88,7 +88,7 @@ def fetchUsersInUsergroup(group_name):
     session = loadSession()
     res = session.query(Usergroup, User, Usertype).join(UserHasUsergroup,
                                                         Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(User,
-                                                        User.userId == UserHasUsergroup.user_userId).join(Usertype,
+                                                        User.id == UserHasUsergroup.user_userId).join(Usertype,
                                                         Usertype.iduserType == UserHasUsergroup.userType_iduserType).filter(
                                                         Usergroup.groupName == group_name).all()
     return res
