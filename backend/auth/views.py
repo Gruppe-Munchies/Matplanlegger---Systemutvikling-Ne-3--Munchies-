@@ -1,15 +1,30 @@
 from urllib.parse import urljoin, urlparse
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 import backend.auth.queries as auth_queries
-
+from flask_login import login_required, login_user, logout_user
+from werkzeug.security import generate_password_hash, check_password_hash
 from backend.auth.forms import LoginForm, RegisterForm, InviteForm, createUserGroupForm
-from backend.auth.queries import * #fetchAllUserGroups, fetchUser, fetchUserGroup
+from backend.auth.queries import *  # fetchAllUserGroups, fetchUser, fetchUserGroup
 
 auth = Blueprint('auth', __name__, template_folder='templates')
 
+
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('index.html')
+    form = LoginForm(request.form)
+    if request.method == 'POST':
+        input_username = form.username.data
+        input_password = form.password.data
+
+        user_from_db = fetchUser(input_username)
+        stored_hashed_password = user_from_db.password
+
+        if check_password_hash(stored_hashed_password, input_password):
+            print("bruker og hashet passord stemmer")
+
+
+    return render_template('index.html', form=form)
+
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -28,26 +43,26 @@ def register():
         lastname = form.lastname.data
         password = form.password.data
         usergroup = form.usergroup.data
-        #Check if creating usergroup. If not, set group to "ingen" and usertype to 2 (not admin)
+        # Check if creating usergroup. If not, set group to "ingen" and usertype to 2 (not admin)
         if (usergroup == ""):
             usertype = 2
             usergroup = "ingen"
         else:
             usertype = 1
 
-        #Insert user to database
+        # Insert user to database
         auth_queries.insert_to_user(username, email, firstname, lastname, password)
-        #Insert userGroup to database
+        # Insert userGroup to database
         auth_queries.insert_to_usergroup(usergroup)
 
-        #Get userID from newly inserted user
+        # Get userID from newly inserted user
         fetchedUser = fetchUser(username)
         userID = fetchedUser.userId
-        #Fetch userGroupID from newly inserted usergroup
+        # Fetch userGroupID from newly inserted usergroup
         fetchedUserGroup = fetchUserGroup(usergroup)
         userGroupId = fetchedUserGroup.iduserGroup
 
-        #Insert userID, userGroupID and userType to "user_has_userGroup"
+        # Insert userID, userGroupID and userType to "user_has_userGroup"
         auth_queries.insert_to_user_has_userGroup(int(userID), int(userGroupId), int(usertype))
 
         flash('Registreringen var vellykket!')
@@ -59,14 +74,15 @@ def register():
 
     return render_template('register.html', form=form, ug=user_group, users=all_users)
 
-#CREATE USERGROUP
+
+# CREATE USERGROUP
 @auth.route('/creategroup', methods=['GET', 'POST'])
 def createGroup():
     createUGForm = createUserGroupForm(request.form)
     if request.method == 'POST' and createUGForm.validate():
         activeUser = "Username for innlogget bruker"  # TODO: Get username for logged in user
         user = fetchUser(activeUser)
-        userId = 9 #TODO: Replace with actual userId for logged in user
+        userId = 9  # TODO: Replace with actual userId for logged in user
         auth_queries.insert_to_usergroup(createUGForm.usergroup.data)
         userGroup = fetchUserGroup(createUGForm.usergroup.data)
         userGroupId = userGroup.iduserGroup
@@ -76,7 +92,8 @@ def createGroup():
 
     return redirect(url_for("auth.invite"))
 
-#INVITE USER TO USERGROUP
+
+# INVITE USER TO USERGROUP
 @auth.route('/groupadmin', methods=['GET', 'POST'])
 def invite():
     form = InviteForm(request.form)
@@ -92,14 +109,15 @@ def invite():
         usergroup = fetchUserGroup(form.usergroup.data)  # Fetch usergroup
         usertype = fetchUserType(form.usertype.data)  # Fetch usertype
 
-        #Check if user exists
+        # Check if user exists
         if not user_to_invite:
             flash("Brukeren finnes ikke.", "danger")
-            return render_template('usergroup-administration.html', form=form, ugform=createUGForm, users=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
+            return render_template('usergroup-administration.html', form=form, ugform=createUGForm,
+                                   users=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes,
+                                   heading="Inviter bruker")
 
-
-        #User exists, add to group
-        #TODO: Adds withouth asking user. Should be an invite.
+        # User exists, add to group
+        # TODO: Adds withouth asking user. Should be an invite.
 
         userId = user_to_invite.userId
         userGroupId = usergroup.iduserGroup
@@ -114,8 +132,8 @@ def invite():
         for error_message in error_messages:
             flash(f"{error_message}", "danger")
 
-    return render_template('usergroup-administration.html', form=form, ugform=createUGForm, users=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
-
+    return render_template('usergroup-administration.html', form=form, ugform=createUGForm, users=users_in_group,
+                           ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
 
 
 def is_safe_url(target):
