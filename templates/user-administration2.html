@@ -37,4 +37,10 @@
       </tbody>
     </table>
 
+<form method="POST" action="{{ url_for('auth.change_usertype') }}"class="row">
+    <div class="form-group w-100 p-3">
+        {{ changeUGForm.submit(class_="btn btn-success") }}
+    </div>
+</form>
+
 

@@ -78,3 +78,6 @@ class createUserGroupForm(FlaskForm):
         validators=[DataRequired()])
 
     submit = SubmitField(label=('Opprett gruppe'))
+
+class changeUserGroupForm(FlaskForm):
+    submit = SubmitField(label=('Lagre endringer'))

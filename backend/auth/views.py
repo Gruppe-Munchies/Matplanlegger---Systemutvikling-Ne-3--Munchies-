@@ -1,7 +1,7 @@
 from urllib.parse import urljoin, urlparse
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 import backend.auth.queries as auth_queries
-from backend.auth.forms import LoginForm, RegisterForm, InviteForm, createUserGroupForm
+from backend.auth.forms import LoginForm, RegisterForm, InviteForm, createUserGroupForm, changeUserGroupForm
 from backend.auth.queries import *  # fetchAllUserGroups, fetchUser, fetchUserGroup
 from flask_login import login_required, login_user, logout_user, current_user
 
@@ -111,6 +111,7 @@ def createGroup():
 def invite():
     form = InviteForm(request.form)
     createUGForm = createUserGroupForm(request.form)
+    changeUGForm = changeUserGroupForm()
     users_in_group = fetchUsersInUsergroup("MatMons")  # Fetch users in group
 
     usertypes = fetchAllUserTypes()
@@ -124,7 +125,7 @@ def invite():
         # Check if user exists
         if not user_to_invite:
             flash("Brukeren finnes ikke.", "danger")
-            return render_template('usergroup-administration.html', form=form, ugform=createUGForm,
+            return render_template('usergroup-administration.html', form=form, ugform=createUGForm, changeUGForm=changeUGForm,
                                    users=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes,
                                    heading="Inviter bruker")
 
@@ -144,9 +145,14 @@ def invite():
         for error_message in error_messages:
             flash(f"{error_message}", "danger")
 
-    return render_template('usergroup-administration.html', form=form, ugform=createUGForm, users=users_in_group,
+    return render_template('usergroup-administration.html', form=form, ugform=createUGForm, users=users_in_group, changeUGForm=changeUGForm,
                            ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
 
+@auth.route('/changeusertype', methods=['GET', 'POST'])
+def change_usertype():
+    form = changeUserGroupForm()
+    print("Funker")
+    flash("Funker")
 
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
