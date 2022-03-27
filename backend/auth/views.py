@@ -113,11 +113,11 @@ def invite():
     users_in_group = fetchUsersInUsergroup("MatMons")  # Fetch users in group
 
     usertypes = fetchAllUserTypes()
-    owner = current_user.username
+    owner = current_user.username #Name of logged in user
     user_to_invite = fetchUser(form.username.data)  # Fetch user to invite
     usergroup = fetchUserGroup(form.usergroup.data)  # Fetch usergroup
     usertype = fetchUserType(form.usertype.data)  # Fetch usertype
-    groups_with_admin = fetchGroupsWhereUserHaveAdmin(owner, usergroup)
+    groups_with_admin = fetchGroupsWhereUserHaveAdmin(owner, usergroup) #Fetch logged in users admin-groups
 
     if request.method == 'POST' and form.validate():
         # Check if user exists
