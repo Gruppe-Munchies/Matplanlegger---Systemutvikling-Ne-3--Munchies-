@@ -22,7 +22,11 @@
             <form action="" name="usertypes">
                 <select name="usertypes" >
                     {% for types in usertypes %}
-                        <option value = "{{ types.iduserType }}">{{ types.userTypeName }}</option>
+                        {% if user[2].userTypeName == types.userTypeName %}
+                            <option value = "{{ types.iduserType }}" selected>{{ types.userTypeName }}</option>
+                        {% else %}
+                            <option value = "{{ types.iduserType }}">{{ types.userTypeName }}</option>
+                        {% endif %}
                     {% endfor %}
                 </select>
             </form>
