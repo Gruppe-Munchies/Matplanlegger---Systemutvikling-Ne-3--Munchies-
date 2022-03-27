@@ -107,6 +107,7 @@ def createGroup():
 
 # INVITE USER TO USERGROUP
 @auth.route('/groupadmin', methods=['GET', 'POST'])
+@login_required
 def invite():
     form = InviteForm(request.form)
     createUGForm = createUserGroupForm(request.form)
