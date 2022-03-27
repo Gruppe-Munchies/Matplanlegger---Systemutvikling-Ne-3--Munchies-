@@ -111,9 +111,13 @@ def invite():
     form = InviteForm(request.form)
     createUGForm = createUserGroupForm(request.form)
     users_in_group = fetchUsersInUsergroup("MatMons")  # Fetch users in group
+    #current_user.id if
+
+
 
     usertypes = fetchAllUserTypes()
     owner = "Username for gruppeeier"  # TODO: Get username for logged in user
+
     groups_with_admin = fetchGroupsWhereUserHaveAdmin(owner)
 
     if request.method == 'POST' and form.validate():

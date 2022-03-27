@@ -13,6 +13,12 @@ def fetchUser(user_name):
     res = session.query(User).where(User.username == user_name).first()
     return res
 
+def checkIfUserIsAdminInGruop(user_id, user_group):
+    session = loadSession()
+    res = session.query(UserHasUsergroup).where(UserHasUsergroup.user_userId == user_id)
+    return res
+
+
 def fetchUserById(user_id):
     session = loadSession()
     res = session.query(User).where(User.id == user_id).first()
