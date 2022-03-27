@@ -44,6 +44,9 @@ def register():
     user_group = fetchAllUserGroups()
     all_users = fetchAllUsers()
     usergroup = userGroup()
+
+    #adminCheck = fetchUserTypeByUserIdAndGroupId(6, 1) # Relatert til issue NR:139
+
     if request.method == 'POST' and form.validate():
         username = form.username.data
         bruker = fetchUser(username)

@@ -13,10 +13,10 @@ def fetchUser(user_name):
     res = session.query(User).where(User.username == user_name).first()
     return res
 
-def checkIfUserIsAdminInGruop(user_id, user_group):
+def fetchUserTypeByUserIdAndGroupId(user_id,user_group):
     session = loadSession()
-    res = session.query(UserHasUsergroup).where(UserHasUsergroup.user_userId == user_id)
-    return res
+    res = session.query(UserHasUsergroup).where((UserHasUsergroup.user_userId == user_id) & (UserHasUsergroup.userGroup_iduserGroup == user_group)).first()
+    return res.userType_iduserType
 
 
 def fetchUserById(user_id):
