@@ -113,7 +113,7 @@ def invite():
     users_in_group = fetchUsersInUsergroup("MatMons")  # Fetch users in group
 
     usertypes = fetchAllUserTypes()
-    owner = "Username for gruppeeier"  # TODO: Get username for logged in user
+    owner = current_user.username
     groups_with_admin = fetchGroupsWhereUserHaveAdmin(owner)
 
     if request.method == 'POST' and form.validate():

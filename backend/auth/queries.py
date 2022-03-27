@@ -83,12 +83,18 @@ def fetchUserGroup(group_name):
     # res = session.query(Usergroup).filter_by(groupName=group_name).values(text("iduserGroup"))
     return res
 
-def fetchGroupsWhereUserHaveAdmin(username):
-    #TODO: Query for fetching groups where user have Admin-type
+def fetchGroupsWhereUserHaveAdmin(username, group_name):
+    session = loadSession()
+    res = session.query(Usergroup, User, Usertype).join(UserHasUsergroup,
+                                                        Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(User,
+                                                        User.id == UserHasUsergroup.user_userId).join(Usertype,
+                                                        Usertype.iduserType == UserHasUsergroup.userType_iduserType).filter(
+                                                        Usergroup.groupName == group_name).filter(
+                                                        User.username == username).filter(
+                                                        Usertype.userTypeName == "Admin").all()
     pass
 
 def fetchUsersInUsergroup(group_name):
-    #TODO: Query for fetching all users belonging to a group
     session = loadSession()
     res = session.query(Usergroup, User, Usertype).join(UserHasUsergroup,
                                                         Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(User,
