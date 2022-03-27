@@ -113,6 +113,7 @@ def invite():
     createUGForm = createUserGroupForm(request.form)
     changeUGForm = changeUserGroupForm()
     users_in_group = fetchUsersInUsergroup("MatMons")  # Fetch users in group
+    #TODO: Fetch users in group for selected usergroup in dropdown
 
     usertypes = fetchAllUserTypes()
     owner = current_user.username #Name of logged in user
@@ -148,13 +149,13 @@ def invite():
     return render_template('usergroup-administration.html', form=form, ugform=createUGForm, users=users_in_group, changeUGForm=changeUGForm,
                            ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
 
-@auth.route('/changeusertype', methods=['GET', 'POST'])
-def change_usertype():
-    form = changeUserGroupForm()
-    print("Funker")
-    flash("Funker")
 
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
     return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
+
+
+@auth.route('/changeusertype', methods=['GET', 'POST'])
+def change_usertype():
+    pass
