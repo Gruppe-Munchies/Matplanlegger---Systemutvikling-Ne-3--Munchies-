@@ -145,6 +145,6 @@ def insert_to_usertype():
 
 def usergroup_admin_update_usertypes(userid, usergroupid, usertypeid):
     session = loadSession()
-    user = session.query(UserHasUsergroup).where(UserHasUsergroup.user_userId == userid, UserHasUsergroup.userGroup_iduserGroup == usergroupid).first()
-    user.user_userId = usertypeid
+    #user = session.query(UserHasUsergroup).where(UserHasUsergroup.user_userId == userid, UserHasUsergroup.userGroup_iduserGroup == usergroupid).first()
+    session.query(UserHasUsergroup).where(UserHasUsergroup.user_userId == userid, UserHasUsergroup.userGroup_iduserGroup == usergroupid).update({UserHasUsergroup.userType_iduserType: usertypeid})
     session.commit()
