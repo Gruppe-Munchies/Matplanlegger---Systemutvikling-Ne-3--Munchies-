@@ -114,13 +114,12 @@ def invite():
 
     usertypes = fetchAllUserTypes()
     owner = current_user.username
-    groups_with_admin = fetchGroupsWhereUserHaveAdmin(owner)
+    user_to_invite = fetchUser(form.username.data)  # Fetch user to invite
+    usergroup = fetchUserGroup(form.usergroup.data)  # Fetch usergroup
+    usertype = fetchUserType(form.usertype.data)  # Fetch usertype
+    groups_with_admin = fetchGroupsWhereUserHaveAdmin(owner, usergroup)
 
     if request.method == 'POST' and form.validate():
-        user_to_invite = fetchUser(form.username.data)  # Fetch user to invite
-        usergroup = fetchUserGroup(form.usergroup.data)  # Fetch usergroup
-        usertype = fetchUserType(form.usertype.data)  # Fetch usertype
-
         # Check if user exists
         if not user_to_invite:
             flash("Brukeren finnes ikke.", "danger")
