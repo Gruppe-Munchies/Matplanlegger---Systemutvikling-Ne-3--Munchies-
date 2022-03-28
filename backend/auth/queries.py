@@ -103,6 +103,17 @@ def fetchUsersInUsergroup(group_name):
                                                         Usergroup.groupName == group_name).all()
     return res
 
+def fetchUsersInUsergroupById(group_id):
+    #TODO: Query for fetching all users belonging to a group
+    session = loadSession()
+    res = session.query(Usergroup, User, Usertype).join(UserHasUsergroup,
+                                                        Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(User,
+                                                        User.id == UserHasUsergroup.user_userId).join(Usertype,
+                                                        Usertype.iduserType == UserHasUsergroup.userType_iduserType).filter(
+                                                        Usergroup.iduserGroup == group_id).all()
+    return res
+
+
 def fetchUserType(usertype):
     session = loadSession()
     res = session.query(Usertype).where(Usertype.userTypeName == usertype).first()

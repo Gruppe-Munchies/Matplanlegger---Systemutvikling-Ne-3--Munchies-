@@ -113,7 +113,10 @@ def createGroup():
 def invite():
     form = InviteForm(request.form)
     createUGForm = createUserGroupForm(request.form)
-    users_in_group = fetchUsersInUsergroup("MatMons")  # Fetch users in group
+
+
+    #users_in_group = fetchUsersInUsergroup("MatMons")  # Fetch users in group
+    users_in_group = fetchUsersInUsergroupById(2)  # Fetch users in group
 
     #sjekker om brukeren, i den gitte brukergruppa, har adminrettigheter.
     usertype = fetchUserTypeByUserIdAndGroupId(current_user.id, 2) #TODO få bort hardkoding på gruppe 2!!!
@@ -123,6 +126,9 @@ def invite():
 
 
     print(usertype) #få inn rett gruppe
+    print(users_in_group)
+    for i in users_in_group:
+        print(i[1].username)
 
 
 
