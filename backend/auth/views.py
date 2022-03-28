@@ -126,11 +126,6 @@ def invite():
 
 
     print(usertype) #få inn rett gruppe
-    print(users_in_group)
-    for i in users_in_group:
-        print(i[1].username)
-
-
 
 
     usertypes = fetchAllUserTypes()
@@ -168,6 +163,13 @@ def invite():
 
     return render_template('usergroup-administration.html', form=form, ugform=createUGForm, users=users_in_group,
                            ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker", userIsAdmin=userIsAdmin)
+
+@auth.route('/profil', methods=['GET', 'POST'])
+def profil():
+
+    return render_template('profilepage.html',)
+
+
 
 
 def is_safe_url(target):
