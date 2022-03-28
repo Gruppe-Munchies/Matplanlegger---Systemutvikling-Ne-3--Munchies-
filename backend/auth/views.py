@@ -166,8 +166,9 @@ def invite():
 
 @auth.route('/profil', methods=['GET', 'POST'])
 def profil():
+    user_groups = fetchAllUserGroupsUserHas(current_user.id)
 
-    return render_template('profilepage.html',)
+    return render_template('profilepage.html',users=user_groups)
 
 
 
