@@ -4,6 +4,7 @@
 {% block description %}Profilside for {{ current_user.username }}{% endblock %}
 {% block content %}
 {% include 'flash_messages.html' %}
+
     <div class="container" style="max-width: 1000px;">
     <h1 class="fw-light"></h1>
     </div>
@@ -16,10 +17,10 @@
         </tr>
       </thead>
       <tbody>
-      {% for user in users %}
+      {% for group in groups %}
         <tr>
-            <td>{{ user[0].groupName }}</td>
-            <td>{{ user[2].userTypeName }}</td>
+            <td>{{ group[0].groupName }}</td>
+            <td>{{ group[2].userTypeName }}</td>
             <td><button type="button" class="btn btn-outline-primary btn-sm"><i class="bi-trash"></i></button></td>
         </tr>
       {% endfor %}

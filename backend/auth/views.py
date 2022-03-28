@@ -168,7 +168,7 @@ def invite():
 def profil():
     user_groups = fetchAllUserGroupsUserHas(current_user.id)
 
-    return render_template('profilepage.html',users=user_groups)
+    return render_template('profilepage.html', groups=user_groups)
 
 
 
