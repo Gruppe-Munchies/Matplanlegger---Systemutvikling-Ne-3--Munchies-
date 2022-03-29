@@ -1,7 +1,7 @@
 from urllib.parse import urljoin, urlparse
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 import backend.auth.queries as auth_queries
-from backend.auth.forms import LoginForm, RegisterForm, InviteForm, createUserGroupForm
+from backend.auth.forms import LoginForm, RegisterForm, InviteForm, createUserGroupForm, UserGroupSelector
 from backend.auth.queries import *  # fetchAllUserGroups, fetchUser, fetchUserGroup
 from flask_login import login_required, login_user, logout_user, current_user
 
@@ -167,15 +167,27 @@ def invite():
 
 @auth.route('/profil', methods=['GET', 'POST'])
 def profil():
-    user_groups = fetchAllUserGroupsUserHas(current_user.id)
-    print(current_group)
-    verdiInn = ['']
-    print(verdiInn)
-    if request.method == "POST":
-        select = request.form.get()
+    #TODO: Må vell legge inn usertype pr group i profilsiden egentlig.
+    groups = fetchAllUserGroupsUserHas(current_user.id)
 
-    usersgroupsselect = user_groups
-    return render_template('profilepage.html', groups=user_groups, usersgroupsselect=usersgroupsselect)
+    ###############################################
+    #   Valg av group(bør vell flyttes til nav?   # TODO:Bør flyttes til nav
+    ###############################################
+
+    form = UserGroupSelector(request.form)
+    choice = []
+    for i in fetchAllUserGroupsUserHas(current_user.id):
+        choice.append((i.iduserGroup, i.groupName))
+
+    form.idOgNavn.choices = choice
+
+    if request.method == 'POST' and form.validate():
+        selectFieldGroup = form.idOgNavn.data # Får tilbake group_id her
+        return redirect(request.referrer)
+
+    #########   Slutt valg av group    #############
+
+    return render_template('profilepage.html', form=form, groups=groups)
 
 
 

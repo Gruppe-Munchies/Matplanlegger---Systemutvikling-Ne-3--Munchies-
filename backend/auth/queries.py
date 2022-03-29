@@ -84,12 +84,13 @@ def fetchAllUserGroups():
 
 def fetchAllUserGroupsUserHas(user_id):
     session = loadSession()
-    res = session.query(Usergroup, User, Usertype).join(UserHasUsergroup,
+    res = session.query(Usergroup).join(UserHasUsergroup,
                                                         Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(User,
                                                         User.id == UserHasUsergroup.user_userId).join(Usertype,
                                                         Usertype.iduserType == UserHasUsergroup.userType_iduserType).filter(
                                                         User.id == user_id).all()
     return res
+
 
 
 def fetchUserGroup(group_name):

@@ -26,17 +26,14 @@
             <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.profil') }}">Min profil</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.invite') }}">Gruppeadministrasjon</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logg ut</a></li>
+
+
             {% else %}
             <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">Register</a></li>
             {% endif %}
+
+
             </ul>
-    <!--TODO må ha en sjekk på om det er medlem i noen grupper i det hele tatt.  /-->
-            <select method="POST">
-                {% for group in usersgroupsselect %}
-                     <option value="{{ group[0].iduserGroup}}" SELECTED>{{ group[0].groupName}}</option>
-                {% endfor %}
-            </select>
-        </ul>
 
         </div>
     </nav>
