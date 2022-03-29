@@ -7,6 +7,7 @@
 
 
             <div class="container" style="max-width: 1000px;">
+            {% if userIsAdmin %}
             <h1 class="fw-light">Inviter bruker</h1>
 
                 <form method="POST" action="{{ url_for('auth.invite') }}"class="row">
@@ -43,6 +44,7 @@
                         <div class="form-group w-50 p-3"></div>
 
                 </form>
+            {% endif %}
 
 
             <h1 class="fw-light">Opprett gruppe</h1>

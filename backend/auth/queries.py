@@ -13,6 +13,12 @@ def fetchUser(user_name):
     res = session.query(User).where(User.username == user_name).first()
     return res
 
+def fetchUserTypeByUserIdAndGroupId(user_id,user_group):
+    session = loadSession()
+    res = session.query(UserHasUsergroup).where((UserHasUsergroup.user_userId == user_id) & (UserHasUsergroup.userGroup_iduserGroup == user_group)).first()
+    return res.userType_iduserType
+
+
 def fetchUserById(user_id):
     session = loadSession()
     res = session.query(User).where(User.id == user_id).first()
@@ -76,6 +82,15 @@ def fetchAllUserGroups():
     res = session.query(Usergroup).all()  # henter ut fra tabell Usergroup (via orm.py i local_db)
     return res  # henter ut alle kolonnene i denne tabellen
 
+def fetchAllUserGroupsUserHas(user_id):
+    session = loadSession()
+    res = session.query(Usergroup, User, Usertype).join(UserHasUsergroup,
+                                                        Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(User,
+                                                        User.id == UserHasUsergroup.user_userId).join(Usertype,
+                                                        Usertype.iduserType == UserHasUsergroup.userType_iduserType).filter(
+                                                        User.id == user_id).all()
+    return res
+
 
 def fetchUserGroup(group_name):
     session = loadSession()
@@ -96,6 +111,17 @@ def fetchUsersInUsergroup(group_name):
                                                         Usertype.iduserType == UserHasUsergroup.userType_iduserType).filter(
                                                         Usergroup.groupName == group_name).all()
     return res
+
+def fetchUsersInUsergroupById(group_id):
+    #TODO: Query for fetching all users belonging to a group
+    session = loadSession()
+    res = session.query(Usergroup, User, Usertype).join(UserHasUsergroup,
+                                                        Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(User,
+                                                        User.id == UserHasUsergroup.user_userId).join(Usertype,
+                                                        Usertype.iduserType == UserHasUsergroup.userType_iduserType).filter(
+                                                        Usergroup.iduserGroup == group_id).all()
+    return res
+
 
 def fetchUserType(usertype):
     session = loadSession()

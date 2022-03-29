@@ -44,6 +44,9 @@ def register():
     user_group = fetchAllUserGroups()
     all_users = fetchAllUsers()
     usergroup = userGroup()
+
+    #adminCheck = fetchUserTypeByUserIdAndGroupId(6, 1) # Relatert til issue NR:139
+
     if request.method == 'POST' and form.validate():
         username = form.username.data
         bruker = fetchUser(username)
@@ -110,10 +113,23 @@ def createGroup():
 def invite():
     form = InviteForm(request.form)
     createUGForm = createUserGroupForm(request.form)
-    users_in_group = fetchUsersInUsergroup("MatMons")  # Fetch users in group
+
+    #users_in_group = fetchUsersInUsergroup("MatMons")  # Fetch users in group
+    users_in_group = fetchUsersInUsergroupById(1)  # Fetch users in group #TODO få bort hardkoding på denne gruppa -må samhandles en plass
+
+    #sjekker om brukeren, i den gitte brukergruppa, har adminrettigheter.
+    usertype = fetchUserTypeByUserIdAndGroupId(current_user.id, 1) #TODO få bort hardkoding på gruppe 2!!!
+    userIsAdmin = False
+    if usertype == 1:
+        userIsAdmin = True
+
+
+    print(usertype) #få inn rett gruppe
+
 
     usertypes = fetchAllUserTypes()
     owner = "Username for gruppeeier"  # TODO: Get username for logged in user
+
     groups_with_admin = fetchGroupsWhereUserHaveAdmin(owner)
 
     if request.method == 'POST' and form.validate():
@@ -126,7 +142,7 @@ def invite():
             flash("Brukeren finnes ikke.", "danger")
             return render_template('usergroup-administration.html', form=form, ugform=createUGForm,
                                    users=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes,
-                                   heading="Inviter bruker")
+                                   heading="Inviter bruker", userIsAdmin=userIsAdmin)
 
         # User exists, add to group
         # TODO: Adds withouth asking user. Should be an invite.
@@ -145,7 +161,15 @@ def invite():
             flash(f"{error_message}", "danger")
 
     return render_template('usergroup-administration.html', form=form, ugform=createUGForm, users=users_in_group,
-                           ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
+                           ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker", userIsAdmin=userIsAdmin)
+
+@auth.route('/profil', methods=['GET', 'POST'])
+def profil():
+    user_groups = fetchAllUserGroupsUserHas(current_user.id)
+
+    return render_template('profilepage.html', groups=user_groups)
+
+
 
 
 def is_safe_url(target):
