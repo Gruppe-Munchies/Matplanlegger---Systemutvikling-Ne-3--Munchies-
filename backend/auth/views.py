@@ -5,6 +5,8 @@ from backend.auth.forms import LoginForm, RegisterForm, InviteForm, createUserGr
 from backend.auth.queries import *  # fetchAllUserGroups, fetchUser, fetchUserGroup
 from flask_login import login_required, login_user, logout_user, current_user
 
+current_group = 0
+
 auth = Blueprint('auth', __name__, template_folder='templates')
 
 
@@ -166,8 +168,14 @@ def invite():
 @auth.route('/profil', methods=['GET', 'POST'])
 def profil():
     user_groups = fetchAllUserGroupsUserHas(current_user.id)
+    print(current_group)
+    verdiInn = ['']
+    print(verdiInn)
+    if request.method == "POST":
+        select = request.form.get()
 
-    return render_template('profilepage.html', groups=user_groups)
+    usersgroupsselect = user_groups
+    return render_template('profilepage.html', groups=user_groups, usersgroupsselect=usersgroupsselect)
 
 
 

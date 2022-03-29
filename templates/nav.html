@@ -29,11 +29,12 @@
             {% else %}
             <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">Register</a></li>
             {% endif %}
-    </ul>
-            <select>
-                <option value="1">Gruppe 1</option>
-                <option value="2">Gruppe 2</option>
-                <option value="3">Gruppe 3</option>
+            </ul>
+    <!--TODO må ha en sjekk på om det er medlem i noen grupper i det hele tatt.  /-->
+            <select method="POST">
+                {% for group in usersgroupsselect %}
+                     <option value="{{ group[0].iduserGroup}}" SELECTED>{{ group[0].groupName}}</option>
+                {% endfor %}
             </select>
         </ul>
 
