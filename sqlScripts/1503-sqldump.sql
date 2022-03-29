@@ -157,7 +157,7 @@ ALTER TABLE munchbase.`userGroup_has_ingredient`
     ADD CONSTRAINT `fk_userGroup_has_ingredient_userGroup1` FOREIGN KEY (`userGroup_iduserGroup`) REFERENCES munchbase.`userGroup` (`iduserGroup`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE munchbase.`user_has_userGroup`
-    ADD CONSTRAINT fk_user_has_usergroup_user1 FOREIGN KEY (`user_userId`) REFERENCES munchbase.`user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ADD CONSTRAINT fk_user_has_usergroup_user1 FOREIGN KEY (`user_userId`) REFERENCES munchbase.`user` (id) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE munchbase.`user_has_userGroup`
     ADD CONSTRAINT fk_user_has_usergroup_usergroup1 FOREIGN KEY (`userGroup_iduserGroup`) REFERENCES munchbase.`userGroup` (`iduserGroup`) ON DELETE NO ACTION ON UPDATE NO ACTION;
