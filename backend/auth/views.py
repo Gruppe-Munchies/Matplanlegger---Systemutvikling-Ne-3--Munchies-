@@ -1,6 +1,7 @@
 from urllib.parse import urljoin, urlparse
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 import backend.auth.queries as auth_queries
+import backend.auth.views
 from backend.auth.forms import LoginForm, RegisterForm, InviteForm, createUserGroupForm, UserGroupSelector
 from backend.auth.queries import *  # fetchAllUserGroups, fetchUser, fetchUserGroup
 from flask_login import login_required, login_user, logout_user, current_user
@@ -175,15 +176,24 @@ def profil():
     ###############################################
 
     form = UserGroupSelector(request.form)
-    choice = []
+    choice = [(0,"Velg gruppe å samhandle som")]
+    #choice = []
+
     for i in fetchAllUserGroupsUserHas(current_user.id):
         choice.append((i.iduserGroup, i.groupName))
-
+#TODO få satt current group som "den som vises". OBS! Ved å bruke default, må man ha med process() og da vil ikke if-setningen kjøre
+    #choice = choice[int(backend.auth.views.current_group)]
     form.idOgNavn.choices = choice
+    #form.idOgNavn.default = 2 #current_group
+
 
     if request.method == 'POST' and form.validate():
         selectFieldGroup = form.idOgNavn.data # Får tilbake group_id her
+
+        #oppdaterer den halvglobale verdien current_group.
+        backend.auth.views.current_group = selectFieldGroup
         return redirect(request.referrer)
+
 
     #########   Slutt valg av group    #############
 
