@@ -71,6 +71,9 @@ class InviteForm(FlaskForm):
 
     submit = SubmitField(label=('Inviter'))
 
+class RemoveUserFromGroup(FlaskForm):
+    submit = SubmitField(label=('Remove'))
+
 
 class createUserGroupForm(FlaskForm):
     usergroup = StringField(

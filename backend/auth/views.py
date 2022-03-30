@@ -1,7 +1,7 @@
 from urllib.parse import urljoin, urlparse
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 import backend.auth.queries as auth_queries
-from backend.auth.forms import LoginForm, RegisterForm, InviteForm, createUserGroupForm
+from backend.auth.forms import LoginForm, RegisterForm, InviteForm, createUserGroupForm, RemoveUserFromGroup
 from backend.auth.queries import *  # fetchAllUserGroups, fetchUser, fetchUserGroup
 from flask_login import login_required, login_user, logout_user, current_user
 
@@ -32,11 +32,13 @@ def login():
 
     return render_template('index.html', form=form, current_user=current_user)
 
+
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for("auth.login"))
+
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -45,7 +47,7 @@ def register():
     all_users = fetchAllUsers()
     usergroup = userGroup()
 
-    #adminCheck = fetchUserTypeByUserIdAndGroupId(6, 1) # Relatert til issue NR:139
+    # adminCheck = fetchUserTypeByUserIdAndGroupId(6, 1) # Relatert til issue NR:139
 
     if request.method == 'POST' and form.validate():
         username = form.username.data
@@ -105,42 +107,43 @@ def createGroup():
         auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(userTypeId))
         flash('Gruppen ble opprettet!')
 
-    return redirect(url_for("auth.invite"))
+    return redirect(url_for("auth.groupadmin"))
 
 
-# INVITE USER TO USERGROUP
 @auth.route('/groupadmin', methods=['GET', 'POST'])
-def invite():
-    form = InviteForm(request.form)
+def groupadmin():
+    invite_form = InviteForm(request.form)
     createUGForm = createUserGroupForm(request.form)
+    deleteForm = RemoveUserFromGroup(request.form)
 
-    #users_in_group = fetchUsersInUsergroup("MatMons")  # Fetch users in group
-    users_in_group = fetchUsersInUsergroupById(1)  # Fetch users in group #TODO få bort hardkoding på denne gruppa -må samhandles en plass
+    # users_in_group = fetchUsersInUsergroup("MatMons")  # Fetch users in group
+    users_in_group = fetchUsersInUsergroupById(
+        1)  # Fetch users in group #TODO få bort hardkoding på denne gruppa -må samhandles en plass
 
-    #sjekker om brukeren, i den gitte brukergruppa, har adminrettigheter.
-    usertype = fetchUserTypeByUserIdAndGroupId(current_user.id, 1) #TODO få bort hardkoding på gruppe 2!!!
+    # sjekker om brukeren, i den gitte brukergruppa, har adminrettigheter.
+    # TODO Legg in metode for de fire neste linjene
+    usertype = fetchUserTypeByUserIdAndGroupId(current_user.id, 1)  # TODO få bort hardkoding på gruppe 2!!!
     userIsAdmin = False
     if usertype == 1:
         userIsAdmin = True
 
-
-    print(usertype) #få inn rett gruppe
-
+    print(usertype)  # få inn rett gruppe
 
     usertypes = fetchAllUserTypes()
     owner = "Username for gruppeeier"  # TODO: Get username for logged in user
 
     groups_with_admin = fetchGroupsWhereUserHaveAdmin(owner)
 
-    if request.method == 'POST' and form.validate():
-        user_to_invite = fetchUser(form.username.data)  # Fetch user to invite
-        usergroup = fetchUserGroup(form.usergroup.data)  # Fetch usergroup
-        usertype = fetchUserType(form.usertype.data)  # Fetch usertype
+    if request.method == 'POST' and invite_form.validate():
+        user_to_invite = fetchUser(invite_form.username.data)  # Fetch user to invite
+        usergroup = fetchUserGroup(invite_form.usergroup.data)  # Fetch usergroup
+        usertype = fetchUserType(invite_form.usertype.data)  # Fetch usertype
 
         # Check if user exists
         if not user_to_invite:
             flash("Brukeren finnes ikke.", "danger")
-            return render_template('usergroup-administration.html', form=form, ugform=createUGForm,
+            return render_template('usergroup-administration.html', form=invite_form,
+                                   ugform=createUGForm,
                                    users=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes,
                                    heading="Inviter bruker", userIsAdmin=userIsAdmin)
 
@@ -154,22 +157,29 @@ def invite():
         auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(usertypeId))
 
         flash('Brukeren ble lagt til!')
-        return redirect(url_for("auth.invite"))
+        return redirect(url_for("auth.groupadmin"))
 
-    for fieldName, error_messages in form.errors.items():
+    # elif request.method == 'POST' and deleteForm.validate():
+    #     print("apebanen")
+    #     # values = request.form.get('action_meld_ut')
+    #     # print(values)
+    #     return redirect(url_for("index"))
+
+    for fieldName, error_messages in invite_form.errors.items():
         for error_message in error_messages:
             flash(f"{error_message}", "danger")
 
-    return render_template('usergroup-administration.html', form=form, ugform=createUGForm, users=users_in_group,
-                           ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker", userIsAdmin=userIsAdmin)
+    return render_template('usergroup-administration.html', form=invite_form,
+                           ugform=createUGForm, users=users_in_group,
+                           ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker",
+                           userIsAdmin=userIsAdmin)
+
 
 @auth.route('/profil', methods=['GET', 'POST'])
 def profil():
     user_groups = fetchAllUserGroupsUserHas(current_user.id)
 
     return render_template('profilepage.html', groups=user_groups)
-
-
 
 
 def is_safe_url(target):

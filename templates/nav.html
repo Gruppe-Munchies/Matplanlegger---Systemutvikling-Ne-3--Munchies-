@@ -12,10 +12,6 @@
 
         <ul id="navigation" class="navbar-nav mr-auto">
 
-
-
-
-
             {% if current_user.is_authenticated %}
 
             <li class="nav-item"><a class="nav-link" href="{{ url_for('recipes.oppskrifter') }}">Oppskrifter</a></li>
@@ -24,7 +20,7 @@
             <li class="nav-item"><a class="nav-link" href="{{ url_for('ukesmeny') }}">Ukesmeny</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('legg_til_rett') }}">Legg til rett</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.profil') }}">Min profil</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.invite') }}">Gruppeadministrasjon</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.groupadmin') }}">Gruppeadministrasjon</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logg ut</a></li>
             {% else %}
             <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">Register</a></li>
