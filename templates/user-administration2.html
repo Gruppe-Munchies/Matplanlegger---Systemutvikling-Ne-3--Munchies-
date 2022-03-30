@@ -13,19 +13,21 @@
       <tbody>
       {% for user in users %}
         <tr>
-            <td id="username">{{ user[1].username }}</td>
+            <td>{{ user[1].username }}</td>
             <td>{{ user[1].email }}</td>
             <td>{{ user[1].firstname }}</td>
             <td>{{ user[1].lastname }}</td>
-            <td id="groupname">{{ user[0].groupName }}
-            <td>
+            <td>{{ user[0].groupName }}<td>
+            <td>{{ user[1].id }}</td>
+            <td>{{ user[0].iduserGroup }}<td>
+            <td>{{ user[2].iduserType }}<td>
             <form action="" name="usertypes">
-                <select name="usertypes" onchange="{{ url_for('auth.change_usertype') }}">
+                <select name="usertypes" id="usertypes" onchange="location=this.value;">
                     {% for types in usertypes %}
                         {% if user[2].userTypeName == types.userTypeName %}
-                            <option value = "{{ types.iduserType }}" selected>{{ types.userTypeName }}</option>
+                            <option value = "{{ url_for('auth.change_usertype', userid=user[1].id, usergroupid=user[0].iduserGroup, usertypeid=types.iduserType) }}" selected>{{ types.userTypeName }}</option>
                         {% else %}
-                            <option value = "{{ types.iduserType }}">{{ types.userTypeName }}</option>
+                            <option value = "{{ url_for('auth.change_usertype', userid=user[1].id, usergroupid=user[0].iduserGroup, usertypeid=types.iduserType) }}">{{ types.userTypeName }}</option>
                         {% endif %}
                     {% endfor %}
                 </select>

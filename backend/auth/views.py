@@ -150,15 +150,18 @@ def invite():
                            ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
 
 
+@auth.route('/changeusertype', methods=['GET', 'POST'])
+@login_required
+def change_usertype():
+    userid=request.args["userid"]
+    usergroupid=request.args["usergroupid"]
+    usertypeid=request.args["usertypeid"]
+
+    usergroup_admin_update_usertypes(userid, usergroupid, usertypeid)
+
+    return redirect(url_for("auth.invite"))
+
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
     return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
-
-
-@auth.route('/changeusertype', methods=['GET', 'POST'])
-def change_usertype(username, groupname, usertype):
-    #usergroup_admin_update_usertypes(6,1,2) #Test
-    #usergroup_admin_update_usertypes(userid, usergroupid, usertypeid)
-
-    return redirect(url_for("auth.invite"))
