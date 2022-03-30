@@ -84,7 +84,7 @@ def fetchAllUserGroups():
 
 def fetchAllUserGroupsUserHas(user_id):
     session = loadSession()
-    res = session.query(Usergroup, User, Usertype).join(UserHasUsergroup,
+    res = session.query(Usergroup).join(UserHasUsergroup,
                                                         Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(User,
                                                         User.id == UserHasUsergroup.user_userId).join(Usertype,
                                                         Usertype.iduserType == UserHasUsergroup.userType_iduserType).filter(
@@ -92,9 +92,16 @@ def fetchAllUserGroupsUserHas(user_id):
     return res
 
 
+
 def fetchUserGroup(group_name):
     session = loadSession()
     res = session.query(Usergroup).where(Usergroup.groupName == group_name).first()
+    # res = session.query(Usergroup).filter_by(groupName=group_name).values(text("iduserGroup"))
+    return res
+
+def fetchUserGroupById(group_id):
+    session = loadSession()
+    res = session.query(Usergroup).where(Usergroup.iduserGroup == group_id).first()
     # res = session.query(Usergroup).filter_by(groupName=group_name).values(text("iduserGroup"))
     return res
 
@@ -139,6 +146,13 @@ def insert_to_usergroup(name):
     usergroup = Usergroup(groupName=name)
     session.add(usergroup)
     session.commit()
+
+
+def fetch_all_usergroups_for_user(userId):
+    session = loadSession()
+    usergroups = session.query(Usergroup).join(UserHasUsergroup,
+                                               Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).where(UserHasUsergroup.user_userId == userId).all()
+    return usergroups
 
 
 # # Add to usergroup_has_ingredient
