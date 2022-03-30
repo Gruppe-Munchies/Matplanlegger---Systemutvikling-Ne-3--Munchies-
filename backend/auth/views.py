@@ -157,6 +157,8 @@ def is_safe_url(target):
 
 
 @auth.route('/changeusertype', methods=['GET', 'POST'])
-def change_usertype():
-    usergroup_admin_update_usertypes(6,1,1)
+def change_usertype(username, groupname, usertype):
+    #usergroup_admin_update_usertypes(6,1,2) #Test
+    #usergroup_admin_update_usertypes(userid, usergroupid, usertypeid)
+
     return redirect(url_for("auth.invite"))
