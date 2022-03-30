@@ -38,7 +38,7 @@ ENGINE = InnoDB;
 -- Table `munchbase`.`user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `munchbase`.`user` (
-  `userId` INT NOT NULL AUTO_INCREMENT,
+  `"id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(45) NOT NULL,
   `email` VARCHAR(100) NOT NULL,
   `firstname` VARCHAR(45) NOT NULL,
@@ -46,8 +46,8 @@ CREATE TABLE IF NOT EXISTS `munchbase`.`user` (
   `password` VARCHAR(75) NOT NULL,
   `userType_iduserType` INT NOT NULL,
   `userGroup_iduserGroup` INT NOT NULL,
-  PRIMARY KEY (`userId`),
-  UNIQUE INDEX `userId_UNIQUE` (`userId` ASC),
+  PRIMARY KEY (`"id`),
+  UNIQUE INDEX `userId_UNIQUE` (`"id` ASC),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC),
   INDEX `fk_user_userType_idx` (`userType_iduserType` ASC),
   INDEX `fk_user_userGroup1_idx` (`userGroup_iduserGroup` ASC),

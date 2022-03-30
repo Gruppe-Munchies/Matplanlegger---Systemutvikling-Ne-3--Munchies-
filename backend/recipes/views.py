@@ -1,5 +1,5 @@
 from urllib.parse import urljoin, urlparse
-from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
+from flask import Blueprint, abort, flash, redirect, render_template, request, url_for, session
 from flask_login import login_required, login_user, logout_user
 import backend.recipes.queries as ingr_queries
 import backend.recipes.queries as recipes
@@ -13,6 +13,8 @@ recipes = Blueprint('recipes', __name__, template_folder='templates')
 
 @recipes.route('/oppskrifter')
 def oppskrifter():
+
+
 
     recipes = ingr_queries.fetch_all_recipes()
 
