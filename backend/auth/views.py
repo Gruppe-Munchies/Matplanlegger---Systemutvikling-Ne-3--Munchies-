@@ -1,10 +1,13 @@
 from urllib.parse import urljoin, urlparse
-from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
+from flask import Blueprint, abort, flash, redirect, render_template, request, url_for, session
 import backend.auth.queries as auth_queries
 import backend.auth.views
 from backend.auth.forms import LoginForm, RegisterForm, InviteForm, createUserGroupForm, UserGroupSelector
 from backend.auth.queries import *  # fetchAllUserGroups, fetchUser, fetchUserGroup
 from flask_login import login_required, login_user, logout_user, current_user
+
+
+
 
 current_group = 0
 
@@ -168,34 +171,29 @@ def invite():
 
 @auth.route('/profil', methods=['GET', 'POST'])
 def profil():
-    #TODO: Må vell legge inn usertype pr group i profilsiden egentlig.
+    print(session.get('group_to_use'))
+    # TODO: Må vell legge inn usertype pr group i profilsiden egentlig.
     groups = fetchAllUserGroupsUserHas(current_user.id)
-
-    ###############################################
-    #   Valg av group(bør vell flyttes til nav?   # TODO:Bør flyttes til nav
-    ###############################################
+    # TODO:Bør flyttes til nav
 
     form = UserGroupSelector(request.form)
-    choice = [(0,"Velg gruppe å samhandle som")]
-    #choice = []
+    # choice = [(0,"Velg gruppe å samhandle som")]
+    choice = []
 
     for i in fetchAllUserGroupsUserHas(current_user.id):
         choice.append((i.iduserGroup, i.groupName))
-#TODO få satt current group som "den som vises". OBS! Ved å bruke default, må man ha med process() og da vil ikke if-setningen kjøre
-    #choice = choice[int(backend.auth.views.current_group)]
-    form.idOgNavn.choices = choice
-    #form.idOgNavn.default = 2 #current_group
 
+    form.idOgNavn.choices = choice
 
     if request.method == 'POST' and form.validate():
-        selectFieldGroup = form.idOgNavn.data # Får tilbake group_id her
+        selectFieldGroup = form.idOgNavn.data  # Får tilbake group_id her
 
-        #oppdaterer den halvglobale verdien current_group.
-        backend.auth.views.current_group = selectFieldGroup
+        # oppdaterer den halvglobale verdien
+        # backend.auth.views.current_group = selectFieldGroup
+        session['group_to_use'] = selectFieldGroup
         return redirect(request.referrer)
-
-
     #########   Slutt valg av group    #############
+    form.idOgNavn.data = session.get('group_to_use', 0)  # setter standard til den aktive
 
     return render_template('profilepage.html', form=form, groups=groups)
 

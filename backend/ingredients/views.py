@@ -1,5 +1,6 @@
 from urllib.parse import urljoin, urlparse
-from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
+from flask import Blueprint, abort, flash, redirect, render_template, request, url_for, session
+import flask
 from flask_login import login_required, login_user, logout_user
 
 import backend.ingredients.queries as ingr_queries
@@ -7,6 +8,7 @@ import backend.auth.queries as auth_queries
 
 from backend.ingredients.forms import RegisterForm
 from backend.ingredients.queries import *
+
 
 ingredient = Blueprint('ingredient', __name__, template_folder='templates', url_prefix='/ingredient')
 
@@ -16,11 +18,9 @@ ingredient = Blueprint('ingredient', __name__, template_folder='templates', url_
 #     ingredienser = fetch_all_ingredients_where_usergroup_equals(1)
 #     for ap in ingredienser:
 #         print(f"{ap[0].ingredientName} {round(ap[1].quantity, 2)} {ap[1].unit} {round(ap[1].price, 2)}")
-
 def new():
+    print(flask.session.get('group_to_use'))
     group_ingredients = fetch_all_ingredients_where_usergroup_equals(1)
-    for i in group_ingredients:
-        print(i)
 
     form = RegisterForm(request.form)
     if request.method == 'POST' and form.validate():

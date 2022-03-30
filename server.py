@@ -1,5 +1,5 @@
-from flask import Flask, render_template
-from flask_login import LoginManager
+from flask import Flask, render_template, session
+from flask_login import LoginManager, current_user
 
 import backend.auth.queries
 import backend.main.views as mainpage
@@ -20,8 +20,12 @@ app.config['SECRET_KEY'] = "secretkey"
 app.config['WTF_CSRF_SECRET_KEY'] = "secretkey"
 
 
+
 @app.route('/')
 def index():
+    session['group_to_use'] = 0
+    if current_user:
+        print("ja er en bruker ja")
     return render_template('index.html')
 
 
