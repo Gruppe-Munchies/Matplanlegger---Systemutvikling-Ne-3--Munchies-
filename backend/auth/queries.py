@@ -99,6 +99,12 @@ def fetchUserGroup(group_name):
     # res = session.query(Usergroup).filter_by(groupName=group_name).values(text("iduserGroup"))
     return res
 
+def fetchUserGroupById(group_id):
+    session = loadSession()
+    res = session.query(Usergroup).where(Usergroup.iduserGroup == group_id).first()
+    # res = session.query(Usergroup).filter_by(groupName=group_name).values(text("iduserGroup"))
+    return res
+
 def fetchGroupsWhereUserHaveAdmin(username):
     #TODO: Query for fetching groups where user have Admin-type
     pass

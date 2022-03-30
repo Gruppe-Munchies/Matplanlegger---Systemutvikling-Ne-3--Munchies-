@@ -191,6 +191,7 @@ def profil():
         # oppdaterer den halvglobale verdien
         # backend.auth.views.current_group = selectFieldGroup
         session['group_to_use'] = selectFieldGroup
+        session['groupname_to_use'] = fetchUserGroupById(selectFieldGroup).groupName
         return redirect(request.referrer)
     #########   Slutt valg av group    #############
     form.idOgNavn.data = session.get('group_to_use', 0)  # setter standard til den aktive
