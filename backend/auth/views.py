@@ -1,9 +1,15 @@
 from urllib.parse import urljoin, urlparse
-from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
+from flask import Blueprint, abort, flash, redirect, render_template, request, url_for, session
 import backend.auth.queries as auth_queries
-from backend.auth.forms import LoginForm, RegisterForm, InviteForm, createUserGroupForm, changeUserGroupForm
+import backend.auth.views
+from backend.auth.forms import LoginForm, RegisterForm, InviteForm, createUserGroupForm, UserGroupSelector
 from backend.auth.queries import *  # fetchAllUserGroups, fetchUser, fetchUserGroup
 from flask_login import login_required, login_user, logout_user, current_user
+
+
+
+
+current_group = 0
 
 auth = Blueprint('auth', __name__, template_folder='templates')
 
@@ -44,6 +50,9 @@ def register():
     user_group = fetchAllUserGroups()
     all_users = fetchAllUsers()
     usergroup = userGroup()
+
+    #adminCheck = fetchUserTypeByUserIdAndGroupId(6, 1) # Relatert til issue NR:139
+
     if request.method == 'POST' and form.validate():
         username = form.username.data
         bruker = fetchUser(username)
@@ -107,28 +116,39 @@ def createGroup():
 
 # INVITE USER TO USERGROUP
 @auth.route('/groupadmin', methods=['GET', 'POST'])
-@login_required
 def invite():
     form = InviteForm(request.form)
     createUGForm = createUserGroupForm(request.form)
-    changeUGForm = changeUserGroupForm()
-    users_in_group = fetchUsersInUsergroup("MatMons")  # Fetch users in group
-    #TODO: Fetch users in group for selected usergroup in dropdown
+
+    #users_in_group = fetchUsersInUsergroup("MatMons")  # Fetch users in group
+    users_in_group = fetchUsersInUsergroupById(1)  # Fetch users in group #TODO få bort hardkoding på denne gruppa -må samhandles en plass
+
+    #sjekker om brukeren, i den gitte brukergruppa, har adminrettigheter.
+    usertype = fetchUserTypeByUserIdAndGroupId(current_user.id, 1) #TODO få bort hardkoding på gruppe 2!!!
+    userIsAdmin = False
+    if usertype == 1:
+        userIsAdmin = True
+
+
+    print(usertype) #få inn rett gruppe
+
 
     usertypes = fetchAllUserTypes()
-    owner = current_user.username #Name of logged in user
-    user_to_invite = fetchUser(form.username.data)  # Fetch user to invite
-    usergroup = fetchUserGroup(form.usergroup.data)  # Fetch usergroup
-    usertype = fetchUserType(form.usertype.data)  # Fetch usertype
-    groups_with_admin = fetchGroupsWhereUserHaveAdmin(owner, usergroup) #Fetch logged in users admin-groups
+    owner = "Username for gruppeeier"  # TODO: Get username for logged in user
+
+    groups_with_admin = fetchGroupsWhereUserHaveAdmin(owner)
 
     if request.method == 'POST' and form.validate():
+        user_to_invite = fetchUser(form.username.data)  # Fetch user to invite
+        usergroup = fetchUserGroup(form.usergroup.data)  # Fetch usergroup
+        usertype = fetchUserType(form.usertype.data)  # Fetch usertype
+
         # Check if user exists
         if not user_to_invite:
             flash("Brukeren finnes ikke.", "danger")
-            return render_template('usergroup-administration.html', form=form, ugform=createUGForm, changeUGForm=changeUGForm,
+            return render_template('usergroup-administration.html', form=form, ugform=createUGForm,
                                    users=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes,
-                                   heading="Inviter bruker")
+                                   heading="Inviter bruker", userIsAdmin=userIsAdmin)
 
         # User exists, add to group
         # TODO: Adds withouth asking user. Should be an invite.
@@ -146,8 +166,38 @@ def invite():
         for error_message in error_messages:
             flash(f"{error_message}", "danger")
 
-    return render_template('usergroup-administration.html', form=form, ugform=createUGForm, users=users_in_group, changeUGForm=changeUGForm,
-                           ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker")
+    return render_template('usergroup-administration.html', form=form, ugform=createUGForm, users=users_in_group,
+                           ownedgroups=groups_with_admin, usertypes=usertypes, heading="Inviter bruker", userIsAdmin=userIsAdmin)
+
+@auth.route('/profil', methods=['GET', 'POST'])
+def profil():
+    print(session.get('group_to_use'))
+    # TODO: Må vell legge inn usertype pr group i profilsiden egentlig.
+    groups = fetchAllUserGroupsUserHas(current_user.id)
+    # TODO:Bør flyttes til nav
+
+    form = UserGroupSelector(request.form)
+    # choice = [(0,"Velg gruppe å samhandle som")]
+    choice = []
+
+    for i in fetchAllUserGroupsUserHas(current_user.id):
+        choice.append((i.iduserGroup, i.groupName))
+
+    form.idOgNavn.choices = choice
+
+    if request.method == 'POST' and form.validate():
+        selectFieldGroup = form.idOgNavn.data  # Får tilbake group_id her
+
+
+        session['group_to_use'] = selectFieldGroup
+        session['groupname_to_use'] = fetchUserGroupById(selectFieldGroup).groupName
+        return redirect(request.referrer)
+    #########   Slutt valg av group    #############
+    form.idOgNavn.data = session.get('group_to_use', 0)  # setter standard til den aktive
+
+    return render_template('profilepage.html', form=form, groups=groups)
+
+
 
 
 @auth.route('/changeusertype', methods=['GET', 'POST'])

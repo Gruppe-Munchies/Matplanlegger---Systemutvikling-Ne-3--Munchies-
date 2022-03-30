@@ -1,16 +1,20 @@
-
 <nav class="navbar navbar-expand-lg navbar-dark p-3 mb-4">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-
-        <a class="navbar-brand" href="{{ url_for('index') }}">Munchbase</a>
-
+         {% if current_user.is_authenticated %}
+        <a class="navbar-brand" href="{{ url_for('index') }}">Munchbase {{ session.get('groupname_to_use') }}</a>
+        {% else %}
+       <a class="navbar-brand" href="{{ url_for('index') }}">Munchbase </a>
+        {% endif %}
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <ul id="navigation" class="navbar-nav mr-auto">
+
+
+            {% if current_user.is_authenticated %}
 
             <li class="nav-item"><a class="nav-link" href="{{ url_for('recipes.oppskrifter') }}">Oppskrifter</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('ingredient.new') }}">Ingredienser</a></li>
@@ -18,11 +22,17 @@
             <li class="nav-item"><a class="nav-link" href="{{ url_for('ukesmeny') }}">Ukesmeny</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">Brukeradministrasjon</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('legg_til_rett') }}">Legg til rett</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.profil') }}">Min profil</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.invite') }}">Gruppeadministrasjon</a></li>
-            {% if current_user.is_authenticated %}
             <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logg ut</a></li>
-            {% endif %} }
-    </ul>
+
+
+            {% else %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">Register</a></li>
+            {% endif %}
+
+
+            </ul>
 
         </div>
     </nav>
