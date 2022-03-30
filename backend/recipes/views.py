@@ -6,6 +6,7 @@ import backend.recipes.queries as recipes
 from backend import recipes
 
 #from backend.recipes.forms import RegisterForm
+from backend.recipes.forms import RegisterRecipeForm
 from backend.recipes.queries import *
 
 #recipes = Blueprint('recipes', __name__, template_folder='templates', url_prefix='/oppskrift')
@@ -27,6 +28,22 @@ def oppskrift(recipe_id: int):
     rec = fetch_recipe_where_recipeId_equals(recipe_id)
 
     return render_template('oppskrift.html', rec=rec)
+
+
+@recipes.route('/legg-til-rett')
+def legg_til_rett():
+    form = RegisterRecipeForm(request.form)
+    if request.method == 'POST':
+        dish = form.dish.data
+        print(dish)
+
+
+    # TODO ta inn ting fra form..
+    # TODO når man legger inn ingrediens, må det også komme mulighet for å legge til en til
+    #TODO legge til til rett bruker.
+
+    return render_template('legg-til-rett.html', form=form)
+
 
 # Spørring som fungerte i Workbench. (hente ingrediens er pr oppskrift)
 

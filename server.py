@@ -50,9 +50,7 @@ def userAdministration():
     return render_template('user-administration.html')
 
 
-@app.route('/legg-til-rett')
-def legg_til_rett():
-    return render_template('legg-til-rett.html')
+
 
 
 login_manager = LoginManager(app)

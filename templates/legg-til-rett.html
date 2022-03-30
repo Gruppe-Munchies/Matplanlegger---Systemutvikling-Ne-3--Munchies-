@@ -6,7 +6,8 @@ senere tidspunkt!{% endblock %}
 
 {% block content %}
 <div class="container" style="max-width: 800px">
-        <form method="post" class="row">
+
+        <form method="POST" action="{{ url_for('recipes.legg_til_rett') }}" class="row">
             <div class="form-group"><input class="form-control" type="text" name="Name" placeholder="Navn" style="margin-top:10px;margin-bottom:10px;"><textarea class="form-control" rows="12" name="shortDescription" placeholder="Legg inn en kort beskrivelse" style="margin-bottom:10px;margin-top:10px;"></textarea>
                 <textarea
                     class="form-control" rows="14" name="Description" placeholder="Legg inn en lang beskrivelse" style="margin-top:10px;margin-bottom:10px;"></textarea>
@@ -48,6 +49,9 @@ senere tidspunkt!{% endblock %}
 </table>
 </div>
             <div class="form-group"><button class="btn btn-primary" type="button">Legg til</button></div>
+                <div class="form-group"> {{ form.submit(class_="btn btn-success") }}
+                </div>
+
         </form>
     </div>
 
