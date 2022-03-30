@@ -18,9 +18,6 @@
             <td>{{ user[1].firstname }}</td>
             <td>{{ user[1].lastname }}</td>
             <td>{{ user[0].groupName }}<td>
-            <td>{{ user[1].id }}</td>
-            <td>{{ user[0].iduserGroup }}<td>
-            <td>{{ user[2].iduserType }}<td>
             <form action="" name="usertypes">
                 <select name="usertypes" id="usertypes" onchange="location=this.value;">
                     {% for types in usertypes %}
@@ -33,7 +30,6 @@
                 </select>
             </form>
             </td>
-            <td><button type="button" class="btn btn-outline-primary btn-sm"><i class="bi-trash"></i></button></td>
         </tr>
       {% endfor %}
       </tbody>
