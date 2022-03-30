@@ -188,8 +188,7 @@ def profil():
     if request.method == 'POST' and form.validate():
         selectFieldGroup = form.idOgNavn.data  # Får tilbake group_id her
 
-        # oppdaterer den halvglobale verdien
-        # backend.auth.views.current_group = selectFieldGroup
+
         session['group_to_use'] = selectFieldGroup
         session['groupname_to_use'] = fetchUserGroupById(selectFieldGroup).groupName
         return redirect(request.referrer)
