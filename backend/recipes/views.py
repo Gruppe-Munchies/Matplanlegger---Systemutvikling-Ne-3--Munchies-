@@ -4,6 +4,7 @@ from flask_login import login_required, login_user, logout_user
 import backend.recipes.queries as ingr_queries
 import backend.recipes.queries as recipes
 from backend import recipes
+from backend.ingredients.queries import *
 
 #from backend.recipes.forms import RegisterForm
 from backend.recipes.forms import RegisterRecipeForm
@@ -32,6 +33,7 @@ def oppskrift(recipe_id: int):
 
 @recipes.route('/legg-til-rett',  methods=["GET", "POST"])
 def legg_til_rett():
+    group_ingredients = fetch_all_ingredients_where_usergroup_equals(1)
     form = RegisterRecipeForm(request.form)
     if request.method == 'POST' and form.validate():
         dish = form.dish.data
@@ -45,7 +47,15 @@ def legg_til_rett():
     # TODO når man legger inn ingrediens, må det også komme mulighet for å legge til en til
     #TODO legge til til rett bruker.
 
-    return render_template('legg-til-rett.html', form=form)
+    return render_template('legg-til-rett.html', form=form, ingredients=group_ingredients)
+
+@recipes.route('/legg-til-rett/<navn>/<mengde>/<enhet>', methods=["GET", "POST"])
+def slettOppslag(navn: str,mengde: str, enhet: str):
+    print(mengde)
+    print(navn)
+    print(enhet)
+    # TODO: Legg til i databasemetode her:
+    return redirect(request.referrer)
 
 
 # Spørring som fungerte i Workbench. (hente ingrediens er pr oppskrift)
