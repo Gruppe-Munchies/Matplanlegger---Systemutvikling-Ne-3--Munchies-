@@ -200,6 +200,17 @@ def profil():
 
 
 
+@auth.route('/changeusertype', methods=['GET', 'POST'])
+@login_required
+def change_usertype():
+    userid=request.args["userid"]
+    usergroupid=request.args["usergroupid"]
+    usertypeid=request.args["usertypeid"]
+
+    usergroup_admin_update_usertypes(userid, usergroupid, usertypeid)
+
+    return redirect(url_for("auth.invite"))
+
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
