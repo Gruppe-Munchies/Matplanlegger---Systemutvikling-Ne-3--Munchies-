@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
-
+from backend.auth.queries import *  # fetchAllUserGroups, fetchUser, fetchUserGroup
+from flask_login import login_required, login_user, logout_user, current_user
 
 class LoginForm(FlaskForm):
     username = StringField(label='Brukernavn')
@@ -90,3 +91,6 @@ class createUserGroupForm(FlaskForm):
         validators=[DataRequired()])
 
     submit = SubmitField(label=('Opprett gruppe'))
+
+class UserGroupSelector(FlaskForm):
+    idOgNavn = SelectField(u'Group', choices='', validators=[DataRequired()])
