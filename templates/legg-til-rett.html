@@ -23,7 +23,7 @@ senere tidspunkt!{% endblock %}
             </div>
 
             <div class="form-group p-3">
-                {{ form.ingredienser(class="form-control",placeholder="ingredientzz") }}
+                {{ form.ingredienser(class="form-control",placeholder="ÅPEN pga debug. Hide i forms.py (hiddenField()) ") }}
             </div>
 
             <div class="form-group w-100 p-3">
@@ -72,7 +72,7 @@ senere tidspunkt!{% endblock %}
                                 document.getElementById('{{ loop.index }}-removeFromList').style.cssText = 'display: inline-block; border-color: red; color: red;';
                                 document.getElementById('{{ loop.index }}-addToList').style.cssText = 'display: none;';
                               var getQuantity = document.getElementById('{{ loop.index }}-quantityForm').value;
-                          document.getElementById('ingredienser').value += "{{ ingredient[0].ingredientName }}," + getQuantity + ",{{ ingredient[1].unit }}" + "|";
+                          document.getElementById('ingredienser').value += "-{{ loop.index }}-{{ ingredient[0].ingredientName }}," + getQuantity + ",{{ ingredient[1].unit }}-:-";
 
                           }
 
@@ -80,7 +80,10 @@ senere tidspunkt!{% endblock %}
                                 document.getElementById('{{ loop.index }}-removeFromList').style.cssText = 'display: none;';
                                 document.getElementById('{{ loop.index }}-addToList').style.cssText = 'display: inline-block;';
                                 document.getElementById('{{ loop.index }}-quantityForm').value="";
-                          document.getElementById('ingredienser').value += "{{ ingredient[0].ingredientName }}," + "0," + "{{ ingredient[1].unit }}" + "|";
+                                let text = document.getElementById("ingredienser").value;
+
+
+                          document.getElementById("ingredienser").value = text.replace(/-{{ loop.index }}-.*?,.*?,.*?-:-/g, "");
 
                           }
 

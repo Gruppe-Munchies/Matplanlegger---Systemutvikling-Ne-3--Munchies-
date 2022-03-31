@@ -37,6 +37,10 @@ def fetch_all_ingredients_from_all_usergroups() -> list:
     return session.query(Ingredient).all()
 
 
+def fetch_ingredients_from_all_usergroups_where_name_is(name):
+    return session.query(Ingredient.idingredient).where(Ingredient.ingredientName == name).first()
+
+
 def fetch_ingredients_where_usergroup_and_ingredientName_equals(usergroup_id, ingredient_name):
     return session.query(Ingredient, UsergroupHasIngredient).join(UsergroupHasIngredient, and_(
         Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,

@@ -5,6 +5,7 @@ import backend.recipes.queries as ingr_queries
 import backend.recipes.queries as recipes
 from backend import recipes
 from backend.ingredients.queries import *
+import re
 
 #from backend.recipes.forms import RegisterForm
 from backend.recipes.forms import RegisterRecipeForm
@@ -46,18 +47,29 @@ def legg_til_rett():
         long_desc = form.long_desc.data
         ingredienser = form.ingredienser.data
 
-        #ingr_queries.insert_to_recipe(dish, short_desc, long_desc, 'test', '1', '1', '1')
+        # Legger til recipe i tabellen
+        ingr_queries.insert_to_recipe(dish, short_desc, long_desc, 'test', '1', '1', '1') #: TODO: Testdata på de siste 4 parametre
 
-        #ingr_queries.insert_to_recipe_has_ingredient(recipe, ingredient, quantity)
-        print(short_desc)
-        print(long_desc)
-        print(ingredienser)
-        lst = ingredienser.split("|")
+
+        # Henter info fra hidden field, og gjør mening ut av denne(For å få en dynamisk field)
+        lst = re.sub("-.*?-", ":o:",ingredienser)
+
+        lst = lst.split(":o:")
+
         ingrediensLst = []
-        # for i in lst:
-        #     item = i.split(",")
-        #     if item[1]
-        #     ingrediensLst.append(item)
+        for i in lst:
+            if i != '':
+                item = i.split(",")
+                if item[1] != '':
+                    ingrediensLst.append(item)
+
+        # Kobler ingrediens opp mot recipe
+        recipeID = fetch_recipeID_where_name_equals(dish)
+        #print(recipeID[0])
+        for k in ingrediensLst:
+            ingredId = fetch_ingredients_from_all_usergroups_where_name_is(k[0])
+            ingr_queries.insert_to_recipe_has_ingredient(str(recipeID[0]), str(ingredId[0]), str(k[1]))
+
 
 
 
