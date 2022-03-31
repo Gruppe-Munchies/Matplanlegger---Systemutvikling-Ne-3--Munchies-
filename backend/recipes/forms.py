@@ -13,5 +13,4 @@ class RegisterRecipeForm(FlaskForm):
         label=('Lengre beskrivelse - hvordan lager man dette?'),
         validators=[DataRequired()])
 
-
     submit = SubmitField(label=('Registrer rett'))

@@ -8,64 +8,69 @@ senere tidspunkt!{% endblock %}
 <div class="container" style="max-width: 800px">
 
         <form method="POST" action="{{ url_for('recipes.legg_til_rett') }}" class="row">
-            <div class="form-group"><input class="form-control" type="text" name="Name" placeholder="Navn" style="margin-top:10px;margin-bottom:10px;"><textarea class="form-control" rows="12" name="shortDescription" placeholder="Legg inn en kort beskrivelse" style="margin-bottom:10px;margin-top:10px;"></textarea>
-                <textarea
-                    class="form-control" rows="14" name="Description" placeholder="Legg inn en lang beskrivelse" style="margin-top:10px;margin-bottom:10px;"></textarea>
+            {{ form.csrf_token }}
+
+            <div class="form-group 50 p-3">
+                {{ form.dish(class="form-control",placeholder="navn på rett") }}
             </div>
 
             <div class="form-group 50 p-3">
-                           {{ form.dish(class="form-control",placeholder="navn på rett") }}
+                {{ form.short_desc(class="form-control",placeholder="kort beskrivelse") }}
             </div>
 
-              <div class="form-group 50 p-3">
-                           {{ form.short_desc(class="form-control",placeholder="kort beskrivelse") }}
+            <div class="form-group 50 p-3">
+                {{ form.long_desc(class="form-control",placeholder="lang beskrivelse - hvordann lager man denne retten?") }}
             </div>
 
-                          <div class="form-group 50 p-3">
-                           {{ form.long_desc(class="form-control",placeholder="lang beskrivelse - hvordann lager man denne retten?") }}
+{##}
+{#            <div class="form-group row">#}
+{#                <h6 class="col-md-6" style="margin-bottom:10px;margin-top:10px;">Legg til bilde av retten:</h6><input type="file" class="col-md-6" style="margin-top:10px;margin-bottom:10px;"></div>#}
+{#            <div class="form-group">#}
+{#                <h3 style="margin-bottom:10px;margin-top:10px;">Legg til ingredienser</h3>#}
+{#            </div><div class="col-md-12" style="margin-bottom:10px;margin-top:10px;padding-left:0px;padding-right:0px;">#}
+
+
+
+{#<table class="table">#}
+{#  <thead>#}
+{#    <tr>#}
+{#      <th class="w-50 p-3">Varenavn</th>#}
+{#      <th class="w-auto p-3">Antall</th>#}
+{#      <th class="w-auto p-3">Enhet</th>#}
+{#      <th></th>#}
+{#    </tr>#}
+{#  </thead>#}
+{#  <tbody>#}
+{#    <tr id="addRow">#}
+{#      <td class="col-xs-3">#}
+{#        <input class="form-control addMain" type="text"  placeholder="Varenavn" />#}
+{#      </td>#}
+{##}
+{#      <td class="col-xs-3">#}
+{#        <input class="form-control addPrefer" type="text"  placeholder="Antall" />#}
+{#      </td>#}
+{#      <td class="col-xs-5">#}
+{#          <input class="form-control addCommon" type="text" placeholder="Enhet" />#}
+{#      </td>#}
+{#      <td class="col-xs-1 text-center">#}
+{#        <span class="addBtn">#}
+{#            <i class="fa fa-plus"></i>#}
+{#          </span>#}
+{#      </td>#}
+{#    </tr>#}
+{##}
+{#  </tbody>#}
+{#</table>#}
+{#</div>#}
+{#            <div class="form-group"><button class="btn btn-primary" type="button">Legg til</button></div>#}
+
+            <div class="form-group w-100 p-3">
+                {{ form.submit(class_="btn btn-success") }}
             </div>
 
-            <div class="form-group row">
-                <h6 class="col-md-6" style="margin-bottom:10px;margin-top:10px;">Legg til bilde av retten:</h6><input type="file" class="col-md-6" style="margin-top:10px;margin-bottom:10px;"></div>
-            <div class="form-group">
-                <h3 style="margin-bottom:10px;margin-top:10px;">Legg til ingredienser</h3>
-            </div><div class="col-md-12" style="margin-bottom:10px;margin-top:10px;padding-left:0px;padding-right:0px;">
-<table class="table">
-  <thead>
-    <tr>
-      <th class="w-50 p-3">Varenavn</th>
-      <th class="w-auto p-3">Antall</th>
-      <th class="w-auto p-3">Enhet</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr id="addRow">
-      <td class="col-xs-3">
-        <input class="form-control addMain" type="text"  placeholder="Varenavn" />
-      </td>
-
-      <td class="col-xs-3">
-        <input class="form-control addPrefer" type="text"  placeholder="Antall" />
-      </td>
-      <td class="col-xs-5">
-          <input class="form-control addCommon" type="text" placeholder="Enhet" />
-      </td>
-      <td class="col-xs-1 text-center">
-        <span class="addBtn">
-            <i class="fa fa-plus"></i>
-          </span>
-      </td>
-    </tr>
-
-  </tbody>
-</table>
-</div>
-            <div class="form-group"><button class="btn btn-primary" type="button">Legg til</button></div>
-                <div class="form-group"> {{ form.submit(class_="btn btn-success") }}
-                </div>
 
         </form>
+
     </div>
 
 {% endblock %}
