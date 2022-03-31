@@ -120,14 +120,21 @@ def invite():
     form = InviteForm(request.form)
     createUGForm = createUserGroupForm(request.form)
 
+    #Fetch groups where user is admin
+    groups_with_admin = fetchGroupsWhereUserHaveAdmin(current_user)
+
     #users_in_group = fetchUsersInUsergroup("MatMons")  # Fetch users in group
     users_in_group = fetchUsersInUsergroupById(1)  # Fetch users in group #TODO få bort hardkoding på denne gruppa -må samhandles en plass
 
     #sjekker om brukeren, i den gitte brukergruppa, har adminrettigheter.
-    usertype = fetchUserTypeByUserIdAndGroupId(current_user.id, 1) #TODO få bort hardkoding på gruppe 2!!!
+    activeGroup = 1
+    print(activeGroup)
+    usertype = fetchUserTypeByUserIdAndGroupId(current_user.id, activeGroup) #TODO få bort hardkoding på gruppe 2!!!
     userIsAdmin = False
     if usertype == 1:
         userIsAdmin = True
+
+    print(userIsAdmin)
 
 
     print(usertype) #få inn rett gruppe
@@ -148,7 +155,7 @@ def invite():
             flash("Brukeren finnes ikke.", "danger")
             return render_template('usergroup-administration.html', form=form, ugform=createUGForm,
                                    users=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes,
-                                   heading="Inviter bruker", userIsAdmin=userIsAdmin)
+                                   heading="Inviter bruker", userIsAdmin=userIsAdmin, groups_with_admin=groups_with_admin)
 
         # User exists, add to group
         # TODO: Adds withouth asking user. Should be an invite.
