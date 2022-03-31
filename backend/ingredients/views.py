@@ -20,7 +20,7 @@ ingredient = Blueprint('ingredient', __name__, template_folder='templates', url_
 #         print(f"{ap[0].ingredientName} {round(ap[1].quantity, 2)} {ap[1].unit} {round(ap[1].price, 2)}")
 def new():
     print(flask.session.get('group_to_use'))
-    group_ingredients = fetch_all_ingredients_where_usergroup_equals(1)
+    group_ingredients = fetch_all_ingredients_where_usergroup_equals(flask.session.get('group_to_use'))
 
     form = RegisterForm(request.form)
     if request.method == 'POST' and form.validate():
