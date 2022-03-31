@@ -35,19 +35,14 @@ def new():
 
         check_ingredient = ingr_queries.fetch_ingredients_from_all_user_groups_where_ingredient_name_equals(
             ingredientName)
-        print(check_ingredient)
 
         fetchedusergroup = auth_queries.fetchUserGroup(usergroup)  # TODO bør være en dropdown der brukeren kan velge
         fetchedusergroup_ID = fetchedusergroup.iduserGroup
-
         check_ingredient_in_userGroup = fetch_ingredients_where_usergroup_and_ingredientName_equals(group_to_use,
-                                                                                                    ingredientName)  # First input: usergroupID
+                                                                                                    ingredientName)
         if check_ingredient_in_userGroup:
             flash("Ingrediens er allerede registrert i din gruppe", "danger")
 
-
-                # return render_template('newingredient.html', form=form,
-                                       # heading="Registrer ny ingrediens")  # vet ikke om heading trengs?
         elif check_ingredient:
 
             fetchedingredientID = ingr_queries.fetch_ingredients_from_all_user_groups_where_ingredient_name_equals(
