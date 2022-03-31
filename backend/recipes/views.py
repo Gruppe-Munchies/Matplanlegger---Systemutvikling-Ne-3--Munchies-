@@ -39,8 +39,11 @@ def legg_til_rett():
         dish = form.dish.data
         short_desc = form.short_desc.data
         long_desc = form.long_desc.data
-        print("hallo")
-        print(dish)
+        ingredienser = form.ingredienser.data
+
+        print(short_desc)
+        print(long_desc)
+        print(ingredienser)
 
 
     # TODO ta inn ting fra form..

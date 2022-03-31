@@ -10,16 +10,20 @@ senere tidspunkt!{% endblock %}
         <form method="POST" action="{{ url_for('recipes.legg_til_rett') }}" class="row">
             {{ form.csrf_token }}
 
-            <div class="form-group 50 p-3">
+            <div class="form-group p-3">
                 {{ form.dish(class="form-control",placeholder="navn på rett") }}
             </div>
 
-            <div class="form-group 50 p-3">
+            <div class="form-group p-3">
                 {{ form.short_desc(class="form-control",placeholder="kort beskrivelse") }}
             </div>
 
-            <div class="form-group 50 p-3">
+            <div class="form-group p-3">
                 {{ form.long_desc(class="form-control",placeholder="lang beskrivelse - hvordann lager man denne retten?") }}
+            </div>
+
+            <div class="form-group p-3">
+                {{ form.ingredienser(class="form-control",placeholder="ingredientzz") }}
             </div>
 
             <div class="form-group w-100 p-3">
@@ -35,18 +39,57 @@ senere tidspunkt!{% endblock %}
                 <tr>
                     <th>Ingrediens</th>
                     <th>Enhet</th>
+                    <th>Mengde</th>
+
                 </tr>
                 </thead>
                 <tbody>
                 {% for ingredient in ingredients %}
                     <tr>
-                        <td>{{ ingredient[0].ingredientName }}</td>
-                        <td>{{ ingredient[1].unit }}</td>
-                        <td>
-                            <a  href="/legg-til-rett/{{ ingredient[0].ingredientName }}/5555/{{ ingredient[1].unit }}" type="button" class="btn btn-outline-primary btn-sm" ><i class="bi bi-plus"></i></a>
-
+                        <td class=" w-50 ">
+                            {{ ingredient[0].ingredientName }}
                         </td>
+
+                        <td class=" w-25 ">
+                            <input type="number" id="{{ loop.index }}-quantityForm" class="form-control" min="0" steps="0.1" />
+                        </td>
+
+                        <td class=" w-auto ">
+                            {{ ingredient[1].unit }}
+                        </td>
+
+
+
+                        <td class=" w-auto ">
+                            <button  id="{{ loop.index }}-addToList" type="button" class="btn btn-outline-primary btn-sm" ><i class="bi bi-plus"></i></button>
+                            <button  id="{{ loop.index }}-removeFromList" type="button" class="btn btn-outline-primary btn-sm" style="display: none"><i class="bi-trash"></i></button>
+                        </td>
+
+
+
+                    <script>
+                          document.getElementById("{{ loop.index }}-addToList").onclick = function() {
+                                document.getElementById('{{ loop.index }}-removeFromList').style.cssText = 'display: inline-block; border-color: red; color: red;';
+                                document.getElementById('{{ loop.index }}-addToList').style.cssText = 'display: none;';
+                              var getQuantity = document.getElementById('{{ loop.index }}-quantityForm').value;
+                          document.getElementById('ingredienser').value += "[" + "{{ ingredient[0].ingredientName }}, " + getQuantity + ", {{ ingredient[1].unit }}" + "], ";
+
+                          }
+
+                          document.getElementById("{{ loop.index }}-removeFromList").onclick = function() {
+                                document.getElementById('{{ loop.index }}-removeFromList').style.cssText = 'display: none;';
+                                document.getElementById('{{ loop.index }}-addToList').style.cssText = 'display: inline-block;';
+                                document.getElementById('{{ loop.index }}-quantityForm').value="";
+                          document.getElementById('ingredienser').value += "[" + "{{ ingredient[0].ingredientName }}, " + "0" + ", {{ ingredient[1].unit }}" + "], ";
+
+                          }
+
+
+                    </script>
+
+
                     </tr>
+
                 {% endfor %}
                 </tbody>
         </table>
