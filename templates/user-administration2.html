@@ -20,13 +20,12 @@
             <td>{{ user[2].userTypeName }}</td>
             <td>
                 <div class="form-group w-100 p-3">
-{#                    <form method="POST" action="{{ url_for("auth.groupadmin")   }}">#}
-                    <form method="POST" action="/">
-                        <input type="hidden" name="ape" value="ape">
-                        <input type="hidden" name="katt" value="katt">
-                        <div>
-                            <button type="submit" class="btn-outline-danger">Meld av gruppe</button>
-                        </div>
+                    <form method="POST" action="{{ url_for('auth.removeUserFromGroup') }}" class="row">
+
+                        <input name="username" type="hidden" value="{{ user[1].id }}">
+                        <input name="userGroupName" type="hidden" value="{{ user[0].iduserGroup }}">
+
+                        <button class="btn btn-danger" type="submit">Meld ut</button>
                     </form>
 
                 </div>
