@@ -34,16 +34,31 @@ def oppskrift(recipe_id: int):
 @recipes.route('/legg-til-rett',  methods=["GET", "POST"])
 def legg_til_rett():
     group_ingredients = fetch_all_ingredients_where_usergroup_equals(1)
+    # for i in group_ingredients:
+    #     print(i[0].ingredientName, i[0].idingredient )
+    #     print(i)
+    #     print(i[1].userGroup_iduserGroup, i[1].unit)
     form = RegisterRecipeForm(request.form)
     if request.method == 'POST' and form.validate():
+        #dishId = form.dish.data
         dish = form.dish.data
         short_desc = form.short_desc.data
         long_desc = form.long_desc.data
         ingredienser = form.ingredienser.data
 
+        #ingr_queries.insert_to_recipe(dish, short_desc, long_desc, 'test', '1', '1', '1')
+
+        #ingr_queries.insert_to_recipe_has_ingredient(recipe, ingredient, quantity)
         print(short_desc)
         print(long_desc)
         print(ingredienser)
+        lst = ingredienser.split("|")
+        ingrediensLst = []
+        # for i in lst:
+        #     item = i.split(",")
+        #     if item[1]
+        #     ingrediensLst.append(item)
+
 
 
     # TODO ta inn ting fra form..
@@ -52,13 +67,6 @@ def legg_til_rett():
 
     return render_template('legg-til-rett.html', form=form, ingredients=group_ingredients)
 
-@recipes.route('/legg-til-rett/<navn>/<mengde>/<enhet>', methods=["GET", "POST"])
-def slettOppslag(navn: str,mengde: str, enhet: str):
-    print(mengde)
-    print(navn)
-    print(enhet)
-    # TODO: Legg til i databasemetode her:
-    return redirect(request.referrer)
 
 
 # Spørring som fungerte i Workbench. (hente ingrediens er pr oppskrift)

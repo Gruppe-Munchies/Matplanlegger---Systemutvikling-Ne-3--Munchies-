@@ -3,6 +3,10 @@ from wtforms import StringField, SubmitField, TextAreaField, SelectField, Intege
 from wtforms.validators import DataRequired
 
 class RegisterRecipeForm(FlaskForm):
+    # dishId = StringField(
+    #     label=('ID'),
+    #     validators=[DataRequired()])
+
     dish = StringField(
         label=('Navn på rett'),
         validators=[DataRequired()])
@@ -14,7 +18,6 @@ class RegisterRecipeForm(FlaskForm):
         validators=[DataRequired()])
 
     ingredienser = HiddenField(
-        label=('Ingredienser'),
-        validators=[DataRequired()])
+        label=('Ingredienser'))
 
     submit = SubmitField(label=('Registrer rett'))
