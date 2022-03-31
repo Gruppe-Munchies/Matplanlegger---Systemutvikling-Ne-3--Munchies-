@@ -30,11 +30,14 @@ def oppskrift(recipe_id: int):
     return render_template('oppskrift.html', rec=rec)
 
 
-@recipes.route('/legg-til-rett')
+@recipes.route('/legg-til-rett',  methods=["GET", "POST"])
 def legg_til_rett():
     form = RegisterRecipeForm(request.form)
-    if request.method == 'POST':
+    if request.method == 'POST' and form.validate():
         dish = form.dish.data
+        short_desc = form.short_desc.data
+        long_desc = form.long_desc.data
+        print("hallo")
         print(dish)
 
 
