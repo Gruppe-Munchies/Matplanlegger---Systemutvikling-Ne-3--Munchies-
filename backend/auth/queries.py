@@ -176,3 +176,8 @@ def insert_to_usertype():
     usertype2 = Usertype(userTypeName="Bruker")
     session.add_all([usertype1, usertype2])
     session.commit()
+
+def usergroup_admin_update_usertypes(userid, usergroupid, usertypeid):
+    session = loadSession()
+    session.query(UserHasUsergroup).where(UserHasUsergroup.user_userId == userid, UserHasUsergroup.userGroup_iduserGroup == usergroupid).update({UserHasUsergroup.userType_iduserType: usertypeid})
+    session.commit()
