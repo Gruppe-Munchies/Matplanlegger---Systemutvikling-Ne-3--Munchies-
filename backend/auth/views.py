@@ -125,6 +125,7 @@ def createGroup():
 
 @auth.route('/groupadmin', methods=['GET', 'POST'])
 def groupadmin():
+    # temp fix, when user has no usergroup, you get redirected to profile page
     if not fetch_first_usergroups_for_user(current_user.id):
         flash("Du er ikke med i noen gruppe")
         print("gruppeadmin: Ikke medlem i gruppe")
