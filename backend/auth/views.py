@@ -98,12 +98,13 @@ def register():
 
 # CREATE USERGROUP
 @auth.route('/creategroup', methods=['GET', 'POST'])
+@login_required
 def createGroup():
     createUGForm = createUserGroupForm(request.form)
     if request.method == 'POST' and createUGForm.validate():
-        activeUser = "Username for innlogget bruker"  # TODO: Get username for logged in user
+        activeUser = current_user.username
         user = fetchUser(activeUser)
-        userId = 9  # TODO: Replace with actual "id for logged in user
+        userId = current_user.id
         auth_queries.insert_to_usergroup(createUGForm.usergroup.data)
         userGroup = fetchUserGroup(createUGForm.usergroup.data)
         userGroupId = userGroup.iduserGroup
@@ -116,6 +117,7 @@ def createGroup():
 
 # INVITE USER TO USERGROUP
 @auth.route('/groupadmin', methods=['GET', 'POST'])
+@login_required
 def invite():
     form = InviteForm(request.form)
     createUGForm = createUserGroupForm(request.form)
@@ -141,8 +143,7 @@ def invite():
 
 
     usertypes = fetchAllUserTypes()
-    owner = "Username for gruppeeier"  # TODO: Get username for logged in user
-
+    owner = current_user
     groups_with_admin = fetchGroupsWhereUserHaveAdmin(owner)
 
     if request.method == 'POST' and form.validate():
