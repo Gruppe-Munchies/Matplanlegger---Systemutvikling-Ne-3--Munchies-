@@ -123,6 +123,7 @@ def groupadmin():
     createUGForm = createUserGroupForm(request.form)
     deleteForm = RemoveUserFromGroup(request.form)
 
+    # TODO: get usergroup the user's currently in(in session)
     users_in_group = fetchUsersInUsergroupById(
         1)  # Fetch users in group #TODO få bort hardkoding på denne gruppa -må samhandles en plass
 
@@ -156,6 +157,8 @@ def removeUserFromGroup():
 
     userId = deleteForm.username.data
     groupId = deleteForm.userGroupName.data
+
+    # TODO: Handle error when deleting oneself or have a setup where a user can't delete remove themself from the group on the group admin page.
 
     auth_queries.remove_row_from_UserHasUsergroup(int(userId), int(groupId))
 
