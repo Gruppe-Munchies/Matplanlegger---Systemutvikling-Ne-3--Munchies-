@@ -7,9 +7,6 @@ from backend.auth.forms import LoginForm, RegisterForm, InviteForm, createUserGr
 from backend.auth.queries import *  # fetchAllUserGroups, fetchUser, fetchUserGroup
 from flask_login import login_required, login_user, logout_user, current_user
 
-
-
-
 current_group = 0
 
 auth = Blueprint('auth', __name__, template_folder='templates')
@@ -30,8 +27,14 @@ def login():
 
             # Sjekker om brukernavn og hashet passord stemmer overens med databasen
             if check_password_hash(stored_hashed_password, input_password):
-                session['group_to_use'] = int(fetch_first_usergroups_for_user(user_from_db.id).iduserGroup)
-                session['groupname_to_use'] = fetchUserGroupById(session.get('group_to_use')).groupName
+
+                if fetch_first_usergroups_for_user(user_from_db.id):
+                    session['group_to_use'] = int(fetch_first_usergroups_for_user(user_from_db.id).iduserGroup)
+                    session['groupname_to_use'] = fetchUserGroupById(session.get('group_to_use')).groupName
+                else:
+                    session['group_to_use'] = 0
+                    session['groupname_to_use'] = ""
+
                 print(session.get('group_to_use'))
                 flash("Login vellykket!")
                 login_user(user_from_db)
@@ -122,19 +125,24 @@ def createGroup():
 
 @auth.route('/groupadmin', methods=['GET', 'POST'])
 def groupadmin():
+    if not fetch_first_usergroups_for_user(current_user.id):
+        flash("Du er ikke med i noen gruppe")
+        print("gruppeadmin: Ikke medlem i gruppe")
+        return redirect(url_for('auth.profil'))
+
     invite_form = InviteForm(request.form)
     createUGForm = createUserGroupForm(request.form)
     deleteForm = RemoveUserFromGroup(request.form)
 
     # TODO: get usergroup the user's currently in(in session)
     users_in_group = fetchUsersInUsergroupById(
-        session.get('group_to_use'))  # Fetch users in group #TODO få bort hardkoding på denne gruppa -må samhandles en plass
+        session.get(
+            'group_to_use'))  # Fetch users in group
 
     # sjekker om brukeren, i den gitte brukergruppa, har adminrettigheter.
-    # TODO Legg in metode for de fire neste linjene
-    #print("brukergruppe: "+session.get('group_to_use'))
-    usertype = fetchUserTypeByUserIdAndGroupId(current_user.id, session.get('group_to_use'))  # TODO få bort hardkoding på gruppe 2!!!
-    userIsAdmin = False
+    # print("brukergruppe: "+session.get('group_to_use'))
+    usertype = fetchUserTypeByUserIdAndGroupId(current_user.id,
+                                               session.get('group_to_use'))
 
     if usertype == 1:
         userIsAdmin = True
@@ -162,8 +170,10 @@ def removeUserFromGroup():
     groupId = deleteForm.userGroupName.data
 
     # TODO: Handle error when deleting oneself or have a setup where a user can't delete remove themself from the group on the group admin page.
-
-    auth_queries.remove_row_from_UserHasUsergroup(int(userId), int(groupId))
+    if userId != current_user.id:
+        auth_queries.remove_row_from_UserHasUsergroup(int(userId), int(groupId))
+    else:
+        flash("Kan ikke slette degselv")
 
     return redirect(url_for("auth.groupadmin"))
 
@@ -205,7 +215,6 @@ def profil():
     if request.method == 'POST' and form.validate():
         selectFieldGroup = form.idOgNavn.data  # Får tilbake group_id her
 
-
         session['group_to_use'] = selectFieldGroup
         session['groupname_to_use'] = fetchUserGroupById(selectFieldGroup).groupName
         return redirect(request.referrer)
@@ -215,18 +224,17 @@ def profil():
     return render_template('profilepage.html', form=form, groups=groups)
 
 
-
-
 @auth.route('/changeusertype', methods=['GET', 'POST'])
 @login_required
 def change_usertype():
-    userid=request.args["userid"]
-    usergroupid=request.args["usergroupid"]
-    usertypeid=request.args["usertypeid"]
+    userid = request.args["userid"]
+    usergroupid = request.args["usergroupid"]
+    usertypeid = request.args["usertypeid"]
 
     usergroup_admin_update_usertypes(userid, usergroupid, usertypeid)
 
     return redirect(url_for("auth.invite"))
+
 
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
