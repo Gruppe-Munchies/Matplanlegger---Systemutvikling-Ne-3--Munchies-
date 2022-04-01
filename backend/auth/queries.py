@@ -154,12 +154,6 @@ def fetch_all_usergroups_for_user(userId):
                                                Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).where(UserHasUsergroup.user_userId == userId).all()
     return usergroups
 
-def fetch_user_in_usergroup(userid, groupid):
-    session = loadSession()
-    res = session.query(UserHasUsergroup).where(UserHasUsergroup.user_userId == userid, UserHasUsergroup.userGroup_iduserGroup == groupid).first()
-
-    return res
-
 
 # # Add to usergroup_has_ingredient
 # def insert_to_usergroup_has_ingredient(userGroup, ingredient, price, unit):

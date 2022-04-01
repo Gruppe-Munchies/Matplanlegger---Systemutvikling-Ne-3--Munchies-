@@ -17,9 +17,7 @@
             <td>{{ user[1].email }}</td>
             <td>{{ user[1].firstname }}</td>
             <td>{{ user[1].lastname }}</td>
-            <td>{{ user[0].groupName }}</td>
-            {% if userIsAdmin %}
-            <td>
+            <td>{{ user[0].groupName }}<td>
             <form action="" name="usertypes">
                 <select name="usertypes" id="usertypes" onchange="location=this.value;">
                     {% for types in usertypes %}
@@ -31,10 +29,6 @@
                     {% endfor %}
                 </select>
             </form>
-            </td>
-            {% else %}
-                <td>{{ user[2].userTypeName }}<td>
-            {% endif %}
             </td>
         </tr>
       {% endfor %}
