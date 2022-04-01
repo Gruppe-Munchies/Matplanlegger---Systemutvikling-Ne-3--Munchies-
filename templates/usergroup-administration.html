@@ -18,11 +18,7 @@
                         </div>
 
                         <div class="form-group w-25 p-3">
-                            <select class="usertype" name="usertype" id="usertype">
-                            {% for type in usertypes %}
-                            <option value = "{{ type.iduserType }}">{{ type.userTypeName }}</option>
-                            {% endfor %}
-                            </select>
+                            {{ form.usertype(class="form-select") }}
                         </div>
 
                         <div class="form-group w-100 p-3">

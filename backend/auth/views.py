@@ -101,16 +101,18 @@ def register():
 @login_required
 def createGroup():
     createUGForm = createUserGroupForm(request.form)
+
     if request.method == 'POST' and createUGForm.validate():
-        activeUser = current_user.username
-        user = fetchUser(activeUser)
         userId = current_user.id
-        auth_queries.insert_to_usergroup(createUGForm.usergroup.data)
-        userGroup = fetchUserGroup(createUGForm.usergroup.data)
-        userGroupId = userGroup.iduserGroup
-        userTypeId = 1
-        auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(userTypeId))
-        flash('Gruppen ble opprettet!')
+        if fetchUserGroup(createUGForm.usergroup.data):  # Check if usergroup already exists
+            flash('Gruppen finnes allerede!')
+        else:
+            auth_queries.insert_to_usergroup(createUGForm.usergroup.data)
+            userGroup = fetchUserGroup(createUGForm.usergroup.data)
+            userGroupId = userGroup.iduserGroup
+            userTypeId = 1
+            auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(userTypeId))
+            flash('Gruppen ble opprettet!')
 
     return redirect(url_for("auth.invite"))
 
@@ -122,25 +124,23 @@ def invite():
     form = InviteForm(request.form)
     createUGForm = createUserGroupForm(request.form)
 
-    activeGroup = 1 #TODO få bort hardkoding på denne gruppa -må samhandles en plass
+    activeGroup = 1 #TODO få bort hardkoding på gruppe
 
-    #users_in_group = fetchUsersInUsergroup("MatMons")  # Fetch users in group
+    # Users_in_group = fetchUsersInUsergroup("MatMons")  # Fetch users in group
     users_in_group = fetchUsersInUsergroupById(activeGroup)  # Fetch users in group
 
-    #sjekker om brukeren, i den gitte brukergruppa, har adminrettigheter.
-    usertype = fetchUserTypeByUserIdAndGroupId(current_user.id, activeGroup) #TODO få bort hardkoding på gruppe!!!
+    # Sjekker om brukeren, i den gitte brukergruppa, har adminrettigheter.
+    usertype = fetchUserTypeByUserIdAndGroupId(current_user.id, activeGroup)
     userIsAdmin = False
     if usertype == 1:
         userIsAdmin = True
 
-    usertypes = fetchAllUserTypes() #Fetch available usertypes to populate dropdown
+    usertypes = fetchAllUserTypes()  # Fetch available usertypes to populate dropdown
 
     if request.method == 'POST' and form.validate():
         user_to_invite = fetchUser(form.username.data)  # Fetch user to invite
-        usertype = fetchUserType(form.usertype.data)  # Fetch usertype assigned to the invited user
-
-        print(user_to_invite)
-        print(usertype)
+        user_to_invite_usertype = form.usertype.data  # Usertype assigned to invited user
+        user_to_invite_usertypeId = fetchUserType(user_to_invite_usertype)  # Fetch id of assigned usertype
 
         # Check if invited user exists
         if not user_to_invite:
@@ -152,12 +152,13 @@ def invite():
         # User exists, add to group
         # TODO: Adds withouth asking user. Should be an invite.
 
+        print(current_group)
+
         if userIsAdmin:
-            userId = user_to_invite.userId
-            userGroupId = current_group.id
-            usertypeId = usertype.iduserType
-            auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(usertypeId))
-            flash('Brukeren ble lagt til!')
+            userId = user_to_invite.id
+            userGroupId = current_group
+            auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(user_to_invite_usertypeId.iduserType))
+            flash( user_to_invite + ' ble invitert!')
         else:
             flash('Krever admin-tilgang!')
         return redirect(url_for("auth.invite"))
