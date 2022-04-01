@@ -144,11 +144,9 @@ def invite():
 
     usertypes = fetchAllUserTypes()
     owner = current_user
-    groups_with_admin = fetchGroupsWhereUserHaveAdmin(owner)
 
     if request.method == 'POST' and form.validate():
         user_to_invite = fetchUser(form.username.data)  # Fetch user to invite
-        usergroup = fetchUserGroup(form.usergroup.data)  # Fetch usergroup
         usertype = fetchUserType(form.usertype.data)  # Fetch usertype
 
         # Check if user exists
@@ -156,13 +154,13 @@ def invite():
             flash("Brukeren finnes ikke.", "danger")
             return render_template('usergroup-administration.html', form=form, ugform=createUGForm,
                                    users=users_in_group, ownedgroups=groups_with_admin, usertypes=usertypes,
-                                   heading="Inviter bruker", userIsAdmin=userIsAdmin, groups_with_admin=groups_with_admin)
+                                   heading="Inviter bruker", userIsAdmin=userIsAdmin)
 
         # User exists, add to group
         # TODO: Adds withouth asking user. Should be an invite.
 
         userId = user_to_invite.userId
-        userGroupId = usergroup.iduserGroup
+        userGroupId = current_group.id
         usertypeId = usertype.iduserType
 
         auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(usertypeId))
