@@ -125,12 +125,12 @@ def groupadmin():
 
     # TODO: get usergroup the user's currently in(in session)
     users_in_group = fetchUsersInUsergroupById(
-        1)  # Fetch users in group #TODO få bort hardkoding på denne gruppa -må samhandles en plass
+        session.get('group_to_use'))  # Fetch users in group #TODO få bort hardkoding på denne gruppa -må samhandles en plass
 
     # sjekker om brukeren, i den gitte brukergruppa, har adminrettigheter.
     # TODO Legg in metode for de fire neste linjene
-
-    usertype = fetchUserTypeByUserIdAndGroupId(current_user.id, 1)  # TODO få bort hardkoding på gruppe 2!!!
+    print("brukergruppe: "+session.get('group_to_use'))
+    usertype = fetchUserTypeByUserIdAndGroupId(current_user.id, session.get('group_to_use'))  # TODO få bort hardkoding på gruppe 2!!!
     userIsAdmin = False
 
     if usertype == 1:
