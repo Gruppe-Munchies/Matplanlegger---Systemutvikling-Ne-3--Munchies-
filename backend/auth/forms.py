@@ -62,10 +62,6 @@ class InviteForm(FlaskForm):
         label=('Brukernavn'),
         validators=[DataRequired()])
 
-    usergroup = SelectField(
-        label=('Brukergruppe'),
-        validators=[DataRequired()])
-
     usertype = SelectField(
         label=('Brukertype'),
         validators=[DataRequired()])
