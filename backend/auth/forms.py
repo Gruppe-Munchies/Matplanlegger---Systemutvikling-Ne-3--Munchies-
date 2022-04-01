@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, SelectField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 from backend.auth.queries import *  # fetchAllUserGroups, fetchUser, fetchUserGroup
 from flask_login import login_required, login_user, logout_user, current_user
@@ -71,6 +71,18 @@ class InviteForm(FlaskForm):
         validators=[DataRequired()])
 
     submit = SubmitField(label=('Inviter'))
+
+
+class RemoveUserFromGroup(FlaskForm):
+    username = IntegerField(
+        label=('BrukerId'),
+        validators=[DataRequired()])
+
+    userGroupName = IntegerField(
+        label=('BrukergruppeId'),
+        validators=[DataRequired()])
+
+    submit = SubmitField(label=('Meld ut'))
 
 
 class createUserGroupForm(FlaskForm):
