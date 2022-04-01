@@ -62,10 +62,13 @@ class InviteForm(FlaskForm):
         label=('Brukernavn'),
         validators=[DataRequired()])
 
-    usertype = SelectField('Brukertype',
-                           choices=[('1', 'Admin'), ('2', 'Bruker')],
-                           # Må kjøre en query fra usertype for å hente verdier her
-                           validate_choice=True)
+    usergroup = SelectField(
+        label=('Brukergruppe'),
+        validators=[DataRequired()])
+
+    usertype = SelectField(
+        label=('Brukertype'),
+        validators=[DataRequired()])
 
     submit = SubmitField(label=('Inviter'))
 
