@@ -100,15 +100,12 @@ def createGroup():
 
     if request.method == 'POST' and createUGForm.validate():
         userId = current_user.id
-        if fetchUserGroup(createUGForm.usergroup.data):  # Check if usergroup already exists
-            flash('Gruppen finnes allerede!')
-        else:
-            auth_queries.insert_to_usergroup(createUGForm.usergroup.data)
-            userGroup = fetchUserGroup(createUGForm.usergroup.data)
-            userGroupId = userGroup.iduserGroup
-            userTypeId = 1
-            auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(userTypeId))
-            flash('Gruppen ble opprettet!')
+        auth_queries.insert_to_usergroup(createUGForm.usergroup.data)
+        userGroup = fetchUserGroup(createUGForm.usergroup.data)
+        userGroupId = userGroup.iduserGroup
+        userTypeId = 1
+        auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(userTypeId))
+        flash('Gruppen ble opprettet!')
 
     return redirect(url_for("auth.invite"))
 
