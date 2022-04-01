@@ -169,6 +169,13 @@ def fetch_all_usergroups_for_user(userId):
         UserHasUsergroup.user_userId == userId).all()
     return usergroups
 
+def fetch_first_usergroups_for_user(userId):
+    session = loadSession()
+    usergroups = session.query(Usergroup).join(UserHasUsergroup,
+                                               Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).where(
+        UserHasUsergroup.user_userId == userId).first()
+    return usergroups
+
 
 # # Add to usergroup_has_ingredient
 # def insert_to_usergroup_has_ingredient(userGroup, ingredient, price, unit):

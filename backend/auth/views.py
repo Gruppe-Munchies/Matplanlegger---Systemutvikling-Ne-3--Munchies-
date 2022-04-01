@@ -30,6 +30,9 @@ def login():
 
             # Sjekker om brukernavn og hashet passord stemmer overens med databasen
             if check_password_hash(stored_hashed_password, input_password):
+                session['group_to_use'] = int(fetch_first_usergroups_for_user(user_from_db.id).iduserGroup)
+                session['groupname_to_use'] = fetchUserGroupById(session.get('group_to_use')).groupName
+                print(session.get('group_to_use'))
                 flash("Login vellykket!")
                 login_user(user_from_db)
                 flash("Velkommen " + current_user.username)
@@ -129,7 +132,7 @@ def groupadmin():
 
     # sjekker om brukeren, i den gitte brukergruppa, har adminrettigheter.
     # TODO Legg in metode for de fire neste linjene
-    print("brukergruppe: "+session.get('group_to_use'))
+    #print("brukergruppe: "+session.get('group_to_use'))
     usertype = fetchUserTypeByUserIdAndGroupId(current_user.id, session.get('group_to_use'))  # TODO få bort hardkoding på gruppe 2!!!
     userIsAdmin = False
 
