@@ -215,7 +215,7 @@ def inviteUser():
             else:
                 flash('Krever admin-tilgang!')
         else:
-            flash(f"{user_to_invite.username} er allerede medlem av gruppen!")
+            flash(f"{user_to_invite.username} er allerede invitert eller medlem av gruppen!")
         return redirect(url_for("auth.groupadmin"))
 
 
