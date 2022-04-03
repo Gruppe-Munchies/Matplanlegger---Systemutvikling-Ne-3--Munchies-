@@ -184,11 +184,10 @@ def inviteUser():
     invite_form = InviteForm(request.form)
 
     user_to_invite = fetchUser(invite_form.username.data)  # Fetch user to invite
-    usergroup = fetchUserGroup(invite_form.usergroup.data)  # Fetch usergroup
     usertype = fetchUserType(invite_form.usertype.data)  # Fetch usertype
 
     userId = user_to_invite.userId
-    userGroupId = usergroup.iduserGroup
+    userGroupId = session.get('group_to_use')
     usertypeId = usertype.iduserType
 
     auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(usertypeId), 1)
