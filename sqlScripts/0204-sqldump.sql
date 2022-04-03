@@ -76,7 +76,7 @@ CREATE TABLE munchbase.`userType`
 CREATE TABLE `munchbase`.`memberStatus`
 (
   `idStatus` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-  `statusName` VARCHAR(45) NULL
+  `statusName` VARCHAR(45) NOT NULL
 )ENGINE = InnoDB
  DEFAULT CHARSET = utf8mb3;
 
@@ -250,9 +250,9 @@ VALUES (1, 'Invited'),
        (3, 'Rejected');
 
 
-INSERT INTO munchbase.`user_has_userGroup`(`user_userId`, `userGroup_iduserGroup`, `userType_iduserType`)
-VALUES (1, 1, 1),
-       (2, 2, 1);
+INSERT INTO munchbase.`user_has_userGroup`(`user_userId`, `userGroup_iduserGroup`, `userType_iduserType`, `memberStatus_idStatus`)
+VALUES (1, 1, 1, 2),
+       (2, 2, 1, 2);
 
 
 # Legg til weekly menus
