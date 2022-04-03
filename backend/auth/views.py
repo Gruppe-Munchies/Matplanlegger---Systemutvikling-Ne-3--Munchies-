@@ -191,9 +191,9 @@ def inviteUser():
     userGroupId = usergroup.iduserGroup
     usertypeId = usertype.iduserType
 
-    auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(usertypeId))
+    auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(usertypeId), 1)
 
-    flash('Brukeren ble lagt til!')
+    flash('Brukeren ble invitert!')
     return redirect(url_for("auth.groupadmin"))
 
 
@@ -234,7 +234,7 @@ def change_usertype():
 
     usergroup_admin_update_usertypes(userid, usergroupid, usertypeid)
 
-    return redirect(url_for("auth.invite"))
+    return redirect(url_for("auth.groupadmin"))
 
 
 def is_safe_url(target):
