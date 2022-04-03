@@ -10,7 +10,7 @@
             {% if userIsAdmin %}
             <h1 class="fw-light">Inviter bruker</h1>
 
-                <form method="POST" action="{{ url_for('auth.groupadmin') }}"class="row">
+                <form method="POST" action="{{ url_for('auth.inviteUser') }}"class="row">
                     {{ form.csrf_token }}
 
                         <div class="form-group w-50 p-3">
