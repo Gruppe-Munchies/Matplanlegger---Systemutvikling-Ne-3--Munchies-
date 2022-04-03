@@ -92,5 +92,13 @@ class createUserGroupForm(FlaskForm):
 
     submit = SubmitField(label=('Opprett gruppe'))
 
+
 class UserGroupSelector(FlaskForm):
     idOgNavn = SelectField(u'Group', choices='', validators=[DataRequired()])
+
+
+class UserTypeSelector(FlaskForm):
+    usergroup = SelectField('Brukergruppe',
+                            choices=[('MatMons'), ('Familien Hansen')],
+                            # Må kjøre en query fra usergroup for å hente verdier her
+                            validate_choice=True)
