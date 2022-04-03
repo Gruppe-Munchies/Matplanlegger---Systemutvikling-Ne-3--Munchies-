@@ -1,6 +1,6 @@
 from local_db.session import loadSession
 from local_db.orm import User, Ingredient, Recipe, RecipeHasIngredient, RecipeHasWeeklyMenu, RecipeAvailability, \
-    Usertype, Usergroup, UsergroupHasIngredient, WeeklyMenu, Base, UserHasUsergroup
+    Usertype, Usergroup, UsergroupHasIngredient, WeeklyMenu, Base, UserHasUsergroup, MemberStatus
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import delete, and_
 
@@ -133,12 +133,12 @@ def fetchUsersInUsergroup(group_name):
 def fetchUsersInUsergroupById(group_id):
     # TODO: Query for fetching all users belonging to a group
     session = loadSession()
-    res = session.query(Usergroup, User, Usertype).join(UserHasUsergroup,
+    res = session.query(Usergroup, User, Usertype, MemberStatus).join(UserHasUsergroup,
                                                         Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(
-        User,
-        User.id == UserHasUsergroup.user_userId).join(Usertype,
-                                                      Usertype.iduserType == UserHasUsergroup.userType_iduserType).filter(
-        Usergroup.iduserGroup == group_id).all()
+                                                        User,
+                                                        User.id == UserHasUsergroup.user_userId).join(Usertype,
+                                                        Usertype.iduserType == UserHasUsergroup.userType_iduserType).filter(
+                                                        Usergroup.iduserGroup == group_id).all()
     return res
 
 
