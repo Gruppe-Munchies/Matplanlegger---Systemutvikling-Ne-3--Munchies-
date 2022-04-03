@@ -185,15 +185,40 @@ def inviteUser():
 
     user_to_invite = fetchUser(invite_form.username.data)  # Fetch user to invite
     usertype = fetchUserType(invite_form.usertype.data)  # Fetch usertype
+    activeGroup = session.get('group_to_use')  # Bruk aktiv gruppe
 
     userId = user_to_invite.userId
-    userGroupId = session.get('group_to_use')
     usertypeId = usertype.iduserType
 
-    auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(usertypeId), 1)
+    auth_queries.insert_to_user_has_userGroup(int(userId), int(activeGroup), int(usertypeId), 1)
 
-    flash('Brukeren ble invitert!')
-    return redirect(url_for("auth.groupadmin"))
+    # Sjekker om brukeren, i den gitte brukergruppa, har adminrettigheter.
+    usertype = fetchUserTypeByUserIdAndGroupId(current_user.id, activeGroup)
+    userIsAdmin = False
+    if usertype == 1:
+        userIsAdmin = True
+
+    if request.method == 'POST' and invite_form.validate():
+        user_to_invite = fetchUser(invite_form.username.data)  # Fetch user to invite
+        usertypeId = invite_form.usertype.data  # Usertype assigned to invited user
+
+        # Check if invited user exists
+        if not user_to_invite:
+            flash("Brukeren finnes ikke.", "danger")
+            return redirect(url_for("auth.groupadmin"))
+
+        # User exists, add to group if not already member
+        if not fetch_user_in_usergroup(user_to_invite.id, activeGroup):
+            if userIsAdmin:
+                userId = user_to_invite.id
+                userGroupId = activeGroup
+                auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(usertypeId), 1)
+                flash(f'{user_to_invite.username} ble invitert!')
+            else:
+                flash('Krever admin-tilgang!')
+        else:
+            flash(f"{user_to_invite.username} er allerede medlem av gruppen!")
+        return redirect(url_for("auth.groupadmin"))
 
 
 @auth.route('/profil', methods=['GET', 'POST'])
