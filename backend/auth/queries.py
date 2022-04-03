@@ -37,10 +37,10 @@ def return_email_from_name(name):
 
 
 # Add user Id, name of user group, and user type in group
-def insert_to_user_has_userGroup(user_id, usergroup_id, user_type_id):
+def insert_to_user_has_userGroup(user_id, usergroup_id, user_type_id, member_status):
     session = loadSession()
     new_insertion = UserHasUsergroup(user_userId=user_id, userGroup_iduserGroup=usergroup_id,
-                                     userType_iduserType=user_type_id)
+                                     userType_iduserType=user_type_id, memberStatus_idStatus=member_status)
     session.add(new_insertion)
     session.commit()
 

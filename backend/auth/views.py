@@ -93,7 +93,7 @@ def register():
         userGroupId = fetchedUserGroup.iduserGroup
 
         # Insert userID, userGroupID and userType to "user_has_userGroup"
-        auth_queries.insert_to_user_has_userGroup(int(userID), int(userGroupId), int(usertype))
+        auth_queries.insert_to_user_has_userGroup(int(userID), int(userGroupId), int(usertype), 2) #TODO: MemberStatus er hardkodet til Accepted
 
         flash('Registreringen var vellykket!')
         return redirect(url_for("auth.register"))
