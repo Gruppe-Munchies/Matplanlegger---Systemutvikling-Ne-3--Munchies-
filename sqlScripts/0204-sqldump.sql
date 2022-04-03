@@ -244,6 +244,11 @@ VALUES (1, 'Admin'),
        (2, 'Bruker');
 
 
+INSERT INTO munchbase.`memberStatus`(`idStatus`, `statusName`)
+VALUES (1, 'Invited'),
+       (2, 'Accepted'),
+       (3, 'Rejected');
+
 
 INSERT INTO munchbase.`user_has_userGroup`(`user_userId`, `userGroup_iduserGroup`, `userType_iduserType`)
 VALUES (1, 1, 1),
