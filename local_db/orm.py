@@ -60,6 +60,12 @@ class UsergroupHasIngredient(Base):
     __table_args__ = {'autoload': True}
     """"""
 
+class memberStatus(Base):
+    """"""
+    __tablename__ = 'memberStatus'
+    __table_args__ = {'autoload': True}
+    """"""
+
 class UserHasUsergroup(Base):
     """"""
     __tablename__ = 'user_has_userGroup'
