@@ -134,10 +134,10 @@ def fetchUsersInUsergroupById(group_id):
     # TODO: Query for fetching all users belonging to a group
     session = loadSession()
     res = session.query(Usergroup, User, Usertype, MemberStatus).join(UserHasUsergroup,
-                                                        Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(
-                                                        User,
+                                                        Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(User,
                                                         User.id == UserHasUsergroup.user_userId).join(Usertype,
-                                                        Usertype.iduserType == UserHasUsergroup.userType_iduserType).filter(
+                                                        Usertype.iduserType == UserHasUsergroup.userType_iduserType).join(MemberStatus,
+                                                        MemberStatus.idStatus == UserHasUsergroup.memberStatus_idStatus).filter(
                                                         Usergroup.iduserGroup == group_id).all()
     return res
 
