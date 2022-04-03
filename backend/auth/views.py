@@ -184,13 +184,11 @@ def inviteUser():
     invite_form = InviteForm(request.form)
 
     user_to_invite = fetchUser(invite_form.username.data)  # Fetch user to invite
-    usertype = fetchUserType(invite_form.usertype.data)  # Fetch usertype
+    usertype = invite_form.usertype.data  # Fetch usertype
     activeGroup = session.get('group_to_use')  # Bruk aktiv gruppe
 
     print(usertype)
     userId = user_to_invite.id
-
-    auth_queries.insert_to_user_has_userGroup(int(userId), int(activeGroup), int(usertype), 1)
 
     # Sjekker om brukeren, i den gitte brukergruppa, har adminrettigheter.
     usertype = fetchUserTypeByUserIdAndGroupId(current_user.id, activeGroup)
