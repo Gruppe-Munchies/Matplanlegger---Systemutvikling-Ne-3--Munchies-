@@ -117,7 +117,7 @@ def createGroup():
         userGroup = fetchUserGroup(createUGForm.usergroup.data)
         userGroupId = userGroup.iduserGroup
         userTypeId = 1
-        auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(userTypeId))
+        auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(userTypeId), 2)
         flash('Gruppen ble opprettet!')
 
     return redirect(url_for("auth.groupadmin"))
