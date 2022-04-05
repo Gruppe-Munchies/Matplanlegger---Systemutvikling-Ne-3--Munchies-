@@ -1,5 +1,3 @@
-# noinspection SpellCheckingInspectionForFile
-
 #################
 # CREATE TALBES #
 #################
@@ -59,8 +57,10 @@ CREATE TABLE munchbase.`userGroup_has_ingredient`
     unit                    varchar(8),
     quantity                decimal(7, 2) DEFAULT 0,
     CONSTRAINT pk_usergroup_has_ingredient PRIMARY KEY (`userGroup_iduserGroup`, ingredient_idingredient),
-    CONSTRAINT `fk_userGroup_has_ingredient_ingredient` FOREIGN KEY (ingredient_idingredient) REFERENCES munchbase.ingredient (idingredient) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT `fk_userGroup_has_ingredient_userGroup` FOREIGN KEY (`userGroup_iduserGroup`) REFERENCES munchbase.`userGroup` (`iduserGroup`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT `fk_userGroup_has_ingredient_ingredient` FOREIGN KEY (ingredient_idingredient)
+        REFERENCES munchbase.ingredient (idingredient) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT `fk_userGroup_has_ingredient_userGroup` FOREIGN KEY (`userGroup_iduserGroup`)
+        REFERENCES munchbase.`userGroup` (`iduserGroup`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
 
@@ -75,35 +75,45 @@ CREATE TABLE munchbase.`userType`
 
 
 
+CREATE TABLE `munchbase`.`memberStatus`
+(
+    `idStatus`   INT         NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `statusName` VARCHAR(45) NOT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb3;
+
+
 CREATE TABLE munchbase.`user_has_userGroup`
 (
     `user_userId`           int NOT NULL,
     `userGroup_iduserGroup` int NOT NULL,
     `userType_iduserType`   int NOT NULL,
+    `memberStatus_idStatus` int not null,
     CONSTRAINT pk_user_has_usergroup PRIMARY KEY (`user_userId`, `userGroup_iduserGroup`),
-    CONSTRAINT fk_user_has_usergroup_user FOREIGN KEY (`user_userId`) REFERENCES munchbase.`user` (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT fk_user_has_usergroup_usergroup FOREIGN KEY (`userGroup_iduserGroup`) REFERENCES munchbase.`userGroup` (`iduserGroup`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT fk_user_has_usergroup_usertype FOREIGN KEY (`userType_iduserType`) REFERENCES munchbase.`userType` (`iduserType`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT fk_user_has_usergroup_user FOREIGN KEY (`user_userId`)
+        REFERENCES munchbase.`user` (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT fk_user_has_usergroup_usergroup FOREIGN KEY (`userGroup_iduserGroup`)
+        REFERENCES munchbase.`userGroup` (`iduserGroup`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT fk_user_has_usergroup_usertype FOREIGN KEY (`userType_iduserType`)
+        REFERENCES munchbase.`userType` (`iduserType`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT fk_user_has_usergroup_status FOREIGN KEY (`memberStatus_idStatus`)
+        REFERENCES munchbase.`memberStatus` (`idStatus`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
-
 
 
 CREATE TABLE munchbase.`weeklyMenu`
 (
-    idWeeklyMenu            int         NOT NULL AUTO_INCREMENT,
-    year                    int         NOT NULL,
+    'idWeeklyMenu'          int         NOT NULL AUTO_INCREMENT,
     `weekNum`               int         NOT NULL,
-    day                     int         NOT NULL,
-    name                    varchar(45) NOT NULL,
-    description             varchar(250),
+    'name'                  varchar(45) NOT NULL,
+    'description'           varchar(250),
     `userGroup_iduserGroup` int         NOT NULL,
-    CONSTRAINT pk_weeklymenu PRIMARY KEY (id),
+    CONSTRAINT pk_weeklymenu PRIMARY KEY ('idWeeklyMenu'),
     CONSTRAINT `fk_weeklyMenu_userGroup` FOREIGN KEY (`userGroup_iduserGroup`)
         REFERENCES munchbase.`userGroup` (`iduserGroup`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
-
 
 
 CREATE TABLE munchbase.recipe
@@ -120,7 +130,6 @@ CREATE TABLE munchbase.recipe
         REFERENCES munchbase.`recipeAvailability` (`idrecipeAvailability`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
-
 
 
 CREATE TABLE munchbase.recipe_has_ingredient
@@ -141,16 +150,17 @@ CREATE TABLE munchbase.recipe_has_ingredient
 CREATE TABLE munchbase.`recipe_has_weeklyMenu`
 (
     `recipe_idRecipe`         int           NOT NULL,
+    'weekly_menu_date_id'     int           NOT NULL,
     'weeklyMenu_idWeeklyMenu' int           NOT NULL,
-    `weeklyMenu_year`         int           NOT NULL,
-    `weeklyMenu_weekNum`      int           NOT NULL,
     `expectedConsumption`     decimal(4, 2) NOT NULL,
     `actualConsumption`       decimal(4, 2) DEFAULT (0.00),
-    CONSTRAINT pk_recipe_has_weeklymenu PRIMARY KEY (`recipe_idRecipe`, `weeklyMenu_idWeeklyMenu`),
+    CONSTRAINT pk_recipe_has_weeklymenu PRIMARY KEY (`recipe_idRecipe`, 'weeklyMenu_idWeeklyMenu'),
     CONSTRAINT `fk_recipe_has_weeklyMenu_recipe` FOREIGN KEY (`recipe_idRecipe`)
         REFERENCES munchbase.recipe (`idRecipe`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT `fk_recipe_has_weeklyMenu_weeklyMenu` FOREIGN KEY (weeklyMenu_idWeeklyMenu)
-        REFERENCES munchbase.`weeklyMenu` (idWeeklyMenu) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT `fk_recipe_has_weeklyMenu_date` FOREIGN KEY (`weekly_menu_date_id`)
+        REFERENCES munchbase.weekly_menu_date (`id_weekly_menu_date`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT `fk_recipe_has_weeklyMenu_weeklyMenu` FOREIGN KEY (`weeklyMenu_year`, `weeklyMenu_weekNum`)
+        REFERENCES munchbase.`weeklyMenu` (year, `weekNum`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
 
@@ -169,6 +179,8 @@ CREATE TABLE munchbase.'weekly_menu_date'
 ##################
 
 CREATE INDEX `fk_userGroup_has_ingredient_ingredient_idx` ON munchbase.`userGroup_has_ingredient` (ingredient_idingredient);
+
+CREATE INDEX `fk_recipe_has_weeklyMenu_date` ON munchbase.`recipe_has_weeklyMenu` (weekly_menu_date_id);
 
 CREATE INDEX `fk_userGroup_has_ingredient_userGroup_idx` ON munchbase.`userGroup_has_ingredient` (`userGroup_iduserGroup`);
 
@@ -253,10 +265,16 @@ VALUES (1, 'Admin'),
        (2, 'Bruker');
 
 
+INSERT INTO munchbase.`memberStatus`(`idStatus`, `statusName`)
+VALUES (1, 'Invitert'),
+       (2, 'Medlem'),
+       (3, 'Avslått');
 
-INSERT INTO munchbase.`user_has_userGroup`(`user_userId`, `userGroup_iduserGroup`, `userType_iduserType`)
-VALUES (1, 1, 1),
-       (2, 2, 1);
+
+INSERT INTO munchbase.`user_has_userGroup`(`user_userId`, `userGroup_iduserGroup`, `userType_iduserType`,
+                                           `memberStatus_idStatus`)
+VALUES (1, 1, 1, 2),
+       (2, 2, 1, 2);
 
 
 # Legg til weekly menus
