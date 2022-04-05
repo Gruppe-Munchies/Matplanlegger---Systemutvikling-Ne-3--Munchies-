@@ -23,6 +23,12 @@ def fetchPendingInvitations(userid):
         UserHasUsergroup.user_userId == userid, UserHasUsergroup.memberStatus_idStatus == 1).all()
     return res
 
+def invitationResponse(userid, usergroupid, response):
+    session = loadSession()
+    session.query(UserHasUsergroup).where(UserHasUsergroup.user_userId == userid,
+                                          UserHasUsergroup.userGroup_iduserGroup == usergroupid).update(
+        {UserHasUsergroup.userType_iduserType: response})
+    session.commit()
 
 def fetchUserTypeByUserIdAndGroupId(user_id, user_group):
     session = loadSession()

@@ -221,7 +221,10 @@ def inviteUser():
 @auth.route('/groupadmin/inviter/response', methods=['GET', 'POST'])
 def response():
 
+    userid = current_user.id
+    usergroup = request.args["usergroup"]
     response = request.args["response"]
+
     if response == 1:
         #Update table
     elif response == 2:
