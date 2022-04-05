@@ -26,7 +26,7 @@ CREATE TABLE munchbase.`recipeAvailability`
 
 CREATE TABLE munchbase.`user`
 (
-    id  int          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id        int          NOT NULL AUTO_INCREMENT PRIMARY KEY,
     username  varchar(45)  NOT NULL,
     email     varchar(100) NOT NULL,
     firstname varchar(45)  NOT NULL,
@@ -139,8 +139,10 @@ CREATE TABLE munchbase.`recipe_has_weeklyMenu`
     `expectedConsumption` decimal(4, 2) NOT NULL,
     `actualConsumption`   decimal(4, 2) DEFAULT (0.00),
     CONSTRAINT pk_recipe_has_weeklymenu PRIMARY KEY (`recipe_idRecipe`, `weeklyMenu_year`, `weeklyMenu_weekNum`),
-    CONSTRAINT `fk_recipe_has_weeklyMenu_recipe` FOREIGN KEY (`recipe_idRecipe`) REFERENCES munchbase.recipe (`idRecipe`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT `fk_recipe_has_weeklyMenu_weeklyMenu` FOREIGN KEY (`weeklyMenu_year`, `weeklyMenu_weekNum`) REFERENCES munchbase.`weeklyMenu` (year, `weekNum`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT `fk_recipe_has_weeklyMenu_recipe` FOREIGN KEY (`recipe_idRecipe`)
+        REFERENCES munchbase.recipe (`idRecipe`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT `fk_recipe_has_weeklyMenu_weeklyMenu` FOREIGN KEY (`weeklyMenu_year`, `weeklyMenu_weekNum`)
+        REFERENCES munchbase.`weeklyMenu` (year, `weekNum`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
 

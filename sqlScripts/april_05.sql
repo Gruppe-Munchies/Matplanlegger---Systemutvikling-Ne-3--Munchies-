@@ -150,14 +150,10 @@ CREATE TABLE munchbase.recipe_has_weeklyMenu
 (
     `weeklyMenu_idWeeklyMenu` int           NOT NULL,
     `recipe_idRecipe`         int           NOT NULL,
-    `weekly_menu_date_id`     int           NOT NULL,
     `expectedConsumption`     decimal(4, 2) NOT NULL,
-    `actualConsumption`       decimal(4, 2) DEFAULT (0.00),
-    CONSTRAINT pk_recipe_has_weeklymenu PRIMARY KEY (`recipe_idRecipe`, `weeklyMenu_idWeeklyMenu`, weekly_menu_date_id),
+    CONSTRAINT pk_recipe_has_weeklymenu PRIMARY KEY (`recipe_idRecipe`, `weeklyMenu_idWeeklyMenu`),
     CONSTRAINT `fk_recipe_has_weeklyMenu_recipe` FOREIGN KEY (`recipe_idRecipe`)
-        REFERENCES munchbase.recipe (`idRecipe`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT `fk_recipe_has_weeklyMenu_date` FOREIGN KEY (`weekly_menu_date_id`)
-        REFERENCES munchbase.weekly_menu_date (`id_weekly_menu_date`) ON DELETE NO ACTION ON UPDATE NO ACTION
+        REFERENCES munchbase.recipe (`idRecipe`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
 
@@ -177,7 +173,7 @@ CREATE TABLE munchbase.weekly_menu_date
 
 CREATE INDEX `fk_userGroup_has_ingredient_ingredient_idx` ON munchbase.`userGroup_has_ingredient` (ingredient_idingredient);
 
-CREATE INDEX `fk_recipe_has_weeklyMenu_date` ON munchbase.`recipe_has_weeklyMenu` (weekly_menu_date_id);
+# CREATE INDEX `fk_recipe_has_weeklyMenu_date` ON munchbase.`recipe_has_weeklyMenu` (weekly_menu_date_id);
 
 CREATE INDEX `fk_userGroup_has_ingredient_userGroup_idx` ON munchbase.`userGroup_has_ingredient` (`userGroup_iduserGroup`);
 
@@ -291,7 +287,6 @@ VALUES (1, 1, 2.0),
 
 
 
-INSERT INTO munchbase.`recipe_has_weeklyMenu`(`weeklyMenu_idWeeklyMenu`, weekly_menu_date_id, `recipe_idRecipe`,
-                                              `expectedConsumption`,
-                                              `actualConsumption`)
-VALUES (0, 0, 1, 20, 50);
+INSERT INTO munchbase.`recipe_has_weeklyMenu`(`weeklyMenu_idWeeklyMenu`, `recipe_idRecipe`,
+                                              `expectedConsumption`)
+VALUES (0, 1, 20);
