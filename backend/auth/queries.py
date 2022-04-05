@@ -17,8 +17,9 @@ def fetchUser(user_name):
 
 def fetchPendingInvitations(userid):
     session = loadSession()
-    res = session.query(Usergroup, UserHasUsergroup).join(
-        UserHasUsergroup, UserHasUsergroup.userGroup_iduserGroup == Usergroup.iduserGroup).where(
+    res = session.query(Usergroup, UserHasUsergroup, Usertype).join(
+        UserHasUsergroup, UserHasUsergroup.userGroup_iduserGroup == Usergroup.iduserGroup).join(
+        UserHasUsergroup, UserHasUsergroup.userType_iduserType == Usertype.iduserType).where(
         UserHasUsergroup.user_userId == userid, UserHasUsergroup.memberStatus_idStatus == 1).all()
     return res
 
