@@ -218,6 +218,20 @@ def inviteUser():
             flash(f"{user_to_invite.username} er allerede invitert eller medlem av gruppen!")
         return redirect(url_for("auth.groupadmin"))
 
+@auth.route('/groupadmin/inviter/response', methods=['GET', 'POST'])
+def response():
+
+    response = request.args["response"]
+    if response == 1:
+        #Update table
+    elif response == 2:
+        #Update table
+    else:
+        return redirect(url_for("auth.profil"))
+
+    return redirect(url_for("auth.profil"))
+
+
 
 @auth.route('/profil', methods=['GET', 'POST'])
 def profil():
