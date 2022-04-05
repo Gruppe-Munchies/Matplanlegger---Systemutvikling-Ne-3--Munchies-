@@ -227,7 +227,7 @@ def profil():
     # TODO:Bør flyttes til nav
 
     #Fetch pending invitations
-
+    invitations = fetchPendingInvitations(current_user.id)
 
     form = UserGroupSelector(request.form)
     # choice = [(0,"Velg gruppe å samhandle som")]
@@ -247,7 +247,7 @@ def profil():
     #########   Slutt valg av group    #############
     form.idOgNavn.data = session.get('group_to_use', 0)  # setter standard til den aktive
 
-    return render_template('profilepage.html', form=form, groups=groups)
+    return render_template('profilepage.html', form=form, groups=groups, invitations=invitations)
 
 
 @auth.route('/changeusertype', methods=['GET', 'POST'])
