@@ -226,6 +226,9 @@ def profil():
     groups = fetchAllUserGroupsUserHas(current_user.id)
     # TODO:Bør flyttes til nav
 
+    #Fetch pending invitations
+
+
     form = UserGroupSelector(request.form)
     # choice = [(0,"Velg gruppe å samhandle som")]
     choice = []

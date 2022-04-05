@@ -245,9 +245,9 @@ VALUES (1, 'Admin'),
 
 
 INSERT INTO munchbase.`memberStatus`(`idStatus`, `statusName`)
-VALUES (1, 'Invited'),
-       (2, 'Accepted'),
-       (3, 'Rejected');
+VALUES (1, 'Invitert'),
+       (2, 'Medlem'),
+       (3, 'Avslått');
 
 
 INSERT INTO munchbase.`user_has_userGroup`(`user_userId`, `userGroup_iduserGroup`, `userType_iduserType`, `memberStatus_idStatus`)

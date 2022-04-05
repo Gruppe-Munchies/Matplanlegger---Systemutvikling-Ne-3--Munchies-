@@ -15,6 +15,12 @@ def fetchUser(user_name):
     res = session.query(User).where(User.username == user_name).first()
     return res
 
+def fetchPendingInvitations(userid):
+    session = loadSession()
+    res = session.query(UserHasUsergroup).where(
+        UserHasUsergroup.user_userId == userid, UserHasUsergroup.memberStatus.idStatus == 1).all()
+    return res
+
 
 def fetchUserTypeByUserIdAndGroupId(user_id, user_group):
     session = loadSession()
