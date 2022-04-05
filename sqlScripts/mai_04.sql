@@ -1,5 +1,7 @@
+# noinspection SpellCheckingInspectionForFile @ any/"munchbase"
+
 #################
-# CREATE TALBES #
+# CREATE TABLES #
 #################
 
 
@@ -82,7 +84,6 @@ CREATE TABLE `munchbase`.`memberStatus`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
 
-
 CREATE TABLE munchbase.`user_has_userGroup`
 (
     `user_userId`           int NOT NULL,
@@ -102,14 +103,12 @@ CREATE TABLE munchbase.`user_has_userGroup`
   DEFAULT CHARSET = utf8mb3;
 
 
-CREATE TABLE munchbase.`weeklyMenu`
+CREATE TABLE munchbase.weeklyMenu
 (
-    'idWeeklyMenu'          int         NOT NULL AUTO_INCREMENT,
-    `weekNum`               int         NOT NULL,
-    'name'                  varchar(45) NOT NULL,
-    'description'           varchar(250),
+    `idWeeklyMenu`          int         NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `userGroup_iduserGroup` int         NOT NULL,
-    CONSTRAINT pk_weeklymenu PRIMARY KEY ('idWeeklyMenu'),
+    `name`                  varchar(45) NOT NULL,
+    `description`           varchar(250),
     CONSTRAINT `fk_weeklyMenu_userGroup` FOREIGN KEY (`userGroup_iduserGroup`)
         REFERENCES munchbase.`userGroup` (`iduserGroup`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB
@@ -147,28 +146,26 @@ CREATE TABLE munchbase.recipe_has_ingredient
 
 
 
-CREATE TABLE munchbase.`recipe_has_weeklyMenu`
+CREATE TABLE munchbase.recipe_has_weeklyMenu
 (
+    `weeklyMenu_idWeeklyMenu` int           NOT NULL,
     `recipe_idRecipe`         int           NOT NULL,
-    'weekly_menu_date_id'     int           NOT NULL,
-    'weeklyMenu_idWeeklyMenu' int           NOT NULL,
+    `weekly_menu_date_id`     int           NOT NULL,
     `expectedConsumption`     decimal(4, 2) NOT NULL,
     `actualConsumption`       decimal(4, 2) DEFAULT (0.00),
-    CONSTRAINT pk_recipe_has_weeklymenu PRIMARY KEY (`recipe_idRecipe`, 'weeklyMenu_idWeeklyMenu'),
+    CONSTRAINT pk_recipe_has_weeklymenu PRIMARY KEY (`recipe_idRecipe`, `weeklyMenu_idWeeklyMenu`, weekly_menu_date_id),
     CONSTRAINT `fk_recipe_has_weeklyMenu_recipe` FOREIGN KEY (`recipe_idRecipe`)
         REFERENCES munchbase.recipe (`idRecipe`) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT `fk_recipe_has_weeklyMenu_date` FOREIGN KEY (`weekly_menu_date_id`)
-        REFERENCES munchbase.weekly_menu_date (`id_weekly_menu_date`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT `fk_recipe_has_weeklyMenu_weeklyMenu` FOREIGN KEY (`weeklyMenu_year`, `weeklyMenu_weekNum`)
-        REFERENCES munchbase.`weeklyMenu` (year, `weekNum`) ON DELETE NO ACTION ON UPDATE NO ACTION
+        REFERENCES munchbase.weekly_menu_date (`id_weekly_menu_date`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
 
-CREATE TABLE munchbase.'weekly_menu_date'
+CREATE TABLE munchbase.weekly_menu_date
 (
-    id_weekly_menu_date int NOT NULL PRIMARY KEY,
-    year                int NOT NULL,
-    weekNumber          int NOT NULL
+    `id_weekly_menu_date` int NOT NULL PRIMARY KEY,
+    `year`                int NOT NULL,
+    `weekNumber`          int NOT NULL
 
 ) ENGINE = InnoDB
   DEFAULT CHAR SET = utf8mb3;
@@ -199,8 +196,6 @@ CREATE INDEX `fk_recipe_recipeAvailability_idx` ON munchbase.recipe (`recipeAvai
 CREATE INDEX fk_recipe_has_ingredient_ingredient_idx ON munchbase.recipe_has_ingredient (ingredient_idingredient);
 
 CREATE INDEX fk_recipe_has_ingredient_recipe_idx ON munchbase.recipe_has_ingredient (`recipe_idRecipe`);
-
-CREATE INDEX `fk_recipe_has_weeklyMenu_weeklyMenu_idx` ON munchbase.`recipe_has_weeklyMenu` (`weeklyMenu_year`, `weeklyMenu_weekNum`);
 
 CREATE INDEX `fk_recipe_has_weeklyMenu_recipe_idx` ON munchbase.`recipe_has_weeklyMenu` (`recipe_idRecipe`);
 
@@ -278,8 +273,8 @@ VALUES (1, 1, 1, 2),
 
 
 # Legg til weekly menus
-INSERT INTO munchbase.`weeklyMenu`(year, `weekNum`, day, name, description, `userGroup_iduserGroup`)
-VALUES (2022, 9, 1, 'Rulleuke', 'En uke full av ruller', 1);
+INSERT INTO munchbase.`weeklyMenu`(name, description, `userGroup_iduserGroup`)
+VALUES ('Rulleuke', 'En uke full av ruller', 1);
 
 
 # Legg til oppskrifter
@@ -296,6 +291,7 @@ VALUES (1, 1, 2.0),
 
 
 
-INSERT INTO munchbase.`recipe_has_weeklyMenu`(`recipe_idRecipe`, `weeklyMenu_year`, `weeklyMenu_weekNum`,
-                                              `expectedConsumption`, `actualConsumption`)
-VALUES (1, 2022, 9, 20, 50);
+INSERT INTO munchbase.`recipe_has_weeklyMenu`(`weeklyMenu_idWeeklyMenu`, weekly_menu_date_id, `recipe_idRecipe`,
+                                              `expectedConsumption`,
+                                              `actualConsumption`)
+VALUES (0, 0, 1, 20, 50);
