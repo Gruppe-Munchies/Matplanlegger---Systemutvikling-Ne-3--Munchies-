@@ -48,8 +48,8 @@
         <tr>
             <td>{{ i[0].groupName }}</td>
             <td>{{ i[2].userTypeName }}</td>
-            <td><button type="button" class="btn btn-success">Aksepter</button></td>
-            <td><button type="button" class="btn btn-danger">Avslå</button></td>
+            <td><a href="{{ url_for('auth.response', usergroup=i[0].iduserGroup, response=1) }}"><button type="button" class="btn btn-success">Aksepter</button></a></td>
+            <td><a href="{{ url_for('auth.response', usergroup=i[0].iduserGroup, response=2) }}"><button type="button" class="btn btn-success">Avslå</button></a></td>
         </tr>
       {% endfor %}
       </tbody>

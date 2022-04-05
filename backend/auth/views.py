@@ -225,10 +225,10 @@ def response():
     usergroup = request.args["usergroup"]
     response = request.args["response"]
 
-    if response == 1:
-        #Update table
-    elif response == 2:
-        #Update table
+    if response == "1":
+        invitationResponse(userid, usergroup, 2)
+    elif response == "2":
+        invitationResponse(userid, usergroup, 3)
     else:
         return redirect(url_for("auth.profil"))
 

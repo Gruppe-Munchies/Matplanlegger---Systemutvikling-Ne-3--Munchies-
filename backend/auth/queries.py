@@ -27,7 +27,7 @@ def invitationResponse(userid, usergroupid, response):
     session = loadSession()
     session.query(UserHasUsergroup).where(UserHasUsergroup.user_userId == userid,
                                           UserHasUsergroup.userGroup_iduserGroup == usergroupid).update(
-        {UserHasUsergroup.userType_iduserType: response})
+        {UserHasUsergroup.memberStatus_idStatus: response})
     session.commit()
 
 def fetchUserTypeByUserIdAndGroupId(user_id, user_group):
