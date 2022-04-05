@@ -228,6 +228,7 @@ def profil():
 
     #Fetch pending invitations
     invitations = fetchPendingInvitations(current_user.id)
+    print(invitations[0][0].groupName)
 
     form = UserGroupSelector(request.form)
     # choice = [(0,"Velg gruppe å samhandle som")]

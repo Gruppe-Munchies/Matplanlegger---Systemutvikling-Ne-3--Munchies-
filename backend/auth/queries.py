@@ -19,7 +19,7 @@ def fetchPendingInvitations(userid):
     session = loadSession()
     res = session.query(Usergroup, UserHasUsergroup).join(
         UserHasUsergroup, UserHasUsergroup.userGroup_iduserGroup == Usergroup.iduserGroup).where(
-        UserHasUsergroup.user_userId == userid, UserHasUsergroup.memberStatus.idStatus == 1).all()
+        UserHasUsergroup.user_userId == userid, UserHasUsergroup.memberStatus_idStatus == 1).all()
     return res
 
 
