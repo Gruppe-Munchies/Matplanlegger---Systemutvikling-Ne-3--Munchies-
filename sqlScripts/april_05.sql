@@ -151,17 +151,36 @@ CREATE TABLE munchbase.recipe_has_weeklyMenu
     `weeklyMenu_idWeeklyMenu` int           NOT NULL,
     `recipe_idRecipe`         int           NOT NULL,
     `expectedConsumption`     decimal(4, 2) NOT NULL,
-    CONSTRAINT pk_recipe_has_weeklymenu PRIMARY KEY (`recipe_idRecipe`, `weeklyMenu_idWeeklyMenu`),
+    CONSTRAINT pk_recipe_has_weeklymenu PRIMARY KEY (`recipe_idRecipe`, weeklyMenu_idWeeklyMenu),
     CONSTRAINT `fk_recipe_has_weeklyMenu_recipe` FOREIGN KEY (`recipe_idRecipe`)
-        REFERENCES munchbase.recipe (`idRecipe`) ON DELETE NO ACTION ON UPDATE NO ACTION
+        REFERENCES munchbase.recipe (`idRecipe`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT `fk_weeklymenu_has_recipe` FOREIGN KEY (`weeklyMenu_idWeeklyMenu`)
+        REFERENCES munchbase.weeklyMenu (`idWeeklyMenu`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb3;
+
+CREATE TABLE munchbase.recipeConsumption
+(
+    recipeConsumption_id int NOT NULL PRIMARY KEY,
+    recipe_id            int NOT NULL,
+    menu_date_id         int NOT NULL,
+    actualConsumption    int,
+    CONSTRAINT `fk_recipeId_recipeConsumption` FOREIGN KEY (`recipe_id`)
+        REFERENCES munchbase.recipe (`idRecipe`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT `fk_menuDate_recipeConsumption` FOREIGN KEY (`menu_date_id`)
+        REFERENCES munchbase.weekly_menu_date (`id_weekly_menu_date`) ON DELETE NO ACTION ON UPDATE NO ACTION
+
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
 
 CREATE TABLE munchbase.weekly_menu_date
 (
     `id_weekly_menu_date` int NOT NULL PRIMARY KEY,
+    `weeklyMenu_id`       int NOT NULL,
     `year`                int NOT NULL,
-    `weekNumber`          int NOT NULL
+    `weekNumber`          int NOT NULL,
+    CONSTRAINT `fk_weeklyMenu_menuDate` FOREIGN KEY (`weeklyMenu_id`)
+        REFERENCES munchbase.weeklyMenu (`idWeeklyMenu`) ON DELETE NO ACTION ON UPDATE NO ACTION
 
 ) ENGINE = InnoDB
   DEFAULT CHAR SET = utf8mb3;
@@ -173,7 +192,9 @@ CREATE TABLE munchbase.weekly_menu_date
 
 CREATE INDEX `fk_userGroup_has_ingredient_ingredient_idx` ON munchbase.`userGroup_has_ingredient` (ingredient_idingredient);
 
-# CREATE INDEX `fk_recipe_has_weeklyMenu_date` ON munchbase.`recipe_has_weeklyMenu` (weekly_menu_date_id);
+CREATE INDEX `fk_menuDate_recipeConsumption` ON munchbase.`weekly_menu_date` (id_weekly_menu_date);
+
+CREATE INDEX `fk_weeklyMenu_menuDate` ON munchbase.`weekly_menu_date` (weeklyMenu_id);
 
 CREATE INDEX `fk_userGroup_has_ingredient_userGroup_idx` ON munchbase.`userGroup_has_ingredient` (`userGroup_iduserGroup`);
 
