@@ -182,13 +182,8 @@ def removeUserFromGroup():
 @auth.route('/groupadmin/inviter', methods=['GET', 'POST'])
 def inviteUser():
     invite_form = InviteForm(request.form)
-
-    user_to_invite = fetchUser(invite_form.username.data)  # Fetch user to invite
-    usertype = invite_form.usertype.data  # Fetch usertype
     activeGroup = session.get('group_to_use')  # Bruk aktiv gruppe
 
-    print(usertype)
-    userId = user_to_invite.id
 
     # Sjekker om brukeren, i den gitte brukergruppa, har adminrettigheter.
     usertype = fetchUserTypeByUserIdAndGroupId(current_user.id, activeGroup)
@@ -201,21 +196,25 @@ def inviteUser():
         usertypeId = invite_form.usertype.data  # Usertype assigned to invited user
 
         # Check if invited user exists
-        if not user_to_invite:
-            flash("Brukeren finnes ikke.", "danger")
-            return redirect(url_for("auth.groupadmin"))
-
-        # User exists, add to group if not already member
-        if not fetch_user_in_usergroup(user_to_invite.id, activeGroup):
-            if userIsAdmin:
-                userId = user_to_invite.id
-                userGroupId = activeGroup
-                auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(usertypeId), 1)
-                flash(f'{user_to_invite.username} ble invitert!')
+        if user_to_invite:
+            # User exists, check if already member or invited
+            if not fetch_user_in_usergroup(user_to_invite.id, activeGroup):
+                #Check if Admin
+                if userIsAdmin:
+                    userId = user_to_invite.id
+                    userGroupId = activeGroup
+                    auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(usertypeId), 1)
+                    flash(f'{user_to_invite.username} ble invitert!')
+                else:
+                    # Not Admin
+                    flash('Krever admin-tilgang!')
             else:
-                flash('Krever admin-tilgang!')
+                # User already member
+                flash(f"{user_to_invite.username} er allerede invitert eller medlem av gruppen!")
         else:
-            flash(f"{user_to_invite.username} er allerede invitert eller medlem av gruppen!")
+            # User does not exist
+            flash("Brukeren finnes ikke.", "danger")
+
         return redirect(url_for("auth.groupadmin"))
 
 @auth.route('/groupadmin/inviter/response', methods=['GET', 'POST'])
