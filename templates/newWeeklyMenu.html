@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}AddWeekly{% endblock %}
+{% block heading %}Legg til ukesmeny{% endblock %}
+{% block description %}Legg til en ukesmeny for din gruppe{% endblock %}
+
+{% block content %}
+    <div class="container" style="max-width: 800px">
+
+        <form method="POST" action="{{ url_for('weeklyMenu.legg_til_ukesmeny') }}" class="row">
+
+            <div class="form-group p-3">
+                {{ form.weekly_name(class="form-control",placeholder="navn på ukesmeny") }}
+            </div>
+
+            <div class="form-group p-3">
+                {{ form.weekly_desc(class="form-control",placeholder="Beskrivelse av ukesmeny") }}
+            </div>
+
+            <div class="form-group w-100 p-3">
+                {{ form.submit(class_="btn btn-success") }}
+            </div>
+
+        </form>
+
+
+    </div>
+
+
+
+
+
+{% endblock %}
