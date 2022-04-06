@@ -1,6 +1,6 @@
 from local_db.session import loadSession
 from local_db.orm import User, Ingredient, Recipe, RecipeHasIngredient, RecipeHasWeeklyMenu, RecipeAvailability, \
-    Usertype, Usergroup, UsergroupHasIngredient, WeeklyMenu, Base, UserHasUsergroup
+    Usertype, Usergroup, UsergroupHasIngredient, WeeklyMenu, Base, UserHasUsergroup, MemberStatus
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import delete, and_
 
@@ -15,6 +15,20 @@ def fetchUser(user_name):
     res = session.query(User).where(User.username == user_name).first()
     return res
 
+def fetchPendingInvitations(userid):
+    session = loadSession()
+    res = session.query(Usergroup, UserHasUsergroup, Usertype).join(
+        Usergroup, UserHasUsergroup.userGroup_iduserGroup == Usergroup.iduserGroup).join(
+        Usertype, UserHasUsergroup.userType_iduserType == Usertype.iduserType).where(
+        UserHasUsergroup.user_userId == userid, UserHasUsergroup.memberStatus_idStatus == 1).all()
+    return res
+
+def invitationResponse(userid, usergroupid, response):
+    session = loadSession()
+    session.query(UserHasUsergroup).where(UserHasUsergroup.user_userId == userid,
+                                          UserHasUsergroup.userGroup_iduserGroup == usergroupid).update(
+        {UserHasUsergroup.memberStatus_idStatus: response})
+    session.commit()
 
 def fetchUserTypeByUserIdAndGroupId(user_id, user_group):
     session = loadSession()
@@ -37,10 +51,10 @@ def return_email_from_name(name):
 
 
 # Add user Id, name of user group, and user type in group
-def insert_to_user_has_userGroup(user_id, usergroup_id, user_type_id):
+def insert_to_user_has_userGroup(user_id, usergroup_id, user_type_id, member_status):
     session = loadSession()
     new_insertion = UserHasUsergroup(user_userId=user_id, userGroup_iduserGroup=usergroup_id,
-                                     userType_iduserType=user_type_id)
+                                     userType_iduserType=user_type_id, memberStatus_idStatus=member_status)
     session.add(new_insertion)
     session.commit()
 
@@ -92,10 +106,10 @@ def fetchAllUserGroupsUserHas(user_id):
     session = loadSession()
     res = session.query(Usergroup).join(UserHasUsergroup,
                                         Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(User,
-                                                                                                              User.id == UserHasUsergroup.user_userId).join(
-        Usertype,
-        Usertype.iduserType == UserHasUsergroup.userType_iduserType).filter(
-        User.id == user_id).all()
+                                        User.id == UserHasUsergroup.user_userId).join(
+                                        Usertype,
+                                        Usertype.iduserType == UserHasUsergroup.userType_iduserType).filter(
+                                        User.id == user_id).filter(UserHasUsergroup.memberStatus_idStatus == 2).all()
     return res
 
 
@@ -133,12 +147,12 @@ def fetchUsersInUsergroup(group_name):
 def fetchUsersInUsergroupById(group_id):
     # TODO: Query for fetching all users belonging to a group
     session = loadSession()
-    res = session.query(Usergroup, User, Usertype).join(UserHasUsergroup,
-                                                        Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(
-        User,
-        User.id == UserHasUsergroup.user_userId).join(Usertype,
-                                                      Usertype.iduserType == UserHasUsergroup.userType_iduserType).filter(
-        Usergroup.iduserGroup == group_id).all()
+    res = session.query(Usergroup, User, Usertype, MemberStatus).join(UserHasUsergroup,
+                                                        Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(User,
+                                                        User.id == UserHasUsergroup.user_userId).join(Usertype,
+                                                        Usertype.iduserType == UserHasUsergroup.userType_iduserType).join(MemberStatus,
+                                                        MemberStatus.idStatus == UserHasUsergroup.memberStatus_idStatus).filter(
+                                                        Usergroup.iduserGroup == group_id).all()
     return res
 
 
@@ -175,6 +189,12 @@ def fetch_first_usergroups_for_user(userId):
                                                Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).where(
         UserHasUsergroup.user_userId == userId).first()
     return usergroups
+
+def fetch_user_in_usergroup(userid, groupid):
+    session = loadSession()
+    res = session.query(UserHasUsergroup).where(UserHasUsergroup.user_userId == userid, UserHasUsergroup.userGroup_iduserGroup == groupid).first()
+
+    return res
 
 
 # # Add to usergroup_has_ingredient

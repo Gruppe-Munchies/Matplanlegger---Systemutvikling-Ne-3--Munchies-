@@ -73,15 +73,25 @@ CREATE TABLE munchbase.`userType`
 
 
 
+CREATE TABLE `munchbase`.`memberStatus`
+(
+  `idStatus` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+  `statusName` VARCHAR(45) NOT NULL
+)ENGINE = InnoDB
+ DEFAULT CHARSET = utf8mb3;
+
+
 CREATE TABLE munchbase.`user_has_userGroup`
 (
     `user_userId`           int NOT NULL,
     `userGroup_iduserGroup` int NOT NULL,
     `userType_iduserType`   int NOT NULL,
+    `memberStatus_idStatus` int not null,
     CONSTRAINT pk_user_has_usergroup PRIMARY KEY (`user_userId`, `userGroup_iduserGroup`),
     CONSTRAINT fk_user_has_usergroup_user FOREIGN KEY (`user_userId`) REFERENCES munchbase.`user` (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT fk_user_has_usergroup_usergroup FOREIGN KEY (`userGroup_iduserGroup`) REFERENCES munchbase.`userGroup` (`iduserGroup`) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT fk_user_has_usergroup_usertype FOREIGN KEY (`userType_iduserType`) REFERENCES munchbase.`userType` (`iduserType`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT fk_user_has_usergroup_status FOREIGN KEY (`memberStatus_idStatus`) REFERENCES munchbase.`memberStatus` (`idStatus`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb3;
 
@@ -234,10 +244,15 @@ VALUES (1, 'Admin'),
        (2, 'Bruker');
 
 
+INSERT INTO munchbase.`memberStatus`(`idStatus`, `statusName`)
+VALUES (1, 'Invitert'),
+       (2, 'Medlem'),
+       (3, 'Avslått');
 
-INSERT INTO munchbase.`user_has_userGroup`(`user_userId`, `userGroup_iduserGroup`, `userType_iduserType`)
-VALUES (1, 1, 1),
-       (2, 2, 1);
+
+INSERT INTO munchbase.`user_has_userGroup`(`user_userId`, `userGroup_iduserGroup`, `userType_iduserType`, `memberStatus_idStatus`)
+VALUES (1, 1, 1, 2),
+       (2, 2, 1, 2);
 
 
 # Legg til weekly menus

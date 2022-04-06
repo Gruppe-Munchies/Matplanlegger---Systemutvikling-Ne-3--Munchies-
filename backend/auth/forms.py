@@ -62,13 +62,10 @@ class InviteForm(FlaskForm):
         label=('Brukernavn'),
         validators=[DataRequired()])
 
-    usergroup = SelectField(
-        label=('Brukergruppe'),
-        validators=[DataRequired()])
-
-    usertype = SelectField(
-        label=('Brukertype'),
-        validators=[DataRequired()])
+    usertype = SelectField('Brukertype',
+                           choices=[('1', 'Admin'), ('2', 'Bruker')],
+                           # Må kjøre en query fra usertype for å hente verdier her
+                           validate_choice=True)
 
     submit = SubmitField(label=('Inviter'))
 
@@ -91,6 +88,7 @@ class createUserGroupForm(FlaskForm):
         validators=[DataRequired()])
 
     submit = SubmitField(label=('Opprett gruppe'))
+
 
 class UserGroupSelector(FlaskForm):
     idOgNavn = SelectField(u'Group', choices='', validators=[DataRequired()])

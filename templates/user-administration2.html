@@ -7,6 +7,7 @@
         <th>Etternavn</th>
         <th>Gruppe</th>
         <th>Type</th>
+        <th>Status</th>
     </tr>
     </thead>
     <tbody>
@@ -29,8 +30,7 @@
                 </select>
             </form>
             </td>
-            <td>{{ user[0].groupName }}</td>
-            <td>{{ user[2].userTypeName }}</td>
+            <td>{{ user[3].statusName }}</td>
             <td>
                 <div class="form-group w-100 p-3">
                     <form method="POST" action="{{ url_for('auth.removeUserFromGroup') }}" class="row">
@@ -40,7 +40,6 @@
 
                         <button class="btn btn-danger" type="submit">Meld ut</button>
                     </form>
-
                 </div>
             </td>
         </tr>

@@ -93,7 +93,7 @@ def register():
         userGroupId = fetchedUserGroup.iduserGroup
 
         # Insert userID, userGroupID and userType to "user_has_userGroup"
-        auth_queries.insert_to_user_has_userGroup(int(userID), int(userGroupId), int(usertype))
+        auth_queries.insert_to_user_has_userGroup(int(userID), int(userGroupId), int(usertype), 2) #TODO: MemberStatus er hardkodet til Accepted
 
         flash('Registreringen var vellykket!')
         return redirect(url_for("auth.register"))
@@ -117,7 +117,7 @@ def createGroup():
         userGroup = fetchUserGroup(createUGForm.usergroup.data)
         userGroupId = userGroup.iduserGroup
         userTypeId = 1
-        auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(userTypeId))
+        auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(userTypeId), 2)
         flash('Gruppen ble opprettet!')
 
     return redirect(url_for("auth.groupadmin"))
@@ -182,19 +182,57 @@ def removeUserFromGroup():
 @auth.route('/groupadmin/inviter', methods=['GET', 'POST'])
 def inviteUser():
     invite_form = InviteForm(request.form)
+    activeGroup = session.get('group_to_use')  # Bruk aktiv gruppe
 
-    user_to_invite = fetchUser(invite_form.username.data)  # Fetch user to invite
-    usergroup = fetchUserGroup(invite_form.usergroup.data)  # Fetch usergroup
-    usertype = fetchUserType(invite_form.usertype.data)  # Fetch usertype
 
-    userId = user_to_invite.userId
-    userGroupId = usergroup.iduserGroup
-    usertypeId = usertype.iduserType
+    # Sjekker om brukeren, i den gitte brukergruppa, har adminrettigheter.
+    usertype = fetchUserTypeByUserIdAndGroupId(current_user.id, activeGroup)
+    userIsAdmin = False
+    if usertype == 1:
+        userIsAdmin = True
 
-    auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(usertypeId))
+    if request.method == 'POST' and invite_form.validate():
+        user_to_invite = fetchUser(invite_form.username.data)  # Fetch user to invite
+        usertypeId = invite_form.usertype.data  # Usertype assigned to invited user
 
-    flash('Brukeren ble lagt til!')
-    return redirect(url_for("auth.groupadmin"))
+        # Check if invited user exists
+        if user_to_invite:
+            # User exists, check if already member or invited
+            if not fetch_user_in_usergroup(user_to_invite.id, activeGroup):
+                #Check if Admin
+                if userIsAdmin:
+                    userId = user_to_invite.id
+                    userGroupId = activeGroup
+                    auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(usertypeId), 1)
+                    flash(f'{user_to_invite.username} ble invitert!')
+                else:
+                    # Not Admin
+                    flash('Krever admin-tilgang!')
+            else:
+                # User already member
+                flash(f"{user_to_invite.username} er allerede invitert eller medlem av gruppen!")
+        else:
+            # User does not exist
+            flash("Brukeren finnes ikke.", "danger")
+
+        return redirect(url_for("auth.groupadmin"))
+
+@auth.route('/groupadmin/inviter/response', methods=['GET', 'POST'])
+def response():
+
+    userid = current_user.id
+    usergroup = request.args["usergroup"]
+    response = request.args["response"]
+
+    if response == "1":
+        invitationResponse(userid, usergroup, 2)
+    elif response == "2":
+        invitationResponse(userid, usergroup, 3)
+    else:
+        return redirect(url_for("auth.profil"))
+
+    return redirect(url_for("auth.profil"))
+
 
 
 @auth.route('/profil', methods=['GET', 'POST'])
@@ -203,6 +241,9 @@ def profil():
     # TODO: Må vell legge inn usertype pr group i profilsiden egentlig.
     groups = fetchAllUserGroupsUserHas(current_user.id)
     # TODO:Bør flyttes til nav
+
+    #Fetch pending invitations
+    invitations = fetchPendingInvitations(current_user.id)
 
     form = UserGroupSelector(request.form)
     # choice = [(0,"Velg gruppe å samhandle som")]
@@ -222,7 +263,7 @@ def profil():
     #########   Slutt valg av group    #############
     form.idOgNavn.data = session.get('group_to_use', 0)  # setter standard til den aktive
 
-    return render_template('profilepage.html', form=form, groups=groups)
+    return render_template('profilepage.html', form=form, groups=groups, invitations=invitations)
 
 
 @auth.route('/changeusertype', methods=['GET', 'POST'])
@@ -234,7 +275,7 @@ def change_usertype():
 
     usergroup_admin_update_usertypes(userid, usergroupid, usertypeid)
 
-    return redirect(url_for("auth.invite"))
+    return redirect(url_for("auth.groupadmin"))
 
 
 def is_safe_url(target):

@@ -13,7 +13,7 @@
             <div class="form-group w-25 p-3">{{ form.idOgNavn(class="form-select", onchange="submit()")}}</div>
         </form>
 
-    Grupper du er medlem i:
+    <h1 class="fw-light">Grupper du er medlem i:</h1>
     <table class="table table-striped table-hover">
       <thead>
         <tr>
@@ -29,5 +29,33 @@
             <td><button type="button" class="btn btn-outline-primary btn-sm"><i class="bi-trash"></i></button></td>
         </tr>
       {% endfor %}
+      </tbody>
+    </table>
+
+    <br>
+    <br>
+    <h1 class="fw-light">Invitasjoner:</h1>
+    {% if invitations %}
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Gruppe</th>
+          <th>Rolle</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for i in invitations %}
+        <tr>
+            <td>{{ i[0].groupName }}</td>
+            <td>{{ i[2].userTypeName }}</td>
+            <td><a href="{{ url_for('auth.response', usergroup=i[0].iduserGroup, response=1) }}"><button type="button" class="btn btn-success">Aksepter</button></a></td>
+            <td><a href="{{ url_for('auth.response', usergroup=i[0].iduserGroup, response=2) }}"><button type="button" class="btn btn-danger">Avslå</button></a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <h2 class="fw-light">Ingen ventende invitasjoner</h2>
+    {% endif %}
 
 {% endblock %}

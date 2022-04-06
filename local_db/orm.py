@@ -5,6 +5,7 @@ from sqlalchemy.orm import declarative_base
 
 Base = declarative_base(engine)
 
+
 class User(Base, UserMixin):
     """"""
     __tablename__ = 'user'
@@ -60,11 +61,20 @@ class UsergroupHasIngredient(Base):
     __table_args__ = {'autoload': True}
     """"""
 
+
+class MemberStatus(Base):
+    """"""
+    __tablename__ = 'memberStatus'
+    __table_args__ = {'autoload': True}
+    """"""
+
+
 class UserHasUsergroup(Base):
     """"""
     __tablename__ = 'user_has_userGroup'
     __table_args__ = {'autoload': True}
     """"""
+
 
 class Usertype(Base):
     """"""
@@ -78,7 +88,3 @@ class WeeklyMenu(Base):
     __tablename__ = 'weeklyMenu'
     __table_args__ = {'autoload': True}
     """"""
-
-
-
-
