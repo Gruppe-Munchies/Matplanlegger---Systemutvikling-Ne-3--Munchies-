@@ -7,10 +7,10 @@ class RegisterWeeklymenuForm(FlaskForm):
     # group_id?
 
     weekly_name = StringField(
-        label=('Navn på ukesmeny'),
+        label=('Navn'),
         validators=[DataRequired()])
     weekly_desc = TextAreaField(
-        label=('Beskrivelse av ukesmeny'),
+        label=('Beskrivelse'),
         validators=[DataRequired()])
 
     # recipes = StringField(
