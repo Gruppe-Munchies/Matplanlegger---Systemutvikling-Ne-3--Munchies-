@@ -54,7 +54,6 @@
 
             </div>
     {% elif current_user.is_authenticated and session.get('groupname_to_use') == ""  %}
-    {% endif %}
 
     Du er ikke medlem i en gruppe enda. Du må enten få en administrator i en gruppe til å invitere deg, eller opprette din egen gruppe.
       <h1 class="fw-light">Opprett gruppe</h1>
@@ -73,6 +72,6 @@
                         <div class="form-group w-50 p-3"></div>
 
                 </form>
-
+ {% endif %}
 {% endblock %}
 
