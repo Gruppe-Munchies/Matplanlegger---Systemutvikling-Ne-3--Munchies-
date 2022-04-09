@@ -4,7 +4,7 @@
 {% block description %}Profilside for {{ current_user.username }}{% endblock %}
 {% block content %}
 {% include 'flash_messages.html' %}
-
+     {% if current_user.is_authenticated and session.get('groupname_to_use') != ""  %}
     <div class="container" style="max-width: 1000px;">
     <h1 class="fw-light"></h1>
     </div>
@@ -31,6 +31,10 @@
       {% endfor %}
       </tbody>
     </table>
+    {% else %}
+    Du er ikke med i noen gruppe. Du kan bli med i en gruppe ved at noen inviterer deg ved brukernavnet ditt ({{ current_user.username }}), eller at du oppretter en egen gruppe i gruppeadministrasjon.
+    {% endif %}
+
 
     <br>
     <br>
