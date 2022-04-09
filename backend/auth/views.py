@@ -107,12 +107,12 @@ def register():
 
 # CREATE USERGROUP
 @auth.route('/creategroup', methods=['GET', 'POST'])
+@login_required
 def createGroup():
     createUGForm = createUserGroupForm(request.form)
+
     if request.method == 'POST' and createUGForm.validate():
-        activeUser = "Username for innlogget bruker"  # TODO: Get username for logged in user
-        user = fetchUser(activeUser)
-        userId = 9  # TODO: Replace with actual "id for logged in user
+        userId = current_user.id
         auth_queries.insert_to_usergroup(createUGForm.usergroup.data)
         userGroup = fetchUserGroup(createUGForm.usergroup.data)
         userGroupId = userGroup.iduserGroup
