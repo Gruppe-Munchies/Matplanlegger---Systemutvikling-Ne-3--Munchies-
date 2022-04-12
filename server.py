@@ -6,6 +6,7 @@ import backend.main.views as mainpage
 import backend.auth.views as auth
 import backend.recipes.views as recipes
 import backend.ingredients.views as ingredients
+from backend import weekly_menu
 from local_db.db_user_info import username, password, DB_NAME
 
 # Flask configuration
@@ -14,6 +15,7 @@ app.register_blueprint(mainpage.mainpage)
 app.register_blueprint(auth.auth)
 app.register_blueprint(recipes.recipes)
 app.register_blueprint(ingredients.ingredient)
+app.register_blueprint(weekly_menu.weeklyMenu)
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{username}:{password}@localhost/{DB_NAME}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # stops warning
 app.config['SECRET_KEY'] = "secretkey"
@@ -48,6 +50,10 @@ def ukesmeny():
 @app.route('/user-administration')
 def userAdministration():
     return render_template('user-administration.html')
+
+@app.route('/leggtilmeny')
+def nyUkesmeny():
+    return render_template('newWeeklyMenu.html')
 
 
 

@@ -1,0 +1,1 @@
+from backend.weekly_menu.views import weeklyMenu
