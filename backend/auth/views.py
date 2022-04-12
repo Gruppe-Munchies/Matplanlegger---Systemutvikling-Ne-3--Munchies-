@@ -118,6 +118,8 @@ def createGroup():
         userGroupId = userGroup.iduserGroup
         userTypeId = 1
         auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(userTypeId), 2)
+        session['group_to_use'] = userGroupId
+        session['groupname_to_use'] = fetchUserGroupById(userGroupId).groupName
         flash('Gruppen ble opprettet!')
 
     return redirect(url_for("auth.groupadmin"))
@@ -125,11 +127,11 @@ def createGroup():
 
 @auth.route('/groupadmin', methods=['GET', 'POST'])
 def groupadmin():
-    # temp fix, when user has no usergroup, you get redirected to profile page
     if not fetch_first_usergroups_for_user(current_user.id):
-        flash("Du er ikke med i noen gruppe")
-        print("gruppeadmin: Ikke medlem i gruppe")
-        return redirect(url_for('auth.profil'))
+        createUGForm = createUserGroupForm(request.form)
+        invite_form = InviteForm(request.form)
+        return render_template('usergroup-administration.html', form=invite_form, ugform=createUGForm)
+
 
     invite_form = InviteForm(request.form)
     createUGForm = createUserGroupForm(request.form)

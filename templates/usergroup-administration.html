@@ -7,6 +7,7 @@
 
 
             <div class="container" style="max-width: 1000px;">
+            {% if current_user.is_authenticated and session.get('groupname_to_use') != ""  %}
             {% if userIsAdmin %}
             <h1 class="fw-light">Inviter bruker</h1>
 
@@ -52,7 +53,25 @@
                 {% include 'user-administration2.html' %}
 
             </div>
+    {% elif current_user.is_authenticated and session.get('groupname_to_use') == ""  %}
 
+    Du er ikke medlem i en gruppe enda. Du må enten få en administrator i en gruppe til å invitere deg, eller opprette din egen gruppe.
+      <h1 class="fw-light">Opprett gruppe</h1>
 
+                <form method="POST" action="{{ url_for('auth.createGroup') }}"class="row">
+                    {{ form.csrf_token }}
+
+                        <div class="form-group w-50 p-3">
+                            {{ ugform.usergroup(class="form-control", placeholder="Gruppenavn") }}
+                        </div>
+
+                        <div class="form-group w-100 p-3">
+                            {{ ugform.submit(class_="btn btn-success") }}
+                        </div>
+
+                        <div class="form-group w-50 p-3"></div>
+
+                </form>
+ {% endif %}
 {% endblock %}
 

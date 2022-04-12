@@ -9,12 +9,16 @@
         {% else %}
        <a class="navbar-brand" href="{{ url_for('index') }}">Munchbase </a>
         {% endif %}
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <ul id="navigation" class="navbar-nav mr-auto">
 
-            {% if current_user.is_authenticated %}
+            {% if current_user.is_authenticated and session.get('groupname_to_use') == ""  %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logg ut</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.profil') }}">Min profil</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.groupadmin') }}">Gruppeadministrasjon</a></li>
 
+            {% elif current_user.is_authenticated and session.get('groupname_to_use') !=""  %}
             <li class="nav-item"><a class="nav-link" href="{{ url_for('recipes.oppskrifter') }}">Oppskrifter</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('ingredient.new') }}">Ingredienser</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('handleliste') }}">Handleliste</a></li>
@@ -24,6 +28,7 @@
             <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.profil') }}">Min profil</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.groupadmin') }}">Gruppeadministrasjon</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logg ut</a></li>
+
 
 
             {% else %}
