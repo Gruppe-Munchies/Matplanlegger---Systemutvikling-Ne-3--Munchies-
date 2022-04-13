@@ -34,6 +34,7 @@ def oppskrift(recipe_id: int):
 
 @recipes.route('/legg-til-rett',  methods=["GET", "POST"])
 def legg_til_rett():
+    print()
     group_ingredients = fetch_all_ingredients_where_usergroup_equals(1)
     # for i in group_ingredients:
     #     print(i[0].ingredientName, i[0].idingredient )
@@ -48,27 +49,35 @@ def legg_til_rett():
         ingredienser = form.ingredienser.data
 
         # Legger til recipe i tabellen
-        ingr_queries.insert_to_recipe(dish, short_desc, long_desc, 'test', '1', '1', '1') #: TODO: Testdata på de siste 4 parametre
+
+        if fetch_recipeID_where_name_equals(dish) is None:
+            ingr_queries.insert_to_recipe(dish, short_desc, long_desc, 'test', '1', '1', '1') #: TODO: Testdata på de siste 4 parametre
+
+            # Henter info fra hidden field, og gjør mening ut av denne(For å få en dynamisk field)
+            lst = re.sub("-.*?-", ":o:", ingredienser)
+
+            lst = lst.split(":o:")
+
+            ingrediensLst = []
+            for i in lst:
+                if i != '':
+                    item = i.split(",")
+                    if item[1] != '':
+                        ingrediensLst.append(item)
+
+            # Kobler ingrediens opp mot recipe
+            recipeID = fetch_recipeID_where_name_equals(dish)
+            # print(recipeID[0])
+            for k in ingrediensLst:
+                ingredId = fetch_ingredients_from_all_usergroups_where_name_is(k[0])
+                ingr_queries.insert_to_recipe_has_ingredient(str(recipeID[0]), str(ingredId[0]), str(k[1]))
+
+            return redirect(url_for("recipes.oppskrifter"))
 
 
-        # Henter info fra hidden field, og gjør mening ut av denne(For å få en dynamisk field)
-        lst = re.sub("-.*?-", ":o:",ingredienser)
+        else:
+            flash("Retten er allerede registrert")
 
-        lst = lst.split(":o:")
-
-        ingrediensLst = []
-        for i in lst:
-            if i != '':
-                item = i.split(",")
-                if item[1] != '':
-                    ingrediensLst.append(item)
-
-        # Kobler ingrediens opp mot recipe
-        recipeID = fetch_recipeID_where_name_equals(dish)
-        #print(recipeID[0])
-        for k in ingrediensLst:
-            ingredId = fetch_ingredients_from_all_usergroups_where_name_is(k[0])
-            ingr_queries.insert_to_recipe_has_ingredient(str(recipeID[0]), str(ingredId[0]), str(k[1]))
 
 
 
