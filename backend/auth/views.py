@@ -72,8 +72,9 @@ def register():
         firstname = form.firstname.data
         lastname = form.lastname.data
         password = form.password.data
-        usergroup = form.usergroup.data
+        usergroup = form.usergroup.data # TODO må fjernes på et vis.
         # Check if creating usergroup. If not, set group to "ingen" and usertype to 2 (not admin)
+        # TODO må fjernes på et vis.  Det skal ikke trenges å sjekkes det her.
         if (usergroup == ""):
             usertype = 2
             usergroup = "ingen"
@@ -83,15 +84,19 @@ def register():
         # Insert user to database
         auth_queries.insert_to_user(username, email, firstname, lastname, password)
         # Insert userGroup to database
+        # TODO må fjernes på et vis.  Det skal ikke legges inn her
         auth_queries.insert_to_usergroup(usergroup)
 
         # Get userID from newly inserted user
         fetchedUser = fetchUser(username)
         userID = fetchedUser.id
         # Fetch userGroupID from newly inserted usergroup
+
+        # TODO må fjernes på et vis.  Det skal ikke legges inn her
         fetchedUserGroup = fetchUserGroup(usergroup)
         userGroupId = fetchedUserGroup.iduserGroup
 
+        # TODO må fjernes på et vis.  Det skal ikke legges inn her
         # Insert userID, userGroupID and userType to "user_has_userGroup"
         auth_queries.insert_to_user_has_userGroup(int(userID), int(userGroupId), int(usertype), 2) #TODO: MemberStatus er hardkodet til Accepted
 
@@ -102,6 +107,7 @@ def register():
         for error_message in error_messages:
             flash(f"{error_message}", "danger")
 
+            # TODO må fjernes på et vis.  ug skal ikke trenges. Men må sjekkes i både forms og html.
     return render_template('register.html', form=form, ug=user_group, users=all_users)
 
 
