@@ -44,16 +44,6 @@ class RegisterForm(FlaskForm):
                     EqualTo('password',
                             message='Passordene må være like')])
 
-    usergroup = SelectField('Brukergruppe',
-                            choices=[('MatMons'), ('Familien Hansen')],
-                            # Må kjøre en query fra usergroup for å hente verdier her
-                            validate_choice=True)
-
-    usertype = SelectField('Brukertype',
-                           choices=[('1', 'Admin'), ('2', 'Bruker')],
-                           # Må kjøre en query fra usertype for å hente verdier her
-                           validate_choice=True)
-
     submit = SubmitField(label=('Registrer'))
 
 
