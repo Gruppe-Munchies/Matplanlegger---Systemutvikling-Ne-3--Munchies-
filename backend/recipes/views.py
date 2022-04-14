@@ -17,8 +17,6 @@ recipes = Blueprint('recipes', __name__, template_folder='templates')
 @recipes.route('/oppskrifter')
 def oppskrifter():
 
-
-
     recipes = ingr_queries.fetch_all_recipes()
 
     return render_template('oppskrifter.html', recipes=recipes)
@@ -28,9 +26,17 @@ def oppskrifter():
 def oppskrift(recipe_id: int):
     #fetch_recipe_where_recipeId_equals
     rec = fetch_recipe_where_recipeId_equals(recipe_id)
+    ingredients = fetch_all_ingredients_where_recipeID_equals(recipe_id)
 
-    return render_template('oppskrift.html', rec=rec)
+    return render_template('oppskrift.html', rec=rec, ingredients=ingredients, id=recipe_id)
 
+
+@recipes.route('/oppskrift/<recipe_id>/<ingrediens_id>/delete', methods=["GET", "POST"])
+def removeFromRecipeHasIngrediens(recipe_id: int, ingrediens_id: int):
+    #fetch_recipe_where_recipeId_equals
+    remove_from_recipe_has_ingredient(recipe_id, ingrediens_id)
+
+    return redirect(url_for('recipes.oppskrifter'))
 
 @recipes.route('/legg-til-rett',  methods=["GET", "POST"])
 def legg_til_rett():

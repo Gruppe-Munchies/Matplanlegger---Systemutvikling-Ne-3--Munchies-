@@ -41,6 +41,8 @@ def fetch_ingredients_from_all_usergroups_where_name_is(name):
     return session.query(Ingredient.idingredient).where(Ingredient.ingredientName == name).first()
 
 
+
+
 def fetch_ingredients_where_usergroup_and_ingredientName_equals(usergroup_id, ingredient_name):
     return session.query(Ingredient, UsergroupHasIngredient).join(UsergroupHasIngredient, and_(
         Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
@@ -113,3 +115,15 @@ def fetch_ingredients_where_name_contains_and_group_equals(usergroup_id: int, na
                                           and_(UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id,
                                                Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
                                                Ingredient.name == "REGEX"))  # REGEX HER?
+
+
+
+def fetch_all_ingredients_where_recipeID_equals(recipe_id):
+    return session.query(RecipeHasIngredient.quantity, Ingredient.ingredientName, UsergroupHasIngredient.price, UsergroupHasIngredient.unit, RecipeHasIngredient.ingredient_idingredient)\
+        .join(Ingredient, RecipeHasIngredient.ingredient_idingredient == Ingredient.idingredient)\
+        .join(UsergroupHasIngredient, Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient)\
+        .filter(RecipeHasIngredient.recipe_idRecipe == recipe_id)\
+        .all()
+
+
+
