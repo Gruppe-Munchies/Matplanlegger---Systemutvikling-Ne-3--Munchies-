@@ -8,7 +8,7 @@ from backend.ingredients.queries import *
 import re
 
 #from backend.recipes.forms import RegisterForm
-from backend.recipes.forms import RegisterRecipeForm
+from backend.recipes.forms import RegisterRecipeForm, EditIngredientInDish
 from backend.recipes.queries import *
 
 #recipes = Blueprint('recipes', __name__, template_folder='templates', url_prefix='/oppskrift')
@@ -38,9 +38,15 @@ def removeFromRecipeHasIngrediens(recipe_id: int, ingrediens_id: int):
 
     return redirect(url_for('recipes.oppskrifter'))
 
+
+@recipes.route('/oppskrift/<recipe_id>/<ingrediens_id>/<value>/update', methods=["GET", "POST"])
+def updateRecipeHasIngrediens(recipe_id: int, ingrediens_id: int,value: int):
+    editIngredientInRecipe(recipe_id, ingrediens_id, value)
+
+    return redirect('/oppskrift/'+ str(recipe_id))
+
 @recipes.route('/legg-til-rett',  methods=["GET", "POST"])
 def legg_til_rett():
-    print()
     group_ingredients = fetch_all_ingredients_where_usergroup_equals(1)
     # for i in group_ingredients:
     #     print(i[0].ingredientName, i[0].idingredient )

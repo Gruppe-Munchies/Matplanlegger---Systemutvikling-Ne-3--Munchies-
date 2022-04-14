@@ -24,10 +24,12 @@ class RegisterRecipeForm(FlaskForm):
 
 
 class EditIngredientInDish(FlaskForm):
-    product = StringField(
-        label=('Navn på rett'),
+    recipeID = StringField(
+        label=('Endring'),
         validators=[DataRequired()])
-
-    quantity = StringField(
-        label=('Navn på rett'),
+    ingredient_id = StringField(
+        label=('Endring'),
+        validators=[DataRequired()])
+    value = StringField(
+        label=('Endring'),
         validators=[DataRequired()])
