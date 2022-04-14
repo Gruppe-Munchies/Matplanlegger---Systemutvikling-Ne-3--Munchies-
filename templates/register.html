@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
-{% block title %}Brukeradministrasjon{% endblock %}
-{% block heading %}Brukeradministasjon{% endblock %}
-{% block description %}Legg til eller slett brukere her!{% endblock %}
+{% block title %}Registrer deg som bruker{% endblock %}
+{% block heading %}Registrer deg som bruker{% endblock %}
+{% block description %}Bli med i en Munchbase, eller lag din egen! Registrer deg her!{% endblock %}
 {% block content %}
     {% include 'flash_messages.html' %}
 
 
     <div class="container" style="max-width: 1000px;">
-        <h1 class="fw-light">Legg til brukere</h1>
+        <h1 class="fw-light">Registrer deg som bruker</h1>
 
 
         <form method="POST" action="{{ url_for('auth.register') }}" class="row">
