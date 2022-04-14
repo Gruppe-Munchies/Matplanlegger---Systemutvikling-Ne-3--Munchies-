@@ -7,12 +7,11 @@
 
     {% if  not current_user.is_authenticated %}
         <div class="container" style="max-width: 1000px;">
-            <h1 class="fw-light">Legg til brukere</h1>
 
             <form method="POST" action="{{ url_for('auth.login') }}" class="row">
 
                 <img class="mb-4" src="https://www.svgrepo.com/show/115503/burger.svg" alt="" width="72" height="57">
-                <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+                <h1 class="h3 mb-3 fw-normal">Logg inn</h1>
 
                 <div class="form-group p-3">
                     {{ form.username(class="form-control",placeholder="brukernavn") }}
@@ -23,7 +22,6 @@
                 <div class="form-floating">
                     {{ form.submit(class_="btn btn-success") }}
                 </div>
-                <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
             </form>
         </div>
     {% else %}
