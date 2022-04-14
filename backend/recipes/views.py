@@ -26,9 +26,19 @@ def oppskrifter():
 def oppskrift(recipe_id: int):
     #fetch_recipe_where_recipeId_equals
     rec = fetch_recipe_where_recipeId_equals(recipe_id)
+    group_ingredients = fetch_all_ingredients_where_usergroup_equals(1)
     ingredients = fetch_all_ingredients_where_recipeID_equals(recipe_id)
+    ingredientInRecipe = []
+    ingredientsInStock = []
 
-    return render_template('oppskrift.html', rec=rec, ingredients=ingredients, id=recipe_id)
+    for item in ingredients:
+        ingredientInRecipe.append(item.ingredientName)
+
+    for item in group_ingredients:
+        if item[0].ingredientName not in ingredientInRecipe:
+            ingredientsInStock.append(item)
+    print(ingredientsInStock)
+    return render_template('oppskrift.html', rec=rec, ingredients=ingredients, id=recipe_id, ingredientsInStock=ingredientsInStock)
 
 
 @recipes.route('/oppskrift/<recipe_id>/<ingrediens_id>/delete', methods=["GET", "POST"])
@@ -42,6 +52,13 @@ def removeFromRecipeHasIngrediens(recipe_id: int, ingrediens_id: int):
 @recipes.route('/oppskrift/<recipe_id>/<ingrediens_id>/<value>/update', methods=["GET", "POST"])
 def updateRecipeHasIngrediens(recipe_id: int, ingrediens_id: int,value: int):
     editIngredientInRecipe(recipe_id, ingrediens_id, value)
+
+    return redirect('/oppskrift/'+ str(recipe_id))
+
+
+@recipes.route('/oppskrift/<recipe_id>/<ingrediens_id>/<quantity>/add', methods=["GET", "POST"])
+def addIngredientToRecipe(recipe_id: int, ingrediens_id: int,quantity: int):
+    ingr_queries.insert_to_recipe_has_ingredient(recipe_id, ingrediens_id, quantity)
 
     return redirect('/oppskrift/'+ str(recipe_id))
 
