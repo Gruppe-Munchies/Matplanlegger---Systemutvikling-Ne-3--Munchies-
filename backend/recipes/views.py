@@ -4,6 +4,7 @@ from flask_login import login_required, login_user, logout_user
 import backend.recipes.queries as ingr_queries
 import backend.recipes.queries as recipes
 from backend import recipes
+import flask
 from backend.ingredients.queries import *
 import re
 
@@ -26,7 +27,8 @@ def oppskrifter():
 def oppskrift(recipe_id: int):
     #fetch_recipe_where_recipeId_equals
     rec = fetch_recipe_where_recipeId_equals(recipe_id)
-    group_ingredients = fetch_all_ingredients_where_usergroup_equals(1)
+    group_ingredients = fetch_all_ingredients_where_usergroup_equals(flask.session.get('group_to_use'))
+
     ingredients = fetch_all_ingredients_where_recipeID_equals(recipe_id)
     ingredientInRecipe = []
     ingredientsInStock = []
@@ -37,7 +39,6 @@ def oppskrift(recipe_id: int):
     for item in group_ingredients:
         if item[0].ingredientName not in ingredientInRecipe:
             ingredientsInStock.append(item)
-    print(ingredientsInStock)
     return render_template('oppskrift.html', rec=rec, ingredients=ingredients, id=recipe_id, ingredientsInStock=ingredientsInStock)
 
 
@@ -46,7 +47,7 @@ def removeFromRecipeHasIngrediens(recipe_id: int, ingrediens_id: int):
     #fetch_recipe_where_recipeId_equals
     remove_from_recipe_has_ingredient(recipe_id, ingrediens_id)
 
-    return redirect(url_for('recipes.oppskrifter'))
+    return redirect('/oppskrifter')
 
 
 @recipes.route('/oppskrift/<recipe_id>/<ingrediens_id>/<value>/update', methods=["GET", "POST"])
@@ -64,7 +65,7 @@ def addIngredientToRecipe(recipe_id: int, ingrediens_id: int,quantity: int):
 
 @recipes.route('/legg-til-rett',  methods=["GET", "POST"])
 def legg_til_rett():
-    group_ingredients = fetch_all_ingredients_where_usergroup_equals(1)
+    group_ingredients = fetch_all_ingredients_where_usergroup_equals(flask.session.get('group_to_use'))
     # for i in group_ingredients:
     #     print(i[0].ingredientName, i[0].idingredient )
     #     print(i)
@@ -80,7 +81,7 @@ def legg_til_rett():
         # Legger til recipe i tabellen
 
         if fetch_recipeID_where_name_equals(dish) is None:
-            ingr_queries.insert_to_recipe(dish, short_desc, long_desc, 'test', '1', '1', '1') #: TODO: Testdata på de siste 4 parametre
+            ingr_queries.insert_to_recipe(dish, short_desc, long_desc, 'test', flask.session.get('group_to_use'), '1', '1') #: TODO: Testdata på de siste 4 parametre
 
             # Henter info fra hidden field, og gjør mening ut av denne(For å få en dynamisk field)
             lst = re.sub("-.*?-", ":o:", ingredienser)
