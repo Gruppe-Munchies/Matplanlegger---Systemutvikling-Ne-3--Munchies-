@@ -21,3 +21,15 @@ class RegisterRecipeForm(FlaskForm):
         label=('Ingredienser'))
 
     submit = SubmitField(label=('Registrer rett'))
+
+
+class EditIngredientInDish(FlaskForm):
+    recipeID = StringField(
+        label=('Endring'),
+        validators=[DataRequired()])
+    ingredient_id = StringField(
+        label=('Endring'),
+        validators=[DataRequired()])
+    value = StringField(
+        label=('Endring'),
+        validators=[DataRequired()])

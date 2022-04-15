@@ -2,6 +2,7 @@ from local_db.session import loadSession
 
 from local_db.orm import User, Ingredient, Recipe, RecipeHasIngredient, RecipeHasWeeklyMenu, RecipeAvailability, \
     Usertype, Usergroup, UsergroupHasIngredient, WeeklyMenu, Base, UserHasUsergroup
+from sqlalchemy import *
 
 session = loadSession()
 
@@ -51,8 +52,12 @@ def fetch_all_recipes():
     return session.query(Recipe).all()
 
 
-def fetch_ingredients_where_recipeId_equals(recipeId):
-    #return session.query(RecipeHasIngredient).where(RecipeHasIngredient.recipe_idRecipe == recipeId)
-    return session.query(Ingredient).join(RecipeHasIngredient.recipe_idRecipe == recipeId)
+
+def remove_from_recipe_has_ingredient(recipeID, ingredient_id):
+    session = loadSession()
+    session.query(RecipeHasIngredient).filter(
+        and_(RecipeHasIngredient.recipe_idRecipe == recipeID, RecipeHasIngredient.ingredient_idingredient == ingredient_id)).delete(
+        synchronize_session=False)
+    session.commit()
 
 
