@@ -6,6 +6,7 @@ import backend.main.views as mainpage
 import backend.auth.views as auth
 import backend.recipes.views as recipes
 import backend.ingredients.views as ingredients
+import backend.weekly_menu.views
 from backend import weekly_menu
 from local_db.db_user_info import username, password, DB_NAME
 
