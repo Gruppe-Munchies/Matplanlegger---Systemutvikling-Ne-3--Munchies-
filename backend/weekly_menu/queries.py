@@ -54,14 +54,14 @@ def get_all_ingredients_and_quantities_in_weeklymenu(menu_id):
                 ingredientsList[index][2] += ingredient[0] * resQuantity
             else:
                 ingredientsList.append([ingredient[2], ingredient[1], ingredient[0] * resQuantity])
-    # index: 0-ingredientID, 1-ingredientName, 2-Queantity of ingredient in weekly menu
+    # index: 0-ingredientID, 1-ingredientName, 2-Quantity of ingredient in weekly menu
     return ingredientsList
 
 
-if __name__ == '__main__':
-    rec = get_all_ingredients_and_quantities_in_weeklymenu(27)
-    for r in rec:
-        print(r[0])
-        print(r[1])
-        print(r[2])
-        print("\n")
+# if __name__ == '__main__':
+#     rec = get_all_ingredients_and_quantities_in_weeklymenu(27)
+#     for r in rec:
+#         print(r[0])
+#         print(r[1])
+#         print(r[2])
+#         print("\n")
