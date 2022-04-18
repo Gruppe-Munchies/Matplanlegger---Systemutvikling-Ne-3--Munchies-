@@ -17,10 +17,20 @@ def fetch_recipes_where_usergroupid(usergroupId):
     return session.query(Recipe).where(Recipe.userGroup_iduserGroup == usergroupId).all()
 
 
+
 def fetch_weeklymenu_where_name_and_usergroupid(usergroup_id, menu_name):
     return session.query(WeeklyMenu).filter(
         and_(WeeklyMenu.userGroup_iduserGroup == usergroup_id, WeeklyMenu.name == menu_name)).all()
 
+def fetch_menu_name_where_menu_id(menu_id):
+    return session.query(WeeklyMenu.name).where(WeeklyMenu.idWeeklyMenu == menu_id).scalar()
+
+
+def fetch_recipesNameQyantity_where_weeklymenu_id(menu_id):
+    return session.query(RecipeHasWeeklyMenu.recipe_idRecipe, Recipe.name,
+                         RecipeHasWeeklyMenu.expectedConsumption).join(
+        RecipeHasWeeklyMenu, RecipeHasWeeklyMenu.recipe_idRecipe == Recipe.idRecipe).filter(
+        RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu == menu_id).all()
 
 def fetch_recipes_where_weeklymenu_id(menu_id):
     return session.query(RecipeHasWeeklyMenu.recipe_idRecipe, RecipeHasWeeklyMenu.expectedConsumption).where(
@@ -58,7 +68,9 @@ def get_all_ingredients_and_quantities_in_weeklymenu(menu_id):
     return ingredientsList
 
 
-# if __name__ == '__main__':
+if __name__ == '__main__':
+    rec = fetch_menu_name_where_menu_id(27)
+    print(rec)
 #     rec = get_all_ingredients_and_quantities_in_weeklymenu(27)
 #     for r in rec:
 #         print(r[0])

@@ -6,6 +6,9 @@ import backend.main.views as mainpage
 import backend.auth.views as auth
 import backend.recipes.views as recipes
 import backend.ingredients.views as ingredients
+import backend.weekly_menu.views as weekly_menu
+#from backend import weekly_menu
+
 import backend.weekly_menu.views
 from backend import weekly_menu
 from local_db.db_user_info import username, password, DB_NAME
@@ -43,11 +46,6 @@ def handleliste():
     return render_template('handleliste.html')
 
 
-@app.route('/ukesmeny')
-def ukesmeny():
-    return render_template('ukesmeny.html')
-
-
 @app.route('/user-administration')
 def userAdministration():
     return render_template('user-administration.html')
@@ -55,8 +53,6 @@ def userAdministration():
 @app.route('/leggtilmeny')
 def nyUkesmeny():
     return render_template('newWeeklyMenu.html')
-
-
 
 
 

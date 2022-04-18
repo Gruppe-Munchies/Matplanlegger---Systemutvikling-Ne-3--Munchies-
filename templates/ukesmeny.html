@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 {% block title %}Ukesmeny{% endblock %}
 {% block heading %}Ukesmeny{% endblock %}
@@ -7,25 +6,28 @@
 {% block content %}
 
 
-        <form method="post" class="row">
-        <h3 class="display-5">Se rettene du har lagt i ukesmenyen</h3>
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Matrett</th>
-                            <th class="w-25 p-3">Antall retter</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Marinert kylling</td>
-                            <td>2</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </form>
+    <form method="post" class="row">
+        <h3 class="display-5">Retter og antall for ukesmeny: {{ name }}</h3>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Matrett</th>
+                    <th class="w-25 p-3">Antall retter</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for recipe in recipes %}
+                    <tr>
+
+                        <td><a href="/oppskrift/{{ recipe[0] }}">{{ recipe[1] }}</a></td>
+                        <td>{{ recipe[2] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </form>
     <div class="card-body">
         <a href="/legg_til_ukesmeny">Legg til ny ukesmeny</a>
     </div>
