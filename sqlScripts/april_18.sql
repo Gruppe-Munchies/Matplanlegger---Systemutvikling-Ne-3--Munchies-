@@ -218,6 +218,7 @@ CREATE INDEX `fk_recipe_has_weeklyMenu_recipe_idx` ON munchbase.`recipe_has_week
 
 
 
+
 ###############
 # INSERT DATA #
 ###############
@@ -291,23 +292,44 @@ VALUES (1, 1, 1, 2),
 
 # Legg til weekly menus
 INSERT INTO munchbase.`weeklyMenu`(name, description, `userGroup_iduserGroup`)
-VALUES ('Rulleuke', 'En uke full av ruller', 1);
+VALUES ('Rulleuke', 'En uke full av ruller', 1),
+       ('Meny2', 'Beskrivelse', 1);
 
 
 # Legg til oppskrifter
 INSERT INTO munchbase.recipe(`idRecipe`, name, `shortDescription`, description, image, `userGroup_iduserGroup`,
                              `recipeAvailability_idrecipeAvailability`, `weeklyMenu_idweeklyMenu`)
-VALUES (1, 'Vårruller', 'Digge ruller', 'Ikke så mye å skrive her', 'test', 1, 1, 1);
+VALUES (1, 'Vårruller', 'Digge ruller', 'Ikke så mye å skrive her', 'test', 1, 1, 1),
+       (2, 'Pizza', 'Digge ruller', 'Ikke så mye å skrive her', 'test', 1, 1, 1),
+       (3, 'Elg', 'Digge ruller', 'Ikke så mye å skrive her', 'test', 1, 1, 1);
 
 
 
 INSERT INTO munchbase.recipe_has_ingredient(`recipe_idRecipe`, ingredient_idingredient, quantity)
 VALUES (1, 1, 2.0),
        (1, 2, 4.0),
-       (1, 3, 1.0);
+       (1, 3, 1.0),
+       (2, 1, 2.0),
+       (2, 4, 4.0),
+       (2, 6, 44.0),
+       (2, 5, 44.0),
+       (3, 6, 44.0),
+       (3, 1, 44.0),
+       (3, 5, 12.0);
 
 
-
-INSERT INTO munchbase.`recipe_has_weeklyMenu`(`weeklyMenu_idWeeklyMenu`, `recipe_idRecipe`,
+INSERT INTO munchbase.recipe_has_weeklyMenu(`weeklyMenu_idWeeklyMenu`, `recipe_idRecipe`,
                                               `expectedConsumption`)
-VALUES (0, 1, 20);
+VALUES (1, 1, 20),
+       (1, 3, 2),
+       (2, 1, 23),
+       (2, 3, 2),
+       (1, 2, 23);
+
+# INSERT INTO munchbase.recipe_has_weeklyMenu(`weeklyMenu_idWeeklyMenu`, `recipe_idRecipe`,
+#                                               `expectedConsumption`)
+# VALUES (1, 1, 20),
+#        (1, 2, 23),
+#        (1, 3, 12),
+#        (2, 2, 2),
+#        (3, 1, 35);
