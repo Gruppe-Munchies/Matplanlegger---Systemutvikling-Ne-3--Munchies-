@@ -5,6 +5,15 @@ from backend.weekly_menu.forms import RegisterWeeklymenuForm
 
 weeklyMenu = Blueprint('weeklyMenu', __name__, template_folder='templates')
 
+@weeklyMenu.route('/ukesmeny', methods=['POST', 'GET'])
+def ukesmeny():
+    #hent ut i liste alle recepies i den gitte ukesmenyen.  hardkod ukesmenyen først.
+    #
+    #weekly.fetch_recipes_where_weeklymenu(1)
+
+
+
+    return render_template('ukesmeny.html')
 
 @weeklyMenu.route('/legg_til_ukesmeny',  methods=['POST', 'GET'])
 def legg_til_ukesmeny():
