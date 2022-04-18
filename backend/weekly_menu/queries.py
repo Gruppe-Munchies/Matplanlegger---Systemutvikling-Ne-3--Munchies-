@@ -16,8 +16,6 @@ def insert_to_weeklymenu(name, description, usergroup):
 def fetch_recipes_where_usergroupid(usergroupId):
     return session.query(Recipe).where(Recipe.userGroup_iduserGroup == usergroupId).all()
 
-#def fetch_recipes_where_weeklymenu(menu_id):
-   # return session.query(RecipeHasWeeklyMenu).where(menu_id ==)
 
 
 def fetch_weeklymenu_where_name_and_usergroupid(usergroup_id, menu_name):
