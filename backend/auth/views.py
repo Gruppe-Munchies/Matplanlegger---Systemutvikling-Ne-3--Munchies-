@@ -36,11 +36,11 @@ def login():
                     session['groupname_to_use'] = ""
 
                 print(session.get('group_to_use'))
-                flash("Login vellykket!")
+                flash("Login vellykket!", "success")
                 login_user(user_from_db)
-                flash("Velkommen " + current_user.username)
+                flash("Velkommen " + current_user.username, "success")
         else:
-            flash("Brukernavn eller passord er feil")
+            flash("Brukernavn eller passord er feil", "danger")
             return redirect(url_for("auth.login"))
 
     return render_template('index.html', form=form, current_user=current_user)
@@ -67,7 +67,7 @@ def register():
         username = form.username.data
         bruker = fetchUser(username)
         if bruker:
-            flash("Brukernavn er allerede tatt", "danger")
+            flash("Brukernavn er allerede tatt", "warning")
             return render_template('register.html', form=form, heading="Registrer ny bruker")
         email = form.email.data
         firstname = form.firstname.data
@@ -99,7 +99,7 @@ def register():
         # Insert userID, userGroupID and userType to "user_has_userGroup"
         #auth_queries.insert_to_user_has_userGroup(int(userID), int(userGroupId), int(usertype), 2)
 
-        flash('Registreringen var vellykket!')
+        flash('Registreringen var vellykket!', "success")
         return redirect(url_for("auth.register"))
 
     for fieldName, error_messages in form.errors.items():
@@ -124,7 +124,7 @@ def createGroup():
         auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(userTypeId), 2)
         session['group_to_use'] = userGroupId
         session['groupname_to_use'] = fetchUserGroupById(userGroupId).groupName
-        flash('Gruppen ble opprettet!')
+        flash('Gruppen ble opprettet!', "success")
 
     return redirect(url_for("auth.groupadmin"))
 
@@ -180,7 +180,7 @@ def removeUserFromGroup():
     if userId != current_user.id:
         auth_queries.remove_row_from_UserHasUsergroup(int(userId), int(groupId))
     else:
-        flash("Kan ikke slette degselv")
+        flash("Kan ikke slette degselv", "warning")
 
     return redirect(url_for("auth.groupadmin"))
 
@@ -210,16 +210,16 @@ def inviteUser():
                     userId = user_to_invite.id
                     userGroupId = activeGroup
                     auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(usertypeId), 1)
-                    flash(f'{user_to_invite.username} ble invitert!')
+                    flash(f'{user_to_invite.username} ble invitert!', "success")
                 else:
                     # Not Admin
-                    flash('Krever admin-tilgang!')
+                    flash('Krever admin-tilgang!', "warning")
             else:
                 # User already member
-                flash(f"{user_to_invite.username} er allerede invitert eller medlem av gruppen!")
+                flash(f"{user_to_invite.username} er allerede invitert eller medlem av gruppen!", "warning")
         else:
             # User does not exist
-            flash("Brukeren finnes ikke.", "danger")
+            flash("Brukeren finnes ikke.", "warning")
 
         return redirect(url_for("auth.groupadmin"))
 
@@ -244,8 +244,6 @@ def response():
 @auth.route('/profil', methods=['GET', 'POST'])
 def profil():
     print(session.get('group_to_use'))
-    # TODO: Må vell legge inn usertype pr group i profilsiden egentlig.
-    #groups = fetchAllUserGroupsUserHas(current_user.id)
     groups = fetchAllUserGroupsUserHasAndType(current_user.id)
 
     # TODO:Bør flyttes til nav

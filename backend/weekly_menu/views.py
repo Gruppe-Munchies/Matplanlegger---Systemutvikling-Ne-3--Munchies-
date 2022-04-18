@@ -41,9 +41,9 @@ def legg_til_ukesmeny():
 
             # TODO: Legg til oppskrifter ---RECIPES
 
-            flash("Meny lagt til!")
+            flash("Meny lagt til!", "success")
             return redirect(url_for("ukesmeny"))
         else:
-            flash("Dere har allerede en meny med dette navnet")
+            flash("Dere har allerede en meny med dette navnet", "warning")
 
     return render_template('newWeeklyMenu.html', form=form)

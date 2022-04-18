@@ -197,7 +197,7 @@ def fetch_first_usergroups_for_user(userId):
     session = loadSession()
     usergroups = session.query(Usergroup).join(UserHasUsergroup,
                                                Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).where(
-        UserHasUsergroup.user_userId == userId).first()
+        UserHasUsergroup.user_userId == userId, UserHasUsergroup.memberStatus_idStatus == 2).first()
     return usergroups
 
 def fetch_user_in_usergroup(userid, groupid):
