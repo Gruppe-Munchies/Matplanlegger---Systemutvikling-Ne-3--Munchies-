@@ -4,7 +4,10 @@
 {% block description %}Se hvilke matretter du har lagt i ukesmenyen{% endblock %}
 
 {% block content %}
-
+    <form method="POST" action="{{ url_for('weeklyMenu.ukesmeny') }}" class="row">
+        {{ form.csrf_token }}
+        <div class="form-group w-25 p-3">{{ form.weeklyIdName(class="form-select", onchange="submit()") }}</div>
+    </form>
 
     <form method="post" class="row">
         <h3 class="display-5">Retter og antall for ukesmeny: {{ name }}</h3>

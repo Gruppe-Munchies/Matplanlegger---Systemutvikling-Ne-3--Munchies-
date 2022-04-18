@@ -20,6 +20,10 @@ def insert_to_weekly_menu_date(menu_id, year, week):
     session.commit()
 
 
+def fetch_all_weeklymenu_where_groupId(group_id):
+    return session.query(WeeklyMenu).where(WeeklyMenu.userGroup_iduserGroup == group_id).all()
+
+
 def fetch_recipes_where_usergroupid(usergroupId):
     return session.query(Recipe).where(Recipe.userGroup_iduserGroup == usergroupId).all()
 
