@@ -67,6 +67,30 @@ def get_all_ingredients_and_quantities_in_weeklymenu(menu_id):
     # index: 0-ingredientID, 1-ingredientName, 2-Quantity of ingredient in weekly menu
     return ingredientsList
 
+def fetch_menu_id_where_name(menu_name):
+    return session.query(WeeklyMenu.idWeeklyMenu).where(WeeklyMenu.name == menu_name).first()
+
+
+def fetch_recipes_where_usergroupid(usergroupId):
+    return session.query(Recipe).where(Recipe.userGroup_iduserGroup == usergroupId).all()
+
+
+def fetch_weeklymenu_where_name_and_usergroupid(usergroup_id, menu_name):
+    return session.query(WeeklyMenu).filter(
+        and_(WeeklyMenu.userGroup_iduserGroup == usergroup_id, WeeklyMenu.name == menu_name)).all()
+
+def fetch_weeklymenu_where_usergroupid(usergroup_id):
+    return session.query(WeeklyMenu).filter((WeeklyMenu.userGroup_iduserGroup == usergroup_id)).all()
+
+def fetch_weeklymenu_recipes_where_name_usergroupid():
+    return session.query(Recipe.name ,RecipeHasWeeklyMenu.expectedConsumption, RecipeHasWeeklyMenu.recipe_idRecipe).join(RecipeHasWeeklyMenu, Recipe.idRecipe == RecipeHasWeeklyMenu.recipe_idRecipe).all()
+
+
+
+def remove_from_RecipeHasWeeklyMenu(recipeID):
+    session = loadSession()
+    session.query(RecipeHasWeeklyMenu).filter(RecipeHasWeeklyMenu.recipe_idRecipe == recipeID).delete(synchronize_session=False)
+    session.commit()
 
 if __name__ == '__main__':
     rec = fetch_menu_name_where_menu_id(27)
