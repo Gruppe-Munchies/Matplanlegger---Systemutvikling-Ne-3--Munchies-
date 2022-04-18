@@ -29,13 +29,15 @@ def insert_to_recipe(name, shortDescription, description, image, userGroup, reci
 
 def fetch_recipe_where_recipeId_equals(recipeId):
     session = loadSession()
+    res = session.query(Recipe).where(Recipe.idRecipe == recipeId).first()
     session.close()
-    return session.query(Recipe).where(Recipe.idRecipe == recipeId).first()
+    return res
 
 def fetch_recipeID_where_name_equals(name):
     session = loadSession()
+    res = session.query(Recipe.idRecipe).where(Recipe.name == name).first()
     session.close()
-    return session.query(Recipe.idRecipe).where(Recipe.name == name).first()
+    return res
 
 # Add to recipe_has_ingredient
 def insert_to_recipe_has_ingredient(recipe, ingredient, quantity):
@@ -60,13 +62,15 @@ def insert_to_recipe_has_weeklymenu(recipe, year, week, expectedConsumption, act
 
 def fetch_all_recipes():
     session = loadSession()
+    res = session.query(Recipe).all()
     session.close()
-    return session.query(Recipe).all()
+    return res
 
 def fetch_all_recipes_to_group(group_id):
     session = loadSession()
+    res = session.query(Recipe).where(Recipe.userGroup_iduserGroup == group_id).all()
     session.close()
-    return session.query(Recipe).where(Recipe.userGroup_iduserGroup == group_id).all()
+    return res
 
 
 def remove_from_recipe_has_ingredient(recipeID, ingredient_id):

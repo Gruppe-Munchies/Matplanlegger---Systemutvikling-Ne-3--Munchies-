@@ -20,6 +20,7 @@ def insert_to_ingredients(name: str):
     ingredient = Ingredient(ingredientName=name)
     session.add(ingredient)
     session.commit()
+    session.close()
 
 def insert_to_usergroup_has_ingredient(userGroup, ingredient, price, unit):
     session = loadSession()
@@ -27,37 +28,44 @@ def insert_to_usergroup_has_ingredient(userGroup, ingredient, price, unit):
                                                      ingredient_idingredient=ingredient, price=price, unit=unit)
     session.add(new_userGroupIngredient)
     session.commit()
+    session.close()
 
 
 def fetch_ingredients_from_all_user_groups_where_ingredient_name_equals(ingredient) -> Ingredient:
     session = loadSession()
-    return session.query(Ingredient).where(Ingredient.ingredientName == ingredient).first()
-
+    res = session.query(Ingredient).where(Ingredient.ingredientName == ingredient).first()
+    session.close()
+    return res
 
 def fetch_all_ingredients_from_all_usergroups() -> list:
     session = loadSession()
-    return session.query(Ingredient).all()
-
+    res = session.query(Ingredient).all()
+    session.close()
+    return res
 
 def fetch_ingredients_from_all_usergroups_where_name_is(name):
     session = loadSession()
-    return session.query(Ingredient.idingredient).where(Ingredient.ingredientName == name).first()
-
-
+    res = session.query(Ingredient.idingredient).where(Ingredient.ingredientName == name).first()
+    session.close()
+    return res
 
 
 def fetch_ingredients_where_usergroup_and_ingredientName_equals(usergroup_id, ingredient_name):
     session = loadSession()
-    return session.query(Ingredient, UsergroupHasIngredient).join(UsergroupHasIngredient, and_(
+    res = session.query(Ingredient, UsergroupHasIngredient).join(UsergroupHasIngredient, and_(
         Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
         Ingredient.ingredientName == ingredient_name,
         UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id)).scalar()
+    session.close()
+    return  res
 
 def fetch_all_ingredients_where_usergroup_equals(usergroup_id):
     session = loadSession()
-    return session.query(Ingredient, UsergroupHasIngredient).join(UsergroupHasIngredient, and_(
+    res = session.query(Ingredient, UsergroupHasIngredient).join(UsergroupHasIngredient, and_(
         Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
         UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id)).all()
+    session.close()
+    return res
 
     # if __name__ == '__main__':
     #     ingredienser = fetch_all_ingredients_where_usergroup_equals(1)
@@ -67,77 +75,95 @@ def fetch_all_ingredients_where_usergroup_equals(usergroup_id):
 
 def fetch_ingredients_where_usergroup_and_unit_equals(usergroup_id: int, unit: str):
     session = loadSession()
-    return session.query(Ingredient).join(UsergroupHasIngredient,
+    res = session.query(Ingredient).join(UsergroupHasIngredient,
                                           and_(UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id,
                                                Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
                                                UsergroupHasIngredient.unit == unit))
+    session.close()
+    return res
 
 
 def fetch_ingredients_in_usergroup_where_price_equals(usergroup_id, price: int):
     session = loadSession()
-    return session.query(Ingredient).join(UsergroupHasIngredient,
+    res = session.query(Ingredient).join(UsergroupHasIngredient,
                                           and_(UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id,
                                                Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
                                                UsergroupHasIngredient.price == price))
+    session.close()
+    return res
 
 
 def fetch_ingredients_where_price_is_greater_than(usergroup_id, price):
     session = loadSession()
-    return session.query(Ingredient).join(UsergroupHasIngredient,
+    res = session.query(Ingredient).join(UsergroupHasIngredient,
                                           and_(UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id,
                                                Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
                                                UsergroupHasIngredient.price > price))
+    session.close()
+    return res
 
 
 def fetch_ingredients_where_price_is_less_than(usergroup_id, price):
     session = loadSession()
-    return session.query(Ingredient).join(UsergroupHasIngredient,
+    res = session.query(Ingredient).join(UsergroupHasIngredient,
                                           and_(UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id,
                                                Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
                                                UsergroupHasIngredient.price < price))
+    session.close()
+    return res
 
 
 def fetch_ingredients_where_quantity_and_groupid_equals(usergroup_id, quantity: int):
     session = loadSession()
-    return session.query(Ingredient).join(UsergroupHasIngredient,
+    res = session.query(Ingredient).join(UsergroupHasIngredient,
                                           and_(UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id,
                                                Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
                                                UsergroupHasIngredient.quantity == quantity))
+    session.close()
+    return res
 
 
 def fetch_ingredients_where_group_id_equals_and_quantity_less_than(usergroup_id, quantity: int):
     session = loadSession()
-    return session.query(Ingredient).join(UsergroupHasIngredient,
+    res = session.query(Ingredient).join(UsergroupHasIngredient,
                                           and_(UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id,
                                                Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
                                                UsergroupHasIngredient.quantity < quantity))
+    session.close()
+    return res
 
 
 def fetch_ingredients_where_group_id_equals_and_quantity_greater_than(usergroup_id, quantity: int):
     session = loadSession()
-    return session.query(Ingredient).join(UsergroupHasIngredient,
+    res = session.query(Ingredient).join(UsergroupHasIngredient,
                                           and_(UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id,
                                                Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
                                                UsergroupHasIngredient.quantity > quantity))
+    session.close()
+    return res
 
 
 # TODO: IKKE OK  NOEN SOM KAN REGEX? :(((((
 def fetch_ingredients_where_name_contains_and_group_equals(usergroup_id: int, name: str, ):
     session = loadSession()
-    return session.query(Ingredient).join(UsergroupHasIngredient,
+    res = session.query(Ingredient).join(UsergroupHasIngredient,
                                           and_(UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id,
                                                Ingredient.idingredient == UsergroupHasIngredient.ingredient_idingredient,
                                                Ingredient.name == "REGEX"))  # REGEX HER?
+    session.close()
+    return res
 
 
 
 def fetch_all_ingredients_where_recipeID_equals(recipe_id, group):
     session = loadSession()
-    return session.query(RecipeHasIngredient.quantity, Ingredient.ingredientName, UsergroupHasIngredient.price, UsergroupHasIngredient.unit, RecipeHasIngredient.ingredient_idingredient)\
+    res = session.query(RecipeHasIngredient.quantity, Ingredient.ingredientName, UsergroupHasIngredient.price, UsergroupHasIngredient.unit, RecipeHasIngredient.ingredient_idingredient)\
         .join(Ingredient, RecipeHasIngredient.ingredient_idingredient == Ingredient.idingredient)\
         .join(UsergroupHasIngredient, RecipeHasIngredient.ingredient_idingredient == UsergroupHasIngredient.ingredient_idingredient)\
         .filter(RecipeHasIngredient.recipe_idRecipe == recipe_id, UsergroupHasIngredient.userGroup_iduserGroup == group)\
         .all()
+    session.close()
+    return res
 
 
 
@@ -147,5 +173,6 @@ def editIngredientInRecipe(recipeID,ingredient_id,value):
         and_(RecipeHasIngredient.recipe_idRecipe == recipeID, RecipeHasIngredient.ingredient_idingredient == ingredient_id)).first()
     field.quantity = value
     session.commit()
+    session.close()
 
 
