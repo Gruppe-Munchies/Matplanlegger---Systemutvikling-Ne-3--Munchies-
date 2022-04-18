@@ -112,6 +112,16 @@ def fetchAllUserGroupsUserHas(user_id):
                                         User.id == user_id).filter(UserHasUsergroup.memberStatus_idStatus == 2).all()
     return res
 
+def fetchAllUserGroupsUserHasAndType(user_id):
+    session = loadSession()
+    res = session.query(Usergroup.groupName, Usertype.userTypeName).join(UserHasUsergroup,
+                                        Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(User,
+                                        User.id == UserHasUsergroup.user_userId).join(
+                                        Usertype,
+                                        Usertype.iduserType == UserHasUsergroup.userType_iduserType).filter(
+                                        User.id == user_id).filter(UserHasUsergroup.memberStatus_idStatus == 2).all()
+    return res
+
 
 def fetchUserGroup(group_name):
     session = loadSession()
