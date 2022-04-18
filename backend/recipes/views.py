@@ -107,7 +107,7 @@ def legg_til_rett():
 
 
         else:
-            flash("Retten er allerede registrert")
+            flash("Retten er allerede registrert", "warning")
 
 
 
