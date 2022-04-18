@@ -22,6 +22,11 @@ def fetch_weeklymenu_where_name_and_usergroupid(usergroup_id, menu_name):
     return session.query(WeeklyMenu).filter(
         and_(WeeklyMenu.userGroup_iduserGroup == usergroup_id, WeeklyMenu.name == menu_name)).all()
 
+def fetch_recipesNameQyantity_where_weeklymenu_id(menu_id):
+    return session.query(RecipeHasWeeklyMenu.recipe_idRecipe, Recipe.name,
+                         RecipeHasWeeklyMenu.expectedConsumption).join(
+        RecipeHasWeeklyMenu, RecipeHasWeeklyMenu.recipe_idRecipe == Recipe.idRecipe).filter(
+        RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu == menu_id).all()
 
 def fetch_recipes_where_weeklymenu_id(menu_id):
     return session.query(RecipeHasWeeklyMenu.recipe_idRecipe, RecipeHasWeeklyMenu.expectedConsumption).where(
