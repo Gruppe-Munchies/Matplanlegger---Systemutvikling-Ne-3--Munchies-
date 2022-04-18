@@ -8,17 +8,13 @@ weeklyMenu = Blueprint('weeklyMenu', __name__, template_folder='templates')
 
 @weeklyMenu.route('/ukesmeny', methods=['POST', 'GET'])
 def ukesmeny():
-    #
     weekly_menu = weekly.fetch_all_weeklymenu_where_groupId(session['group_to_use'])
-    print(session['group_to_use'])
 
-    # TODO: Ukesmeny id må hentes fra et sted som gir mening
     if not session['menu_id']:
         session['menu_id'] = weekly_menu[0].idWeeklyMenu
 
     form = WeeklyMenuSelector(request.form)
     choice = []
-
 
     for i in weekly_menu:
         choice.append((i.idWeeklyMenu, i.name))
@@ -33,10 +29,8 @@ def ukesmeny():
 
     form.weeklyIdName.data = session.get('menu_id', 0)
 
-    # hent ut i liste alle recepies i den gitte ukesmenyen.  hardkod ukesmenyen først.
     recipes_weeklymenu = weekly.fetch_recipesNameQyantity_where_weeklymenu_id(session['menu_id'])
     manu_name = weekly.fetch_menu_name_where_menu_id(session['menu_id'])
-    # id = session['menu_id']
 
     return render_template('ukesmeny.html', recipes=recipes_weeklymenu, name=manu_name, id=session['menu_id'], form=form)
 

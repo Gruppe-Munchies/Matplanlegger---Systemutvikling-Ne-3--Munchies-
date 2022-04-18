@@ -150,7 +150,7 @@ def groupadmin():
     # print("brukergruppe: "+session.get('group_to_use'))
     usertype = fetchUserTypeByUserIdAndGroupId(current_user.id,
                                                session.get('group_to_use'))
-
+    userIsAdmin = False #satte inn
     if usertype == 1:
         userIsAdmin = True
 
@@ -245,7 +245,9 @@ def response():
 def profil():
     print(session.get('group_to_use'))
     # TODO: Må vell legge inn usertype pr group i profilsiden egentlig.
-    groups = fetchAllUserGroupsUserHas(current_user.id)
+    #groups = fetchAllUserGroupsUserHas(current_user.id)
+    groups = fetchAllUserGroupsUserHasAndType(current_user.id)
+
     # TODO:Bør flyttes til nav
 
     #Fetch pending invitations
