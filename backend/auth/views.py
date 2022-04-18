@@ -150,7 +150,7 @@ def groupadmin():
     # print("brukergruppe: "+session.get('group_to_use'))
     usertype = fetchUserTypeByUserIdAndGroupId(current_user.id,
                                                session.get('group_to_use'))
-
+    userIsAdmin = False #satte inn
     if usertype == 1:
         userIsAdmin = True
 
