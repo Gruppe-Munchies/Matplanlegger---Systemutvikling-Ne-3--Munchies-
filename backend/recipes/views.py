@@ -18,7 +18,7 @@ recipes = Blueprint('recipes', __name__, template_folder='templates')
 @recipes.route('/oppskrifter')
 def oppskrifter():
 
-    recipes = ingr_queries.fetch_all_recipes()
+    recipes = fetch_all_recipes_to_group(flask.session.get('group_to_use'))
 
     return render_template('oppskrifter.html', recipes=recipes)
 

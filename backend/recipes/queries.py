@@ -51,6 +51,8 @@ def insert_to_recipe_has_weeklymenu(recipe, year, week, expectedConsumption, act
 def fetch_all_recipes():
     return session.query(Recipe).all()
 
+def fetch_all_recipes_to_group(group_id):
+    return session.query(Recipe).where(Recipe.userGroup_iduserGroup == group_id).all()
 
 
 def remove_from_recipe_has_ingredient(recipeID, ingredient_id):
