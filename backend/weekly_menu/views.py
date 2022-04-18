@@ -23,29 +23,27 @@ def ukesmeny():
 @weeklyMenu.route('/legg_til_ukesmeny', methods=['POST', 'GET'])
 def legg_til_ukesmeny():
     group_id = flask.session.get('group_to_use', 'not set')
-    group_recipes = weekly.fetch_recipes_where_usergroupid(flask.session.get('group_to_use'))
-    weeklyMenus = weekly.fetch_weeklymenu_recipes_where_name_usergroupid()
-    activeMenu = weekly.fetch_weeklymenu_where_usergroupid(flask.session.get('group_to_use'))
-    dishes = [i.name for i in weeklyMenus]
 
+    # This variable contains all recipes of the group ---RECIPES
+    group_recipes = weekly.fetch_recipes_where_usergroupid(group_id)
 
-    return render_template('newWeeklyMenu.html', recipes=group_recipes, weeklyMenus=weeklyMenus, activeMenu=activeMenu, dishes=dishes)
+    form = RegisterWeeklymenuForm(request.form)
 
+    # TODO: Validering av form?
+    if request.method == 'POST':
+        weeklymanu_name = form.weekly_name.data
+        weeklymenu_desc = form.weekly_desc.data
 
-@weeklyMenu.route('/weekly_menu/<array>/update', methods=["GET", "POST"])
-def updateRecipeHasIngrediens(array: str):
+        # Do group already have menu with same name?
+        if not weekly.fetch_weeklymenu_where_name_and_usergroupid(group_id, weeklymanu_name):
 
+            weekly.insert_to_weeklymenu(weeklymanu_name, weeklymenu_desc, group_id)
 
-    return redirect(url_for("recipes.oppskrifter"))
+            # TODO: Legg til oppskrifter ---RECIPES
 
+            flash("Meny lagt til!", "success")
+            return redirect(url_for("ukesmeny"))
+        else:
+            flash("Dere har allerede en meny med dette navnet", "warning")
 
-@weeklyMenu.route('/weekly_menu/<recipe_id>/<quantity>/add', methods=["GET", "POST"])
-def addRecipeToWeeklyMenu(recipe_id: int, quantity: int):
-    weekly.insert_to_recipe_has_weeklymenu(1, recipe_id, quantity)
-    return redirect('/legg_til_ukesmeny')
-
-
-@weeklyMenu.route('/weekly_menu/<recipe_id>/delete', methods=["GET", "POST"])
-def RemoveRecipeFromWeeklyMenu(recipe_id: int):
-    weekly.remove_from_RecipeHasWeeklyMenu(recipe_id)
-    return redirect('/legg_til_ukesmeny')
+    return render_template('newWeeklyMenu.html', form=form)
