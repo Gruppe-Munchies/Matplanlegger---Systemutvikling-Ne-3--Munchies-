@@ -24,6 +24,12 @@ def fetch_recipes_where_usergroupid(usergroupId):
     session = loadSession()
     return session.query(Recipe).where(Recipe.userGroup_iduserGroup == usergroupId).all()
 
+def insert_to_recipe_has_weeklymenu(menu_id, recipe_id, quantity):
+    session = loadSession()
+    new_weekly_menu_recipe = RecipeHasWeeklyMenu(weeklyMenu_idWeeklyMenu=menu_id, recipe_idRecipe=recipe_id,
+                                                 expectedConsumption=quantity)
+    session.add(new_weekly_menu_recipe)
+    session.commit()
 
 
 def fetch_weeklymenu_where_name_and_usergroupid(usergroup_id, menu_name):
