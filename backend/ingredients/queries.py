@@ -118,11 +118,11 @@ def fetch_ingredients_where_name_contains_and_group_equals(usergroup_id: int, na
 
 
 
-def fetch_all_ingredients_where_recipeID_equals(recipe_id):
+def fetch_all_ingredients_where_recipeID_equals(recipe_id, group):
     return session.query(RecipeHasIngredient.quantity, Ingredient.ingredientName, UsergroupHasIngredient.price, UsergroupHasIngredient.unit, RecipeHasIngredient.ingredient_idingredient)\
         .join(Ingredient, RecipeHasIngredient.ingredient_idingredient == Ingredient.idingredient)\
         .join(UsergroupHasIngredient, RecipeHasIngredient.ingredient_idingredient == UsergroupHasIngredient.ingredient_idingredient)\
-        .filter(RecipeHasIngredient.recipe_idRecipe == recipe_id)\
+        .filter(RecipeHasIngredient.recipe_idRecipe == recipe_id, UsergroupHasIngredient.userGroup_iduserGroup == group)\
         .all()
 
 

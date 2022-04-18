@@ -27,9 +27,10 @@ def oppskrifter():
 def oppskrift(recipe_id: int):
     #fetch_recipe_where_recipeId_equals
     rec = fetch_recipe_where_recipeId_equals(recipe_id)
-    group_ingredients = fetch_all_ingredients_where_usergroup_equals(flask.session.get('group_to_use'))
+    group = flask.session.get('group_to_use')
+    group_ingredients = fetch_all_ingredients_where_usergroup_equals(group)
 
-    ingredients = fetch_all_ingredients_where_recipeID_equals(recipe_id)
+    ingredients = fetch_all_ingredients_where_recipeID_equals(recipe_id, group)
     ingredientInRecipe = []
     ingredientsInStock = []
 
