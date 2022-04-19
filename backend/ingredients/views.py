@@ -50,7 +50,7 @@ def new():
             ingredientID = fetchedingredientID.idingredient
 
             ingr_queries.insert_to_usergroup_has_ingredient(fetchedusergroup_ID, ingredientID, price, unit)
-            flash('Ingrediensen er registrert!!')
+            flash('Ingrediensen er registrert!!', "success")
 
         else:
             ingr_queries.insert_to_ingredients(ingredientName)
@@ -59,7 +59,7 @@ def new():
             ingredientID = fetchedingredientID.idingredient
 
             ingr_queries.insert_to_usergroup_has_ingredient(fetchedusergroup_ID, ingredientID, price, unit)
-            flash('Ingrediensen er registrert!!')
+            flash('Ingrediensen er registrert!!', "success")
 
             # TODO Render with new ingredient dette funker vel nå..?
 

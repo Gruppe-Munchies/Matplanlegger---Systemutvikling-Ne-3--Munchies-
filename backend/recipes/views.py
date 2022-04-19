@@ -48,7 +48,7 @@ def removeFromRecipeHasIngrediens(recipe_id: int, ingrediens_id: int):
     #fetch_recipe_where_recipeId_equals
     remove_from_recipe_has_ingredient(recipe_id, ingrediens_id)
 
-    return redirect('/oppskrifter')
+    return redirect('/oppskrift/'+ str(recipe_id))
 
 
 @recipes.route('/oppskrift/<recipe_id>/<ingrediens_id>/<value>/update', methods=["GET", "POST"])
@@ -107,7 +107,7 @@ def legg_til_rett():
 
 
         else:
-            flash("Retten er allerede registrert")
+            flash("Retten er allerede registrert", "warning")
 
 
 
