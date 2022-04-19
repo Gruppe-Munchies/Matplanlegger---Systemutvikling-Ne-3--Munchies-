@@ -37,28 +37,29 @@ def ukesmeny():
     formSelector.weeklyIdName.choices = choice
 
     if request.method == 'POST':
-        session['menuID'] = formSelector.weeklyIdName.data
-        print('kjbsa')
-        print(flask.session.get('menuID'))
-        formSelector.weeklyIdName.data = session['menuID']
+        if formSelector.weeklyIdName.data != None:
+            session['menuID'] = formSelector.weeklyIdName.data
+            print('kjbsa')
+            print(flask.session.get('menuID'))
+            formSelector.weeklyIdName.data = session['menuID']
 
-        return redirect(request.referrer)
+            return redirect(request.referrer)
 
-    if "addToWeeklyMenuForm" in request.method == 'POST' and form.validate():
-        weeklymanu_name = form.weekly_name.data
-        weeklymenu_desc = form.weekly_desc.data
+        if form.weekly_name.data != None:
+            weeklymanu_name = form.weekly_name.data
+            weeklymenu_desc = form.weekly_desc.data
 
-        # Do group already have menu with same name?
-        if not weekly.fetch_weeklymenu_where_name_and_usergroupid(group_id, weeklymanu_name):
+            # Do group already have menu with same name?
+            if not weekly.fetch_weeklymenu_where_name_and_usergroupid(group_id, weeklymanu_name):
 
-            weekly.insert_to_weeklymenu(weeklymanu_name, weeklymenu_desc, group_id)
+                weekly.insert_to_weeklymenu(weeklymanu_name, weeklymenu_desc, group_id)
 
-            # TODO: Legg til oppskrifter ---RECIPES
+                # TODO: Legg til oppskrifter ---RECIPES
 
-            flash("Meny lagt til!", "success")
-            return redirect(url_for("weeklyMenu.ukesmeny"))
-        else:
-            flash("Dere har allerede en meny med dette navnet", "warning")
+                flash("Meny lagt til!", "success")
+                return redirect(url_for("weeklyMenu.ukesmeny"))
+            else:
+                flash("Dere har allerede en meny med dette navnet", "warning")
 
 
     weeklyMenus = weekly.fetch_weeklymenu_recipes_where_name_usergroupid(flask.session.get('menuID'))
