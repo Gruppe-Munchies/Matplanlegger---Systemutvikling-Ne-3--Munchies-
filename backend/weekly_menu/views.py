@@ -26,21 +26,17 @@ def ukesmeny():
 
     for i in weekly_menu:
         choice.append((i.idWeeklyMenu, i.name))
-    print(choice)
     for i in choice:
         if i[0] == int(flask.session.get('menuID')):
             choice.remove(i)
             choice.insert(0, i)
 
-    print(choice)
 
     formSelector.weeklyIdName.choices = choice
 
     if request.method == 'POST':
         if formSelector.weeklyIdName.data != None:
             session['menuID'] = formSelector.weeklyIdName.data
-            print('kjbsa')
-            print(flask.session.get('menuID'))
             formSelector.weeklyIdName.data = session['menuID']
 
             return redirect(request.referrer)
@@ -88,7 +84,6 @@ def updateRecipeHasIngrediens(array: str):
 @weeklyMenu.route('/weekly_menu/<recipe_id>/<quantity>/add', methods=["GET", "POST"])
 def addRecipeToWeeklyMenu(recipe_id: int, quantity: int):
     menuID = flask.session.get('menuID')
-    print(menuID)
     weekly.insert_to_recipe_has_weeklymenu(menuID, recipe_id, quantity)
     return redirect('/ukesmeny')
 
