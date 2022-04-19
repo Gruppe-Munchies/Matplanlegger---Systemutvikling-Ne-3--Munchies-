@@ -1,21 +1,35 @@
 import flask
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for, session
 import backend.weekly_menu.queries as weekly
-from backend.weekly_menu.forms import RegisterWeeklymenuForm
+from backend.weekly_menu.forms import RegisterWeeklymenuForm, WeeklyMenuSelector
 
 weeklyMenu = Blueprint('weeklyMenu', __name__, template_folder='templates')
 
 
 @weeklyMenu.route('/ukesmeny', methods=['POST', 'GET'])
 def ukesmeny():
-    # hent ut i liste alle recepies i den gitte ukesmenyen.  hardkod ukesmenyen først.
     group_id = flask.session.get('group_to_use', 'not set')
+    weekly_menu = weekly.fetch_all_weeklymenu_where_groupId(group_id)
+    recipes_weeklymenu = weekly.fetch_recipesNameQyantity_where_weeklymenu_id(weekly_menu[0].idWeeklyMenu)
+
+    # hent ut i liste alle recepies i den gitte ukesmenyen.  hardkod ukesmenyen først.
     group_recipes = weekly.fetch_recipes_where_usergroupid(flask.session.get('group_to_use'))
     weeklyMenus = weekly.fetch_weeklymenu_recipes_where_name_usergroupid()
     activeMenu = weekly.fetch_weeklymenu_where_usergroupid(flask.session.get('group_to_use'))
     dishes = [i.name for i in weeklyMenus]
 
     form = RegisterWeeklymenuForm(request.form)
+    formSelector = WeeklyMenuSelector(request.form)
+    choice = []
+
+    for i in weekly_menu:
+        choice.append((i.idWeeklyMenu, i.name))
+
+    formSelector.weeklyIdName.choices = choice
+
+    # if request.method == 'POST' and form.validate():
+    #     selectFieldGroup = form.weeklyIdName.data
+    #     MENU_ID = selectFieldGroup
 
     if request.method == 'POST' and form.validate():
         weeklymanu_name = form.weekly_name.data
@@ -32,7 +46,7 @@ def ukesmeny():
         else:
             flash("Dere har allerede en meny med dette navnet", "warning")
 
-    return render_template('ukesmeny.html',recipes=group_recipes, weeklyMenus=weeklyMenus, activeMenu=activeMenu, dishes=dishes, form=form)
+    return render_template('ukesmeny.html',recipes=group_recipes, weeklyMenus=weeklyMenus, activeMenu=activeMenu, dishes=dishes, form=form, formSelect=formSelector)
 
 
 @weeklyMenu.route('/legg_til_ukesmeny', methods=['POST', 'GET'])

@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, SelectField, IntegerField, FloatField, HiddenField
 from wtforms.validators import DataRequired
 
+
 class RegisterWeeklymenuForm(FlaskForm):
     # weekly_id?
     # group_id?
@@ -17,3 +18,7 @@ class RegisterWeeklymenuForm(FlaskForm):
     #     label=('Oppskrifter'))
 
     submit = SubmitField(label=('Registrer ukesmeny'))
+
+
+class WeeklyMenuSelector(FlaskForm):
+    weeklyIdName = SelectField(u'Group', choices='', validators=[DataRequired()])
