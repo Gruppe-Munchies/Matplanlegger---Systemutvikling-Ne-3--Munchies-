@@ -27,13 +27,15 @@ def ukesmeny():
 
     formSelector.weeklyIdName.choices = choice
 
-    # if request.method == 'POST' and form.validate():
-    #     selectFieldGroup = form.weeklyIdName.data
-    #     MENU_ID = selectFieldGroup
+    if "selectFormName" in request.method == 'POST' and form.validate():
+        selectFieldGroup = form.weeklyIdName.data
+        MENU_ID = selectFieldGroup
 
-    if request.method == 'POST' and form.validate():
+    if "addToWeeklyMenuForm" in request.method == 'POST' and form.validate():
         weeklymanu_name = form.weekly_name.data
         weeklymenu_desc = form.weekly_desc.data
+
+
         # Do group already have menu with same name?
         if not weekly.fetch_weeklymenu_where_name_and_usergroupid(group_id, weeklymanu_name):
 
