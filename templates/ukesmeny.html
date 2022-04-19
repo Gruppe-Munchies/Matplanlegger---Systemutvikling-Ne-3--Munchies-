@@ -114,7 +114,7 @@
                         <div class="container mt-5">
                             <div class="row align-items-center">
                                 <div class="card p-2 m-auto">
-                                    <form method="POST" name="formz" value="addToWeeklyMenuForm" action="{{ url_for('weeklyMenu.ukesmeny',formid=2) }}" class="row">
+                                    <form method="POST"  action="{{ url_for('weeklyMenu.ukesmeny',formid=2) }}" class="row">
                                         {{ form.csrf_token }}
 
                                         <div class="row mb-3 g-2 justify-content-center">
