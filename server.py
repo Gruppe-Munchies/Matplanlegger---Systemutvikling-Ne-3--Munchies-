@@ -3,6 +3,7 @@ from flask_login import LoginManager, current_user
 
 import backend.auth.queries
 import backend.main.views as mainpage
+import backend.weekly_menu.queries as weekly
 import backend.auth.views as auth
 import backend.recipes.views as recipes
 import backend.ingredients.views as ingredients
@@ -24,7 +25,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{username}:{password}@
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # stops warning
 app.config['SECRET_KEY'] = "secretkey"
 app.config['WTF_CSRF_SECRET_KEY'] = "secretkey"
-
 
 
 @app.route('/')
