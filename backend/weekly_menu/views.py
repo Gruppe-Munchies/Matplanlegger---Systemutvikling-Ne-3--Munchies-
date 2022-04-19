@@ -30,7 +30,7 @@ def ukesmeny():
     for i in choice:
         if i[0] == int(flask.session.get('menuID')):
             choice.remove(i)
-            choice.insert(i,1)
+            choice.insert(0, i)
 
     print(choice)
 
