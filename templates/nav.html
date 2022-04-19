@@ -1,41 +1,50 @@
 <nav class="navbar navbar-expand-lg navbar-dark p-3 mb-4">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+{#    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"#}
+{#            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">#}
+{#        <span class="navbar-toggler-icon"></span>#}
+{#    </button>#}
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-label="Toggle">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-         {% if current_user.is_authenticated %}
+    {% if current_user.is_authenticated %}
         <a class="navbar-brand" href="{{ url_for('index') }}">Munchbase {{ session.get('groupname_to_use') }}</a>
-        {% else %}
-       <a class="navbar-brand" href="{{ url_for('index') }}">Munchbase </a>
-        {% endif %}
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    {% else %}
+        <a class="navbar-brand" href="{{ url_for('index') }}">Munchbase </a>
+    {% endif %}
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <ul id="navigation" class="navbar-nav mr-auto">
 
-            {% if current_user.is_authenticated and session.get('groupname_to_use') == ""  %}
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logg ut</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.profil') }}">Min profil</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.groupadmin') }}">Gruppeadministrasjon</a></li>
+            {% if current_user.is_authenticated and session.get('groupname_to_use') == "" %}
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logg ut</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.profil') }}">Min profil</a></li>
+                <li class="nav-item"><a class="nav-link"
+                                        href="{{ url_for('auth.groupadmin') }}">Gruppeadministrasjon</a></li>
 
-            {% elif current_user.is_authenticated and session.get('groupname_to_use') !=""  %}
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('recipes.oppskrifter') }}">Oppskrifter</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('ingredient.new') }}">Ingredienser</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('handleliste') }}">Handleliste</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('weeklyMenu.ukesmeny') }}">Ukesmeny</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('recipes.legg_til_rett') }}">Legg til rett</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.profil') }}">Min profil</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.groupadmin') }}">Gruppeadministrasjon</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logg ut</a></li>
+            {% elif current_user.is_authenticated and session.get('groupname_to_use') !="" %}
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('recipes.oppskrifter') }}">Oppskrifter</a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('ingredient.new') }}">Ingredienser</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('handleliste') }}">Handleliste</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('weeklyMenu.ukesmeny') }}">Ukesmeny</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('recipes.legg_til_rett') }}">Legg til rett</a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.profil') }}">Min profil</a></li>
+                <li class="nav-item"><a class="nav-link"
+                                        href="{{ url_for('auth.groupadmin') }}">Gruppeadministrasjon</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logg ut</a></li>
 
 
 
             {% else %}
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">Register</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">Register</a></li>
             {% endif %}
-    </ul>
+        </ul>
 
-        </div>
-    </nav>
+    </div>
+</nav>
 
 
