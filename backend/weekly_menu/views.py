@@ -1,23 +1,42 @@
 import flask
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for, session
 import backend.weekly_menu.queries as weekly
-from backend.weekly_menu.forms import RegisterWeeklymenuForm
+from backend.weekly_menu.forms import RegisterWeeklymenuForm, WeeklyMenuSelector
 
 weeklyMenu = Blueprint('weeklyMenu', __name__, template_folder='templates')
 
 
 @weeklyMenu.route('/ukesmeny', methods=['POST', 'GET'])
 def ukesmeny():
-    # hent ut i liste alle recepies i den gitte ukesmenyen.  hardkod ukesmenyen først.
+    weekly_menu = weekly.fetch_all_weeklymenu_where_groupId(session['group_to_use'])
+    MENU_ID = 1
+    # if not session['menu_id']:
+    #     session['menu_id'] = weekly_menu[0].idWeeklyMenu
 
-    MENY_ID = 27
-    recipes_weeklymenu = weekly.fetch_recipesNameQyantity_where_weeklymenu_id(MENY_ID)
-    manu_name = weekly.fetch_menu_name_where_menu_id(MENY_ID)
-    # prints names
-    for r in recipes_weeklymenu:
-        print(r[1])
+    form = WeeklyMenuSelector(request.form)
+    choice = []
 
-    return render_template('ukesmeny.html', recipes=recipes_weeklymenu, name=manu_name)
+    for i in weekly_menu:
+        choice.append((i.idWeeklyMenu, i.name))
+
+    form.weeklyIdName.choices = choice
+
+    if request.method == 'POST' and form.validate():
+        selectFieldGroup = form.weeklyIdName.data
+
+        MENU_ID = selectFieldGroup
+        # return redirect(url_for("ukesmeny", id=MENU_ID))
+
+    form.weeklyIdName.data = MENU_ID
+
+    recipes_weeklymenu = weekly.fetch_recipesNameQyantity_where_weeklymenu_id(MENU_ID)
+    manu_name = weekly.fetch_menu_name_where_menu_id(MENU_ID)
+
+    return render_template('ukesmeny.html', recipes=recipes_weeklymenu, name=manu_name, id=MENU_ID, form=form)
+
+
+# @weeklyMenu.route('/ukesmeny/addTocalendar', methods=['POST', 'GET'])
+# def legg_ukesmenu_til_uke():
 
 
 @weeklyMenu.route('/legg_til_ukesmeny', methods=['POST', 'GET'])

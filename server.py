@@ -42,6 +42,15 @@ def ingredienser():
 
 
 
+@app.route('/ukesmeny')
+def ukesmeny():
+    return render_template('ukesmeny.html')
+
+
+@app.route('/user-administration')
+def userAdministration():
+    return render_template('user-administration.html')
+
 @app.route('/leggtilmeny')
 def nyUkesmeny():
     return render_template('newWeeklyMenu.html')
