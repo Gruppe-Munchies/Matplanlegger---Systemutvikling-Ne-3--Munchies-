@@ -88,3 +88,9 @@ class WeeklyMenu(Base):
     __tablename__ = 'weeklyMenu'
     __table_args__ = {'autoload': True}
     """"""
+
+class WeeklyMenuDate(Base):
+    """"""
+    __tablename__ = 'weekly_menu_date'
+    __table_args__ = {'autoload': True}
+    """"""
