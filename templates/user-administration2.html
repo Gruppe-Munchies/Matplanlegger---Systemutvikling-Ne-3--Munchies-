@@ -11,6 +11,7 @@
     </tr>
     </thead>
     <tbody>
+    {% if userIsAdmin %}
     {% for user in users %}
         <tr>
             <td>{{ user[1].username }}</td>
@@ -43,7 +44,21 @@
                 </div>
             </td>
         </tr>
+         {% endfor %}
+    {% else %}
+        {% for user in users %}
+        <tr>
+            <td>{{ user[1].username }}</td>
+            <td>{{ user[1].email }}</td>
+            <td>{{ user[1].firstname }}</td>
+            <td>{{ user[1].lastname }}</td>
+            <td>{{ user[0].groupName }}</td>
+            <td>{{ user[2].userTypeName }}</td>
+            <td>{{ user[3].statusName }}</td>
+        </tr>
     {% endfor %}
+    {% endif %}
+
     </tbody>
 </table>
 
