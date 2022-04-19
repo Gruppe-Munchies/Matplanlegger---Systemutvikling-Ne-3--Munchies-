@@ -118,15 +118,22 @@ def fetch_weeklymenu_where_usergroupid(usergroup_id):
     session = loadSession()
     return session.query(WeeklyMenu).filter((WeeklyMenu.userGroup_iduserGroup == usergroup_id)).all()
 
-def fetch_weeklymenu_recipes_where_name_usergroupid():
+def fetch_weeklymenu_recipes_where_name_usergroupid(menuID):
     session = loadSession()
-    return session.query(Recipe.name ,RecipeHasWeeklyMenu.expectedConsumption, RecipeHasWeeklyMenu.recipe_idRecipe).join(RecipeHasWeeklyMenu, Recipe.idRecipe == RecipeHasWeeklyMenu.recipe_idRecipe).all()
+    return session.query(Recipe.name, RecipeHasWeeklyMenu.expectedConsumption, RecipeHasWeeklyMenu.recipe_idRecipe).join(RecipeHasWeeklyMenu, Recipe.idRecipe == RecipeHasWeeklyMenu.recipe_idRecipe).filter(RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu == menuID).all()
 
-
-
-def remove_from_RecipeHasWeeklyMenu(recipeID):
+def fetch_all_weeklymenu_where_groupId(group_id):
     session = loadSession()
-    session.query(RecipeHasWeeklyMenu).filter(RecipeHasWeeklyMenu.recipe_idRecipe == recipeID).delete(synchronize_session=False)
+    return session.query(WeeklyMenu).where(WeeklyMenu.userGroup_iduserGroup == group_id).all()
+
+def fetch_first_weeklymenu_where_groupId(group_id):
+    session = loadSession()
+    return session.query(WeeklyMenu.idWeeklyMenu).where(WeeklyMenu.userGroup_iduserGroup == group_id).first()[0]
+
+
+def remove_from_RecipeHasWeeklyMenu(recipeID,MenuID):
+    session = loadSession()
+    session.query(RecipeHasWeeklyMenu).filter(and_(RecipeHasWeeklyMenu.recipe_idRecipe == recipeID,RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu == MenuID)).delete(synchronize_session=False)
     session.commit()
 
 if __name__ == '__main__':
