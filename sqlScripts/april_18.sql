@@ -333,15 +333,3 @@ VALUES (1, 1, 20),
 #        (1, 3, 12),
 #        (2, 2, 2),
 #        (3, 1, 35);
-© 2022 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
