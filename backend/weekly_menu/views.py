@@ -49,3 +49,11 @@ def addRecipeToWeeklyMenu(recipe_id: int, quantity: int):
 def RemoveRecipeFromWeeklyMenu(recipe_id: int):
     weekly.remove_from_RecipeHasWeeklyMenu(recipe_id)
     return redirect('/legg_til_ukesmeny')
+
+
+@weeklyMenu.route('/handleliste', methods=["GET", "POST"])
+def handleliste():
+    weekly_menu_name = " en konkret hardkodet ukesmeny "
+    totalsum = 32123132 #hardkodet totalsum
+
+    return render_template('handleliste.html',  weekly_menu_name=weekly_menu_name, totalsum=totalsum)

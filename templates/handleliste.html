@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}Handleliste{% endblock %}
 {% block heading %}Handleliste{% endblock %}
-{% block description %}Se produktene du må kjøpe inn basert på rettene som du har lagt i ukesmenyen{% endblock %}
+{% block description %}Se produktene du må kjøpe inn basert på rettene som du har lagt i ukesmenyen:
+    <h2>{{weekly_menu_name}}</h2>
+
+{% endblock %}
 
 {% block content %}
 
@@ -39,7 +42,7 @@
                     </tbody>
                 </table>
             </div>
-            <h5 style="height:45px;color:rgb(3,3,3);font-family:'Source Sans Pro', sans-serif;margin-top:20px;">Totalt : 2993 ,-</h5>
+            <h5 style="height:45px;color:rgb(3,3,3);font-family:'Source Sans Pro', sans-serif;margin-top:20px;">Totalt : {{totalsum}} ,-</h5>
         </form>
 
 {% endblock %}

@@ -41,10 +41,6 @@ def ingredienser():
     return render_template('ingredienser.html')
 
 
-@app.route('/handleliste')
-def handleliste():
-    return render_template('handleliste.html')
-
 
 @app.route('/leggtilmeny')
 def nyUkesmeny():
