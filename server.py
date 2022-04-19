@@ -3,7 +3,6 @@ from flask_login import LoginManager, current_user
 
 import backend.auth.queries
 import backend.main.views as mainpage
-import backend.weekly_menu.queries as weekly
 import backend.auth.views as auth
 import backend.recipes.views as recipes
 import backend.ingredients.views as ingredients
@@ -27,12 +26,11 @@ app.config['SECRET_KEY'] = "secretkey"
 app.config['WTF_CSRF_SECRET_KEY'] = "secretkey"
 
 
+
 @app.route('/')
 def index():
     session['group_to_use'] = 0
     session['groupname_to_use'] = ""
-    if current_user:
-        print("ja er en bruker ja")
     return render_template('index.html')
 
 
@@ -45,6 +43,15 @@ def ingredienser():
 def handleliste():
     return render_template('handleliste.html')
 
+
+@app.route('/ukesmeny')
+def ukesmeny():
+    return render_template('ukesmeny.html')
+
+
+@app.route('/user-administration')
+def userAdministration():
+    return render_template('user-administration.html')
 
 @app.route('/leggtilmeny')
 def nyUkesmeny():
