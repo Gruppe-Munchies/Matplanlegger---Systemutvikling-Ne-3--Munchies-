@@ -9,8 +9,6 @@ weeklyMenu = Blueprint('weeklyMenu', __name__, template_folder='templates')
 @weeklyMenu.route('/ukesmeny', methods=['POST', 'GET'])
 def ukesmeny():
     # hent ut i liste alle recepies i den gitte ukesmenyen.  hardkod ukesmenyen først.
-
-
     group_id = flask.session.get('group_to_use', 'not set')
     group_recipes = weekly.fetch_recipes_where_usergroupid(flask.session.get('group_to_use'))
     weeklyMenus = weekly.fetch_weeklymenu_recipes_where_name_usergroupid()
