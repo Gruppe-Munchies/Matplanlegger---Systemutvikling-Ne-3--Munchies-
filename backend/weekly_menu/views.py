@@ -13,11 +13,31 @@ def ukesmeny():
     MENY_ID = 27
     recipes_weeklymenu = weekly.fetch_recipesNameQyantity_where_weeklymenu_id(MENY_ID)
     manu_name = weekly.fetch_menu_name_where_menu_id(MENY_ID)
+
+    group_id = flask.session.get('group_to_use', 'not set')
     # prints names
     for r in recipes_weeklymenu:
         print(r[1])
 
-    return render_template('ukesmeny.html', recipes=recipes_weeklymenu, name=manu_name)
+    form = RegisterWeeklymenuForm(request.form)
+
+    if request.method == 'POST':
+        weeklymanu_name = form.weekly_name.data
+        weeklymenu_desc = form.weekly_desc.data
+
+        # Do group already have menu with same name?
+        if not weekly.fetch_weeklymenu_where_name_and_usergroupid(group_id, weeklymanu_name):
+
+            weekly.insert_to_weeklymenu(weeklymanu_name, weeklymenu_desc, group_id)
+
+            # TODO: Legg til oppskrifter ---RECIPES
+
+            flash("Meny lagt til!", "success")
+            return redirect(url_for("ukesmeny"))
+        else:
+            flash("Dere har allerede en meny med dette navnet", "warning")
+
+    return render_template('ukesmeny.html', recipes=recipes_weeklymenu, name=manu_name, form=form)
 
 
 @weeklyMenu.route('/legg_til_ukesmeny', methods=['POST', 'GET'])
@@ -27,6 +47,7 @@ def legg_til_ukesmeny():
     weeklyMenus = weekly.fetch_weeklymenu_recipes_where_name_usergroupid()
     activeMenu = weekly.fetch_weeklymenu_where_usergroupid(flask.session.get('group_to_use'))
     dishes = [i.name for i in weeklyMenus]
+
 
 
     return render_template('newWeeklyMenu.html', recipes=group_recipes, weeklyMenus=weeklyMenus, activeMenu=activeMenu, dishes=dishes)
