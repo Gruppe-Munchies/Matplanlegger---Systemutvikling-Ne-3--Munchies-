@@ -33,7 +33,7 @@ def ukesmeny():
         session['menuID'] = formSelector.weeklyIdName.data
         print('kjbsa')
         print(flask.session.get('menuID'))
-        #return redirect(request.referrer)
+        return redirect(request.referrer)
 
 
     if "addToWeeklyMenuForm" in request.method == 'POST' and form.validate():
