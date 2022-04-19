@@ -9,9 +9,9 @@ weeklyMenu = Blueprint('weeklyMenu', __name__, template_folder='templates')
 @weeklyMenu.route('/ukesmeny', methods=['POST', 'GET'])
 def ukesmeny():
     weekly_menu = weekly.fetch_all_weeklymenu_where_groupId(session['group_to_use'])
-
-    if not session['menu_id']:
-        session['menu_id'] = weekly_menu[0].idWeeklyMenu
+    MENU_ID = 1
+    # if not session['menu_id']:
+    #     session['menu_id'] = weekly_menu[0].idWeeklyMenu
 
     form = WeeklyMenuSelector(request.form)
     choice = []
@@ -24,15 +24,15 @@ def ukesmeny():
     if request.method == 'POST' and form.validate():
         selectFieldGroup = form.weeklyIdName.data
 
-        session['menu_id'] = selectFieldGroup
-        return redirect(request.referrer)
+        MENU_ID = selectFieldGroup
+        # return redirect(url_for("ukesmeny", id=MENU_ID))
 
-    form.weeklyIdName.data = session.get('menu_id', 0)
+    form.weeklyIdName.data = MENU_ID
 
-    recipes_weeklymenu = weekly.fetch_recipesNameQyantity_where_weeklymenu_id(session['menu_id'])
-    manu_name = weekly.fetch_menu_name_where_menu_id(session['menu_id'])
+    recipes_weeklymenu = weekly.fetch_recipesNameQyantity_where_weeklymenu_id(MENU_ID)
+    manu_name = weekly.fetch_menu_name_where_menu_id(MENU_ID)
 
-    return render_template('ukesmeny.html', recipes=recipes_weeklymenu, name=manu_name, id=session['menu_id'], form=form)
+    return render_template('ukesmeny.html', recipes=recipes_weeklymenu, name=manu_name, id=MENU_ID, form=form)
 
 
 # @weeklyMenu.route('/ukesmeny/addTocalendar', methods=['POST', 'GET'])
