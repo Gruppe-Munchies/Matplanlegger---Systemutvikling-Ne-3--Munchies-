@@ -26,6 +26,13 @@ def ukesmeny():
 
     for i in weekly_menu:
         choice.append((i.idWeeklyMenu, i.name))
+    print(choice)
+    for i in choice:
+        if i[0] == int(flask.session.get('menuID')):
+            choice.remove(i)
+            choice.insert(i,1)
+
+    print(choice)
 
     formSelector.weeklyIdName.choices = choice
 
@@ -35,7 +42,7 @@ def ukesmeny():
         print(flask.session.get('menuID'))
         formSelector.weeklyIdName.data = session['menuID']
 
-        # return redirect(request.referrer)
+        return redirect(request.referrer)
 
     if "addToWeeklyMenuForm" in request.method == 'POST' and form.validate():
         weeklymanu_name = form.weekly_name.data
