@@ -65,7 +65,7 @@ def ukesmeny():
     weeklyMenus = weekly.fetch_weeklymenu_recipes_where_name_usergroupid(flask.session.get('menuID'))
 
     return render_template('ukesmeny.html', recipes=group_recipes, weeklyMenus=weeklyMenus, activeMenu=activeMenu,
-                           dishes=dishes, form=form, formSelect=formSelector)
+                           dishes=dishes, form=form, formSelect=formSelector, menuID=flask.session.get('menuID'))
 
 
 @weeklyMenu.route('/legg_til_ukesmeny', methods=['POST', 'GET'])
@@ -93,7 +93,7 @@ def addRecipeToWeeklyMenu(recipe_id: int, quantity: int):
     return redirect('/ukesmeny')
 
 
-@weeklyMenu.route('/weekly_menu/<recipe_id>/delete', methods=["GET", "POST"])
-def RemoveRecipeFromWeeklyMenu(recipe_id: int):
-    weekly.remove_from_RecipeHasWeeklyMenu(recipe_id)
+@weeklyMenu.route('/weekly_menu/<recipe_id>/<menu_ID>/delete', methods=["GET", "POST"])
+def RemoveRecipeFromWeeklyMenu(recipe_id: int,menu_ID: int):
+    weekly.remove_from_RecipeHasWeeklyMenu(recipe_id, menu_ID)
     return redirect('/ukesmeny')

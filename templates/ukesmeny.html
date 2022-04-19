@@ -42,7 +42,7 @@
 
                 <script>
                     document.getElementById("{{ loop.index }}-RemoveFromRecipe").onclick = function () {
-                        document.getElementById('{{ loop.index }}-RemoveFromRecipe').href = "/weekly_menu/{{ weeklyMenu.recipe_idRecipe }}/delete";
+                        document.getElementById('{{ loop.index }}-RemoveFromRecipe').href = "/weekly_menu/{{ weeklyMenu.recipe_idRecipe }}/{{ menuID }}/delete";
                     }
                 </script>
             {% endfor %}

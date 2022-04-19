@@ -119,9 +119,9 @@ def fetch_first_weeklymenu_where_groupId(group_id):
     return session.query(WeeklyMenu.idWeeklyMenu).where(WeeklyMenu.userGroup_iduserGroup == group_id).first()[0]
 
 
-def remove_from_RecipeHasWeeklyMenu(recipeID):
+def remove_from_RecipeHasWeeklyMenu(recipeID,MenuID):
     session = loadSession()
-    session.query(RecipeHasWeeklyMenu).filter(RecipeHasWeeklyMenu.recipe_idRecipe == recipeID).delete(synchronize_session=False)
+    session.query(RecipeHasWeeklyMenu).filter(and_(RecipeHasWeeklyMenu.recipe_idRecipe == recipeID,RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu == MenuID)).delete(synchronize_session=False)
     session.commit()
 
 if __name__ == '__main__':
