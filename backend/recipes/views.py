@@ -83,7 +83,7 @@ def legg_til_rett():
         # Legger til recipe i tabellen
 
         if fetch_recipeID_where_name_and_groupID_equals(dish, group_id) is None:
-            ingr_queries.insert_to_recipe(dish, short_desc, long_desc, 'test', group_id, '1', '1') #: TODO: Testdata på de siste 4 parametre
+            ingr_queries.insert_to_recipe(dish, short_desc, long_desc, 'IMAGE OF DISH', group_id)
 
             # Henter info fra hidden field, og gjør mening ut av denne(For å få en dynamisk field)
             lst = re.sub("-.*?-", ":o:", ingredienser)

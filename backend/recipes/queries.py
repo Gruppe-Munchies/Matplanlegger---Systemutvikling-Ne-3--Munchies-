@@ -17,11 +17,13 @@ def insert_to_recipeavalilability():
 
 
 # Add recipe
-def insert_to_recipe(name, shortDescription, description, image, userGroup, recipeAvailability, weeklymenu):
+def insert_to_recipe(name, shortDescription, description, image, userGroup):
     session = loadSession()
     new_recipe = Recipe(name=name, shortDescription=shortDescription, description=description, image=image,
-                        userGroup_iduserGroup=userGroup, recipeAvailability_idrecipeAvailability=recipeAvailability,
-                        weeklyMenu_idweeklyMenu=weeklymenu)
+                        userGroup_iduserGroup=userGroup, recipeAvailability_idrecipeAvailability=1,
+                        weeklyMenu_idweeklyMenu=0) #recipeavailability var tenkt som hvilken gruppe som skal se denne.
+    #De to sistnevnte brukes strengt tatt ikke, men ligger i databasen fremdeles.
+
     session.add(new_recipe)
     session.commit()
     session.close()
