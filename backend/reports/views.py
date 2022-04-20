@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, render_template
 from backend.reports.queries import *
 import pandas as pd
 from flask_alchemy_db_creation.local_db_create import engine
@@ -24,6 +24,12 @@ if __name__ == '__main__':
 
 
 @reports.route('/report', methods=['GET', 'POST'])
-def ingredients_used_per_week(groupId, year, weeknum):
+def ingredients_used_per_week():
+
+    groupId = 1
+    year = 2022
+    weeknum = 16
 
     res = ingredients_used_per_week_per_dish(groupId, year, weeknum)
+
+    return render_template('report.html', report=res)
