@@ -30,6 +30,9 @@ def ingredients_used_per_week():
     year = 2022
     weeknum = 16
 
-    res = ingredients_used_per_week_per_dish(groupId, year, weeknum)
+    res = ingredients_used_per_week_total(groupId, year, weeknum)
+
+    #for i in res:
+    #    print(i.Ingrediens)
 
     return render_template('report.html', report=res)
