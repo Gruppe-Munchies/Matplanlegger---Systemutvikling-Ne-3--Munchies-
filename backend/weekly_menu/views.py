@@ -72,7 +72,7 @@ def RemoveRecipeFromWeeklyMenu(recipe_id: int):
 
 @weeklyMenu.route('/handleliste', methods=["GET", "POST"])
 def handleliste():
-    allIngredientsFromWeekly = weekly.get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(1)
+    allIngredientsFromWeekly = weekly.get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(3)
     weekly_menu_name = " en konkret hardkodet ukesmeny "
     totalsum = 0
     for ingredient in allIngredientsFromWeekly:

@@ -113,13 +113,13 @@ def get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(menu_id):
         for ingredient in ingredients:
             exist = False
             index = -1
+            quantity = 0
             for i in range(len(ingredientsList)):
                 if ingredientsList[i][1] == ingredient[1]:
                     exist = True
                     index = i
 
             if exist:
-                quantity += (ingredient[0] * resQuantity)
                 cost = quantity * ingredient[3]
                 ingredientsList[index][2] += ingredient[0] * resQuantity
                 ingredientsList[index][4] = cost
@@ -138,7 +138,7 @@ def get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(menu_id):
                 print("COST")
                 print(ingredient[3])
                 print(cost)
-                ingredientsList.append([id, name, quantity, unit, cost, price])
+                ingredientsList.append([id, name, round(quantity), unit, cost, price])
 
     # index: 0-ingredientID, 1-ingredientName, 2-Quantity of ingredient in weekly menu, 3-unit, 4-totIngredientCost, 5-unit price
     return ingredientsList
