@@ -44,10 +44,12 @@ def fetch_menu_name_where_menu_id(menu_id):
 
 def fetch_recipesNameQyantity_where_weeklymenu_id(menu_id):
     session = loadSession()
-    return session.query(RecipeHasWeeklyMenu.recipe_idRecipe, Recipe.name,
+    res = session.query(RecipeHasWeeklyMenu.recipe_idRecipe, Recipe.name,
                          RecipeHasWeeklyMenu.expectedConsumption).join(
         RecipeHasWeeklyMenu, RecipeHasWeeklyMenu.recipe_idRecipe == Recipe.idRecipe).filter(
         RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu == menu_id).all()
+    session.close()
+    return res
 
 def fetch_recipes_where_weeklymenu_id(menu_id):
     session = loadSession()
