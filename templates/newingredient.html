@@ -105,9 +105,8 @@
                                 <script>
                                     document.getElementById("{{ loop.index }}-myLink").onclick = function() {
                                         var getQuantity = document.getElementById('{{ loop.index }}-quantityForm').value;
-                                        var getUnit = document.getElementById('{{ loop.index }}-unitForm').value;
                                         var getPrice = document.getElementById('{{ loop.index }}-prisForm').value;
-                                    document.getElementById('{{ loop.index }}-myLink').href = '/ingredient/{{ ingredient[1].ingredient_idingredient }}/' +  getQuantity + '/' + getUnit + '/' + getPrice + '/update';
+                                    document.getElementById('{{ loop.index }}-myLink').href = '/ingredient/{{ ingredient[1].ingredient_idingredient }}/' +  getQuantity +  '/' + getPrice + '/update';
                                     }
                                     </script>
 

@@ -71,8 +71,8 @@ def new():
 
     return render_template('newingredient.html', form=form, ingredients=group_ingredients)
 
-@ingredient.route('/<ingrediens_id>/<quantity>/<unit>/<price>/update', methods=["GET", "POST"])
-def updateIngredient(ingrediens_id: str, quantity: str,unit: str, price: str):
+@ingredient.route('/<ingrediens_id>/<quantity>/<price>/update', methods=["GET", "POST"])
+def updateIngredient(ingrediens_id: str, quantity: str, price: str):
     group = flask.session.get('group_to_use')
-    editIngredient(group, ingrediens_id, quantity, unit, price)
+    editIngredient(group, ingrediens_id, quantity, price)
     return redirect('/ingredient/new')
