@@ -66,7 +66,56 @@
                 <td>{{ ingredient[1].quantity }}</td>
                 <td>{{ ingredient[1].unit }}</td>
                 <td>{{ ingredient[1].price }}</td>
+            <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal{{ingredient[0].ingredientName }}">Rediger</button></td>
             </tr>
+
+            <!-- Modal -->
+                        <div class="modal fade" id="modal{{ingredient[0].ingredientName }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Rediger {{ ingredient.ingredientName }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body row align-items-end">
+
+                                  <div class="form-group col">
+                                         <label>Ingrediens</label>
+                                        <input id="{{ loop.index }}-nameForm" class="form-control" type="text" value="{{ ingredient[0].ingredientName }}" disabled readonly>
+                                    </div>
+
+                                    <div class="form-group col">
+                                         <label>Antall</label>
+                                        <input id="{{ loop.index }}-quantityForm" type="number" min="0" class="form-control" id="exampleFormControlInput1" value="{{ ingredient[1].quantity }}">
+                                    </div>
+                                  <div class="form-group col">
+                                         <label>Enhet</label>
+                                        <input id="{{ loop.index }}-unitForm" class="form-control" type="text" value="{{ ingredient[1].unit }}">
+                                    </div>
+
+                                  <div class="form-group col">
+                                         <label>Print</label>
+                                        <input id="{{ loop.index }}-prisForm" type="number" min="0" class="form-control" id="exampleFormControlInput1" value="{{ ingredient[1].quantity }}">
+                                    </div>
+                              </div>
+                                <div class="modal-footer">
+                                        <a href="{{ id }}/{{ ingredient.ingredient_idingredient }}/delete" type="button" class="btn btn-secondary" ><i class="bi-trash"></i> Slett ingrediens</a>
+                                        <a href="#" id="{{ loop.index }}-myLink" type="button" class="btn btn-primary">Oppdater</a>
+
+                                <script>
+                                    document.getElementById("{{ loop.index }}-myLink").onclick = function() {
+                                        var getQuantity = document.getElementById('{{ loop.index }}-quantityForm').value;
+                                        var getUnit = document.getElementById('{{ loop.index }}-unitForm').value;
+                                        var getPrice = document.getElementById('{{ loop.index }}-prisForm').value;
+                                    document.getElementById('{{ loop.index }}-myLink').href = '/ingredient/{{ ingredient[1].ingredient_idingredient }}/' +  getQuantity + '/' + getUnit + '/' + getPrice + '/update';
+                                    }
+                                    </script>
+
+                                </div>
+
+                            </div>
+                          </div>
+                        </div>
         {% endfor %}
         </tbody>
     </table>
