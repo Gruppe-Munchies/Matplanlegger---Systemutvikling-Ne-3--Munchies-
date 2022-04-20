@@ -12,17 +12,21 @@
         <th>Vare</th>
         <th>Forbruk</th>
         <th>Enhet</th>
+        <th>Pris </th>
+        <th>Kostnad</th>
     </tr>
     </thead>
     <tbody>
     {% for i in report %}
         <tr>
             <td>{{ i.Ingrediens }}</td>
-            <td>{{ i.Sum }}</td>
+            <td>{{ i.SumMengde }}</td>
             <td>{{ i.Enhet }}</td>
+            <td>{{ i.Pris }}</td>
+            <td>{{ i.SumBelop }}</td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
-
+<h5>Total kostnad: {{ report[0].SumTotal }} </h5>
 {% endblock %}

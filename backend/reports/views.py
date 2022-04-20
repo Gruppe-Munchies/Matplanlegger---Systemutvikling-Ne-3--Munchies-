@@ -10,13 +10,13 @@ def test():
     pd.set_option('display.expand_frame_repr', False)
 
     res = pd.read_sql(ingredients_used_per_week_per_dish(1,2022,16).statement, engine)
-    print(res[['Ukemeny','Gruppe', 'Oppskrift','Prognose', 'Ingrediens', 'Mengde', 'Sum', 'Enhet']])
+    print(res[['Ukemeny','Gruppe', 'Oppskrift','Prognose', 'Ingrediens', 'Mengde', 'SumMengde', 'Enhet']])
 
     print("")
     print("")
 
     res2 = pd.read_sql(ingredients_used_per_week_total(1,2022,16).statement, engine)
-    print(res2[['Ukemeny','Gruppe', 'Antall retter', 'Ingrediens', 'Sum', 'Enhet']])
+    print(res2[['Ukemeny','Gruppe', 'Antall retter', 'Ingrediens', 'SumMengde', 'Enhet', 'SumBelop']])
 
 
 if __name__ == '__main__':
