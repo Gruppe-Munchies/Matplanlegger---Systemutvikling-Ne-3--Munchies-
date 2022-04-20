@@ -39,6 +39,12 @@ def fetch_recipeID_where_name_equals(name):
     session.close()
     return res
 
+def fetch_recipeID_where_name_and_groupID_equals(name, groupID):
+    session = loadSession()
+    res = session.query(Recipe.idRecipe).where(and_(Recipe.name == name, Recipe.userGroup_iduserGroup == groupID)).first()
+    session.close()
+    return res
+
 # Add to recipe_has_ingredient
 def insert_to_recipe_has_ingredient(recipe, ingredient, quantity):
     session = loadSession()
