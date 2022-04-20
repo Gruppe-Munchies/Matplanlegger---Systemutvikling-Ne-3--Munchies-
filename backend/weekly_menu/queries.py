@@ -135,6 +135,13 @@ def remove_from_RecipeHasWeeklyMenu(recipeID,MenuID):
     session = loadSession()
     session.query(RecipeHasWeeklyMenu).filter(and_(RecipeHasWeeklyMenu.recipe_idRecipe == recipeID,RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu == MenuID)).delete(synchronize_session=False)
     session.commit()
+    session.close()
+
+def check_first_weeklymenu_where_groupId(group_id):
+    session = loadSession()
+    res = session.query(WeeklyMenu.userGroup_iduserGroup,WeeklyMenu.idWeeklyMenu).where(WeeklyMenu.userGroup_iduserGroup == group_id).first()
+    return res
+
 
 if __name__ == '__main__':
     insert_to_weekly_menu_date(2, 2022, 15)

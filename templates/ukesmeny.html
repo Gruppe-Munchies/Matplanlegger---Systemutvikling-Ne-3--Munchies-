@@ -4,6 +4,7 @@
 {% block description %}Se hvilke matretter du har lagt i ukesmenyen{% endblock %}
 
 {% block content %}
+    {% if menuID != None %}
     <form method="POST" action="{{ url_for('weeklyMenu.ukesmeny',formid=1) }}" class="row">
         {{ form.csrf_token }}
         <div class="form-group w-25 p-3">{{ formSelect.weeklyIdName(class="form-select", onchange="submit()") }}</div>
@@ -151,5 +152,8 @@
             </div>
         </div>
     </div>
+        {% else %}
 
+        <p> Du har ingen ukesmenyer</p>
+{% endif %}
 {% endblock %}

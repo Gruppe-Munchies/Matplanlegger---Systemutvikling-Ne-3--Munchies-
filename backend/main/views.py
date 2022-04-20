@@ -13,6 +13,7 @@ def index():
     form = LoginForm()
     # print(f"current user: {current_user}")
     is_logged_in = False
-    session['menuID'] = weekly.fetch_first_weeklymenu_where_groupId(session.get('group_to_use'))
+    if session.get('group_to_use') != 0 and weekly.check_first_weeklymenu_where_groupId(session.get('group_to_use')) != None:
+        session['menuID'] = weekly.fetch_first_weeklymenu_where_groupId(session.get('group_to_use'))
     return render_template('index.html', form=form)
 
