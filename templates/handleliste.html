@@ -2,47 +2,44 @@
 {% block title %}Handleliste{% endblock %}
 {% block heading %}Handleliste{% endblock %}
 {% block description %}Se produktene du må kjøpe inn basert på rettene som du har lagt i ukesmenyen:
-    <h2>{{weekly_menu_name}}</h2>
+    <h2>{{ weekly_menu_name }}</h2>
 
 {% endblock %}
 
 {% block content %}
 
-        <form method="post" class="row" >
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr style="color:rgb(0,0,0);">
-                            <th>Produkt</th>
-                            <th class="justify-content-end">Enhet</th>
-                            <th>Antall</th>
-                            <th>Enhets Pris</th>
-                            <th>Sum Pris</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr style="color:rgb(11,11,11);">
-                            <td>
-                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1">Brød</label></div>
-                            </td>
-                            <td>24</td>
-                            <td>stk</td>
-                            <td>90</td>
-                            <td>2 160</td>
-                        </tr>
-                        <tr style="color:rgb(0,0,0);">
-                            <td>
-                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-2"><label class="form-check-label" for="formCheck-2">Fisk</label></div>
-                            </td>
-                            <td>1</td>
-                            <td>stk</td>
-                            <td>95</td>
-                            <td>95</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <h5 style="height:45px;color:rgb(3,3,3);font-family:'Source Sans Pro', sans-serif;margin-top:20px;">Totalt : {{totalsum}} ,-</h5>
-        </form>
+    <form method="post" class="row">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr style="color:rgb(0,0,0);">
+                    <th>Produkt</th>
+                    <th class="justify-content-end">Enhet</th>
+                    <th>Antall</th>
+                    <th>Enhets Pris</th>
+                    <th>Sum Pris</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ingredient in ingredients %}
+                    <tr style="color:rgb(11,11,11);">
+                        <td>
+                            <div class="form-check"><input class="form-check-input" type="checkbox"
+                                                           id="formCheck-1"><label class="form-check-label"
+                                                                                   for="formCheck-1">{{ ingredient[1] }}</label>
+                            </div>
+                        </td>
+                        <td>{{ ingredient[3] }}</td>
+                        <td>{{ ingredient[2] }}</td>
+                        <td>{{ ingredient[5] }}</td>
+                        <td>{{ ingredient[4] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <h5 style="height:45px;color:rgb(3,3,3);font-family:'Source Sans Pro', sans-serif;margin-top:20px;">Totalt
+            : {{ totalsum }} ,-</h5>
+    </form>
 
 {% endblock %}
