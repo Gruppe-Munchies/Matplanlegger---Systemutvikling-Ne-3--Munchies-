@@ -21,3 +21,9 @@ def test():
 
 if __name__ == '__main__':
     test()
+
+
+@reports.route('/report', methods=['GET', 'POST'])
+def ingredients_used_per_week(groupId, year, weeknum):
+
+    res = ingredients_used_per_week_per_dish(groupId, year, weeknum)
