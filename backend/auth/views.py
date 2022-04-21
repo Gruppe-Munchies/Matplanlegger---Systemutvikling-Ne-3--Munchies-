@@ -35,7 +35,6 @@ def login():
                     session['group_to_use'] = 0
                     session['groupname_to_use'] = ""
 
-                print(session.get('group_to_use'))
                 flash("Login vellykket!", "success")
                 login_user(user_from_db)
                 flash("Velkommen " + current_user.username, "success")
@@ -243,7 +242,6 @@ def response():
 
 @auth.route('/profil', methods=['GET', 'POST'])
 def profil():
-    print(session.get('group_to_use'))
     groups = fetchAllUserGroupsUserHasAndType(current_user.id)
 
     # TODO:Bør flyttes til nav

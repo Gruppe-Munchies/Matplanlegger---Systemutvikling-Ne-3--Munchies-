@@ -175,4 +175,12 @@ def editIngredientInRecipe(recipeID,ingredient_id,value):
     session.commit()
     session.close()
 
+def editIngredient(userGroup,ingredient_id,quantity,price):
+    session = loadSession()
+    field = session.query(UsergroupHasIngredient).filter(
+        and_(UsergroupHasIngredient.userGroup_iduserGroup == userGroup, UsergroupHasIngredient.ingredient_idingredient == ingredient_id)).first()
+    field.quantity = quantity
+    field.price = price
+    session.commit()
+    session.close()
 
