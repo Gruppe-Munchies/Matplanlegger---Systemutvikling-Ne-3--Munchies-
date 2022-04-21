@@ -290,7 +290,7 @@ VALUES (1, 1, 1, 2),
        (2, 2, 1, 2);
 
 
-# Legg til weekly menus
+# Legg til menu_queries menus
 INSERT INTO munchbase.`weeklyMenu`(name, description, `userGroup_iduserGroup`)
 VALUES ('Rulleuke', 'En uke full av ruller', 1),
        ('Meny2', 'Beskrivelse', 1);

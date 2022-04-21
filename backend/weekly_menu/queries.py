@@ -130,7 +130,7 @@ def get_all_ingredients_and_quantities_in_weeklymenu(menu_id):
                 ingredientsList[index][2] += ingredient[0] * resQuantity
             else:
                 ingredientsList.append([ingredient[2], ingredient[1], ingredient[0] * resQuantity])
-    # index: 0-ingredientID, 1-ingredientName, 2-Quantity of ingredient in weekly menu
+    # index: 0-ingredientID, 1-ingredientName, 2-Quantity of ingredient in menu_queries menu
     session.close()
     return ingredientsList
 
@@ -178,7 +178,7 @@ def get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(menu_id):
                 # print(cost)
                 ingredientsList.append([id, name, round(quantity), unit, cost, price])
 
-    # index: 0-ingredientID, 1-ingredientName, 2-Quantity of ingredient in weekly menu, 3-unit, 4-totIngredientCost, 5-unit price
+    # index: 0-ingredientID, 1-ingredientName, 2-Quantity of ingredient in menu_queries menu, 3-unit, 4-totIngredientCost, 5-unit price
     return ingredientsList
 
 
@@ -260,12 +260,31 @@ if __name__ == '__main__':
         print(r[2])
         print(r[3])
         print(r[4])
+
     # insert_to_weekly_menu_date(2, 2022, 15)
     # rec = fetch_menu_name_where_menu_id(27)
     # print(rec)
-#     rec = get_all_ingredients_and_quantities_in_weeklymenu(27)
-#     for r in rec:
-#         print(r[0])
-#         print(r[1])
-#         print(r[2])
-#         print("\n")
+    #     rec = get_all_ingredients_and_quantities_in_weeklymenu(27)
+    #     for r in rec:
+    #         print(r[0])
+    #         print(r[1])
+    #         print(r[2])
+    #         print("\n")
+
+
+def fetch_menus_with_dates_by_group_id(group_id):
+    session = loadSession()
+    res = session.query(WeeklyMenu).join(WeeklyMenuDate,
+                                         WeeklyMenu.idWeeklyMenu == WeeklyMenuDate.weeklyMenu_id).filter(
+        WeeklyMenu.userGroup_iduserGroup == group_id).all()
+    session.close()
+    return res
+
+
+if __name__ == '__main__':
+    # ape = fetch_weeklymenu_where_usergroupid(5)
+    # for i in ape:
+    #     print(i.idWeeklyMenu)
+    ape = fetch_menus_with_dates_by_group_id(5)
+    for i in ape:
+        print(ape[0].name)
