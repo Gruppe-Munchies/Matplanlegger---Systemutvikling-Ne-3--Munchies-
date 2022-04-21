@@ -126,5 +126,5 @@ def handleliste():
 @weeklyMenu.route('/<ingrediens_id>/<quantity>/update', methods=["GET", "POST"])
 def updateIngredient(ingrediens_id: str, quantity: str):
     group = flask.session.get('group_to_use')
-    weekly.editIngredientShopping(group, ingrediens_id, decimal(quantity))
+    weekly.editIngredientShopping(group, ingrediens_id, quantity)
     return redirect('/handleliste')

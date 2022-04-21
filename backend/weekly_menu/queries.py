@@ -1,3 +1,5 @@
+from numpy import double
+
 from local_db.session import loadSession
 from local_db.orm import User, Ingredient, Recipe, RecipeHasIngredient, RecipeHasWeeklyMenu, RecipeAvailability, \
     Usertype, Usergroup, UsergroupHasIngredient, WeeklyMenu, Base, UserHasUsergroup, WeeklyMenuDate
@@ -166,7 +168,7 @@ def get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(menu_id):
                     id = ingredient[2]
                     name = ingredient[1]
                     cost = quantity * ingredient[3]
-                    ingredientsList.append([id, name, round(quantity), unit, round(cost), price])
+                    ingredientsList.append([id, name, double(quantity), unit, double(cost), price])
 
     # index: 0-ingredientID, 1-ingredientName, 2-Quantity of ingredient in weekly menu, 3-unit, 4-totIngredientCost, 5-unit price
     return ingredientsList
@@ -257,7 +259,7 @@ def editIngredientShopping(userGroup, ingredient_id, quantity):
     field = session.query(UsergroupHasIngredient).filter(
         and_(UsergroupHasIngredient.userGroup_iduserGroup == userGroup,
              UsergroupHasIngredient.ingredient_idingredient == ingredient_id)).first()
-    field.quantity = currentQuantity.quantity + quantity
+    field.quantity = double(currentQuantity.quantity) + double(quantity)
     session.commit()
     session.close()
 
