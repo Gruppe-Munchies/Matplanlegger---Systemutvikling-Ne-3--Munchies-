@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, session, request, redirect, url_fo
 from backend.reports.queries import *
 import pandas as pd
 from flask_alchemy_db_creation.local_db_create import engine
+from flask_login import login_required
 
 reports = Blueprint('reports', __name__, template_folder='templates')
 
@@ -29,16 +30,18 @@ if __name__ == '__main__':
 
 
 @reports.route('/rapporter', methods=['GET', 'POST'])
+@login_required
 def ingredients_used_per_week():
 
-    #groupId = session.get('group_to_use')
-    groupId = 1
-    year = 2022
+    groupId = session.get('group_to_use')
+    #groupId = 1
 
     if 'weeknum' in request.args:
         weeknum = request.args["weeknum"]
+        year = request.args["year"]
     else:
         weeknum = 0
+        year = 0
 
     res = ingredients_used_per_week_total(groupId, year, weeknum)
     menus = fetch_weekly_menus_for_group(groupId)
