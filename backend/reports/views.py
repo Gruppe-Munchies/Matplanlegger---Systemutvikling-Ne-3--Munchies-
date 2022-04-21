@@ -10,14 +10,14 @@ def test():
     pd.set_option('display.max_columns', None)
     pd.set_option('display.expand_frame_repr', False)
 
-    res = pd.read_sql(ingredients_used_per_week_per_dish(1,2022,16).statement, engine)
-    print(res[['Ukemeny','Gruppe', 'Oppskrift','Prognose', 'Ingrediens', 'Mengde', 'SumMengde', 'Enhet']])
-
-    print("")
-    print("")
-
     res2 = pd.read_sql(ingredients_used_per_week_total(1,2022,16).statement, engine)
-    print(res2[['Ukemeny','Gruppe', 'Antall retter', 'Oppskrift', 'Ingrediens', 'SumMengde', 'Enhet', 'SumBelop']])
+    print(res2[['Ukemeny','Gruppe', 'Ingrediens', 'SumMengde', 'Enhet', 'SumBelop']])
+
+    print("")
+    print("")
+
+    res = pd.read_sql(ingredients_used_per_week_per_dish(1,2022,16,2).statement, engine)
+    print(res[['Ukemeny','Gruppe', 'Oppskrift', 'Ingrediens', 'Mengde', 'Prognose', 'SumMengde', 'Enhet']])
 
     print("")
     print("")
@@ -35,14 +35,26 @@ def ingredients_used_per_week():
 
     groupId = session.get('group_to_use')
 
-    if 'weeknum' in request.args:
+    weeknum = 0
+    year = 0
+    recipe = 0
+
+    # If recipe specification
+    if 'recipe' in request.args:
         weeknum = request.args["weeknum"]
         year = request.args["year"]
-    else:
-        weeknum = 0
-        year = 0
+        recipe = request.args["recipe"]
+        res = ingredients_used_per_week_per_dish(groupId, year, weeknum, recipe)
 
-    res = ingredients_used_per_week_total(groupId, year, weeknum)
+    # Else if menu selected
+    elif 'weeknum' in request.args:
+        weeknum = request.args["weeknum"]
+        year = request.args["year"]
+        res = ingredients_used_per_week_total(groupId, year, weeknum)
+
+    else:
+        res = ingredients_used_per_week_total(groupId, year, weeknum)
+
     menus = fetch_weekly_menus_for_group(groupId)
     menuId = menus[0][0].idWeeklyMenu
     recipes = fetch_recipes_in_weekly_menu(menuId)

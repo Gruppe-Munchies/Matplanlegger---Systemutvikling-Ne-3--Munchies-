@@ -13,7 +13,7 @@
 <h2>{{ report[1].Ukemeny }}</h2>
 <h5>Forbruk per ingrediens</h5>
 {% for recipe in recipes %}
-    <span class="badge badge-secondary"><a href="{{ url_for('reports.ingredients_used_per_week', weeknum=menus[0][2].weekNumber, year=recipe.year, recipe=recipe.idRecipe) }}">{{ recipe[0].name }}</a></span>
+    <span class="badge badge-secondary"><a href="{{ url_for('reports.ingredients_used_per_week', weeknum=recipe[2].weekNumber, year=recipe[2].year, recipe=recipe[0].idRecipe) }}">{{ recipe[0].name }}</a></span>
 {% endfor %}
     <thead>
     <tr>

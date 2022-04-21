@@ -14,11 +14,20 @@ from sqlalchemy import *
 def ingredients_used_per_week_total(groupId, year, weeknum):
     session = loadSession()
 
-    res = session.query(WeeklyMenuDate.id_weekly_menu_date,WeeklyMenuDate.weekNumber.label('Ukenummer'), WeeklyMenuDate.year.label('Aar'),
-                        WeeklyMenu.name.label("Ukemeny"), Usergroup.groupName.label("Gruppe"), RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu,
-                        func.sum(RecipeHasWeeklyMenu.expectedConsumption).label("Antall retter"), Recipe.name.label("Oppskrift"), Recipe.idRecipe.label('OppskriftID'),
-                        RecipeHasIngredient.recipe_idRecipe, Ingredient.ingredientName.label("Ingrediens"), UsergroupHasIngredient.unit.label("Enhet"),
-                        UsergroupHasIngredient.price.label("Pris"), func.sum(RecipeHasIngredient.quantity).label("Mengde"),
+    res = session.query(WeeklyMenuDate.id_weekly_menu_date,
+                        WeeklyMenuDate.weekNumber.label('Ukenummer'),
+                        WeeklyMenuDate.year.label('Aar'),
+                        WeeklyMenu.name.label("Ukemeny"),
+                        Usergroup.groupName.label("Gruppe"),
+                        RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu,
+                        func.sum(RecipeHasWeeklyMenu.expectedConsumption).label("Antall retter"),
+                        Recipe.name.label("Oppskrift"),
+                        Recipe.idRecipe.label('OppskriftID'),
+                        RecipeHasIngredient.recipe_idRecipe,
+                        Ingredient.ingredientName.label("Ingrediens"),
+                        UsergroupHasIngredient.unit.label("Enhet"),
+                        UsergroupHasIngredient.price.label("Pris"),
+                        func.sum(RecipeHasIngredient.quantity).label("Mengde"),
                         func.sum(RecipeHasWeeklyMenu.expectedConsumption * RecipeHasIngredient.quantity).label("SumMengde"),
                         (UsergroupHasIngredient.price * func.sum(RecipeHasWeeklyMenu.expectedConsumption * RecipeHasIngredient.quantity)).label("SumBelop"),
                         func.sum('SumBelop').label("SumTotal"))\
@@ -36,22 +45,36 @@ def ingredients_used_per_week_total(groupId, year, weeknum):
     return res
 
 
-def ingredients_used_per_week_per_dish(groupId, year, weeknum):
+def ingredients_used_per_week_per_dish(groupId, year, weeknum, recipeId):
     session = loadSession()
 
-    res = session.query(WeeklyMenuDate, WeeklyMenu.name.label("Ukemeny"), Usergroup.groupName.label("Gruppe"),
-                        RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu, RecipeHasWeeklyMenu.expectedConsumption.label("Prognose"),
-                        Recipe.name.label("Oppskrift"), Recipe.idRecipe, RecipeHasIngredient.recipe_idRecipe, Ingredient.ingredientName.label("Ingrediens"),
-                        UsergroupHasIngredient.unit.label("Enhet"), RecipeHasIngredient.quantity.label("Mengde"),
-                        (RecipeHasWeeklyMenu.expectedConsumption * RecipeHasIngredient.quantity).label("SumMengde"))\
-        .join(WeeklyMenu, WeeklyMenuDate.id_weekly_menu_date == WeeklyMenu.idWeeklyMenu)\
-        .join(Usergroup, WeeklyMenu.userGroup_iduserGroup == Usergroup.iduserGroup)\
-        .join(RecipeHasWeeklyMenu, RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu == WeeklyMenu.idWeeklyMenu)\
-        .join(Recipe, Recipe.idRecipe == RecipeHasWeeklyMenu.recipe_idRecipe)\
-        .join(RecipeHasIngredient, RecipeHasIngredient.recipe_idRecipe == Recipe.idRecipe)\
+    res = session.query(WeeklyMenuDate.id_weekly_menu_date,
+                        WeeklyMenuDate.weekNumber.label('Ukenummer'),
+                        WeeklyMenuDate.year.label('Aar'),
+                        WeeklyMenu.name.label("Ukemeny"),
+                        Usergroup.groupName.label("Gruppe"),
+                        RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu,
+                        RecipeHasWeeklyMenu.expectedConsumption.label("Prognose"),
+                        func.sum(RecipeHasWeeklyMenu.expectedConsumption).label("Antall retter"),
+                        Recipe.name.label("Oppskrift"),
+                        Recipe.idRecipe.label('OppskriftID'),
+                        RecipeHasIngredient.recipe_idRecipe,
+                        Ingredient.ingredientName.label("Ingrediens"),
+                        UsergroupHasIngredient.unit.label("Enhet"),
+                        UsergroupHasIngredient.price.label("Pris"),
+                        RecipeHasIngredient.quantity.label("Mengde"),
+                        (RecipeHasWeeklyMenu.expectedConsumption * RecipeHasIngredient.quantity).label("SumMengde"),
+                        (UsergroupHasIngredient.price * func.sum(RecipeHasWeeklyMenu.expectedConsumption * RecipeHasIngredient.quantity)).label("SumBelop"),
+                        func.sum('SumBelop').label("SumTotal")) \
+        .join(WeeklyMenu, WeeklyMenuDate.id_weekly_menu_date == WeeklyMenu.idWeeklyMenu) \
+        .join(Usergroup, WeeklyMenu.userGroup_iduserGroup == Usergroup.iduserGroup) \
+        .join(RecipeHasWeeklyMenu, RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu == WeeklyMenu.idWeeklyMenu) \
+        .join(Recipe, Recipe.idRecipe == RecipeHasWeeklyMenu.recipe_idRecipe) \
+        .join(RecipeHasIngredient, RecipeHasIngredient.recipe_idRecipe == Recipe.idRecipe) \
         .join(Ingredient, Ingredient.idingredient == RecipeHasIngredient.ingredient_idingredient) \
         .join(UsergroupHasIngredient, UsergroupHasIngredient.ingredient_idingredient == Ingredient.idingredient) \
-        .where(WeeklyMenuDate.year == year, WeeklyMenuDate.weekNumber == weeknum, WeeklyMenu.userGroup_iduserGroup == groupId)
+        .where(WeeklyMenuDate.year == year, WeeklyMenuDate.weekNumber == weeknum, WeeklyMenu.userGroup_iduserGroup == groupId, Recipe.idRecipe == recipeId ) \
+        .group_by(Usergroup.iduserGroup, Ingredient.idingredient)
 
     session.close()
     return res
