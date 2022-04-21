@@ -14,9 +14,9 @@ from sqlalchemy import *
 def ingredients_used_per_week_total(groupId, year, weeknum):
     session = loadSession()
 
-    res = session.query(WeeklyMenuDate.id_weekly_menu_date, WeeklyMenu.name.label("Ukemeny"),
-                        Usergroup.groupName.label("Gruppe"), RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu,
-                        func.sum(RecipeHasWeeklyMenu.expectedConsumption).label("Antall retter"), Recipe.name.label("Oppskrift"),
+    res = session.query(WeeklyMenuDate.id_weekly_menu_date,WeeklyMenuDate.weekNumber.label('Ukenummer'), WeeklyMenuDate.year.label('Aar'),
+                        WeeklyMenu.name.label("Ukemeny"), Usergroup.groupName.label("Gruppe"), RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu,
+                        func.sum(RecipeHasWeeklyMenu.expectedConsumption).label("Antall retter"), Recipe.name.label("Oppskrift"), Recipe.idRecipe.label('OppskriftID'),
                         RecipeHasIngredient.recipe_idRecipe, Ingredient.ingredientName.label("Ingrediens"), UsergroupHasIngredient.unit.label("Enhet"),
                         UsergroupHasIngredient.price.label("Pris"), func.sum(RecipeHasIngredient.quantity).label("Mengde"),
                         func.sum(RecipeHasWeeklyMenu.expectedConsumption * RecipeHasIngredient.quantity).label("SumMengde"),
@@ -39,9 +39,9 @@ def ingredients_used_per_week_total(groupId, year, weeknum):
 def ingredients_used_per_week_per_dish(groupId, year, weeknum):
     session = loadSession()
 
-    res = session.query(WeeklyMenuDate.id_weekly_menu_date, WeeklyMenu.name.label("Ukemeny"), Usergroup.groupName.label("Gruppe"),
+    res = session.query(WeeklyMenuDate, WeeklyMenu.name.label("Ukemeny"), Usergroup.groupName.label("Gruppe"),
                         RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu, RecipeHasWeeklyMenu.expectedConsumption.label("Prognose"),
-                        Recipe.name.label("Oppskrift"), RecipeHasIngredient.recipe_idRecipe, Ingredient.ingredientName.label("Ingrediens"),
+                        Recipe.name.label("Oppskrift"), Recipe.idRecipe, RecipeHasIngredient.recipe_idRecipe, Ingredient.ingredientName.label("Ingrediens"),
                         UsergroupHasIngredient.unit.label("Enhet"), RecipeHasIngredient.quantity.label("Mengde"),
                         (RecipeHasWeeklyMenu.expectedConsumption * RecipeHasIngredient.quantity).label("SumMengde"))\
         .join(WeeklyMenu, WeeklyMenuDate.id_weekly_menu_date == WeeklyMenu.idWeeklyMenu)\
@@ -63,6 +63,17 @@ def fetch_weekly_menus_for_group(groupId):
         .join(WeeklyMenu, WeeklyMenuDate.weeklyMenu_id == WeeklyMenu.idWeeklyMenu)\
         .join(Usergroup, Usergroup.iduserGroup == WeeklyMenu.userGroup_iduserGroup)\
         .where(WeeklyMenu.userGroup_iduserGroup == groupId)
+
+    session.close()
+    return res
+
+def fetch_recipes_in_weekly_menu(menuId):
+    session = loadSession()
+
+    res = session.query(Recipe, RecipeHasWeeklyMenu, WeeklyMenuDate)\
+        .join(RecipeHasWeeklyMenu, Recipe.idRecipe == RecipeHasWeeklyMenu.recipe_idRecipe)\
+        .where(RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu == menuId)\
+        .group_by(Recipe.idRecipe)
 
     session.close()
     return res

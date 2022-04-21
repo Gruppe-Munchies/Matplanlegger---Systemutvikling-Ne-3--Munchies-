@@ -17,7 +17,7 @@ def test():
     print("")
 
     res2 = pd.read_sql(ingredients_used_per_week_total(1,2022,16).statement, engine)
-    print(res2[['Ukemeny','Gruppe', 'Antall retter', 'Ingrediens', 'SumMengde', 'Enhet', 'SumBelop']])
+    print(res2[['Ukemeny','Gruppe', 'Antall retter', 'Oppskrift', 'Ingrediens', 'SumMengde', 'Enhet', 'SumBelop']])
 
     print("")
     print("")
@@ -34,7 +34,6 @@ if __name__ == '__main__':
 def ingredients_used_per_week():
 
     groupId = session.get('group_to_use')
-    #groupId = 1
 
     if 'weeknum' in request.args:
         weeknum = request.args["weeknum"]
@@ -45,5 +44,7 @@ def ingredients_used_per_week():
 
     res = ingredients_used_per_week_total(groupId, year, weeknum)
     menus = fetch_weekly_menus_for_group(groupId)
+    menuId = menus[0][0].idWeeklyMenu
+    recipes = fetch_recipes_in_weekly_menu(menuId)
 
-    return render_template('report.html', report=res, menus=menus)
+    return render_template('report.html', report=res, menus=menus, recipes=recipes)
