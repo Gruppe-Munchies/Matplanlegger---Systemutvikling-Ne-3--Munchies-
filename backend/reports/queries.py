@@ -94,7 +94,7 @@ def fetch_recipes_in_weekly_menu(menuId):
     session = loadSession()
 
     res = session.query(Recipe, RecipeHasWeeklyMenu, WeeklyMenuDate)\
-        .join(RecipeHasWeeklyMenu, Recipe.idRecipe == RecipeHasWeeklyMenu.recipe_idRecipe)\
+        .join(Recipe, Recipe.idRecipe == RecipeHasWeeklyMenu.recipe_idRecipe)\
         .where(RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu == menuId)\
         .group_by(Recipe.idRecipe)
 

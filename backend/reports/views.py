@@ -59,4 +59,6 @@ def ingredients_used_per_week():
     menuId = menus[0][0].idWeeklyMenu
     recipes = fetch_recipes_in_weekly_menu(menuId)
 
+    print(recipes[0][0].name)
+
     return render_template('report.html', report=res, menus=menus, recipes=recipes)
