@@ -40,13 +40,13 @@ def ukesmeny():
         formSelector.weeklyIdName.choices = choice
 
         if request.method == 'POST':
-            if formSelector.weeklyIdName.data != None:
+            if formSelector.weeklyIdName.data is not None:
                 session['menuID'] = formSelector.weeklyIdName.data
                 formSelector.weeklyIdName.data = session['menuID']
 
                 return redirect(request.referrer)
 
-            if form.weekly_name.data != None:
+            if form.weekly_name.data is not None:
                 weeklymanu_name = form.weekly_name.data
                 weeklymenu_desc = form.weekly_desc.data
 
@@ -114,13 +114,13 @@ def RemoveRecipeFromWeeklyMenu(recipe_id: int, menu_ID: int):
 @weeklyMenu.route('/handleliste', methods=["GET", "POST"])
 def handleliste():
     # TODO: Instead of weekly menus it should show weekly menus that are sat to a week
-    weekly_menu = weekly.fetch_all_weeklymenu_where_groupId(session['group_to_use'])
+    weekly_menu_w_dates = weekly.fetch_all_weeklymenu_where_groupId(session['group_to_use'])
 
     formSelector = WeeklyMenuWeekSelector(request.form)
     choice = []
     form = RegisterWeeklymenuForm(request.form)
 
-    for i in weekly_menu:
+    for i in weekly_menu_w_dates:
         choice.append((i.idWeeklyMenu, i.name))
     for i in choice:
         if i[0] == int(flask.session.get('menuID')):
@@ -128,13 +128,24 @@ def handleliste():
             choice.insert(0, i)
 
     formSelector.weeklyMenuWeekId.choices = choice
+    # id = formSelector.weeklyMenuWeekId
+    # print(id.data)
 
-    # TODO: number passed in to method ikke hardkoda
-    allIngredientsFromWeekly = weekly.get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(12)
-    weekly_menu_name = " en konkret hardkodet ukesmeny "
+    if request.method == 'POST':
+        print("1")
+        if formSelector.weeklyMenuWeekId.data is not None:
+            print("2")
+            session['menuID'] = formSelector.weeklyMenuWeekId.data
+            formSelector.weeklyMenuWeekId.data = session['menuID']
+            print(formSelector.data)
+
+            return redirect(request.referrer)
+        # TODO: number passed in to method ikke hardkoda
+    allIngredientsFromWeekly = weekly.get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(session['menuID'])
     totalsum = 0
     for ingredient in allIngredientsFromWeekly:
         totalsum += ingredient[4]
+    weekly_menu_name = "***"
 
     return render_template('handleliste.html', weekly_menu_name=weekly_menu_name, form=form, totalsum=totalsum,
                            ingredients=allIngredientsFromWeekly, formSelect=formSelector)
