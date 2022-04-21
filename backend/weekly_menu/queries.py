@@ -154,17 +154,19 @@ def get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(menu_id):
 
             if exist:
                 quantity = (ingredient[0] * resQuantity) - ingredient[5]
-                cost = quantity * ingredient[3]
-                ingredientsList[index][2] += round(ingredient[0] * resQuantity)
-                ingredientsList[index][4] += round(cost)
+                if quantity > 0:
+                    cost = quantity * ingredient[3]
+                    ingredientsList[index][2] += round(ingredient[0] * resQuantity)
+                    ingredientsList[index][4] += round(cost)
             else:
                 quantity = (ingredient[0] * resQuantity) - ingredient[5]
-                price = ingredient[3]
-                unit = ingredient[4]
-                id = ingredient[2]
-                name = ingredient[1]
-                cost = quantity * ingredient[3]
-                ingredientsList.append([id, name, round(quantity), unit, round(cost), price])
+                if quantity > 0:
+                    price = ingredient[3]
+                    unit = ingredient[4]
+                    id = ingredient[2]
+                    name = ingredient[1]
+                    cost = quantity * ingredient[3]
+                    ingredientsList.append([id, name, round(quantity), unit, round(cost), price])
 
     # index: 0-ingredientID, 1-ingredientName, 2-Quantity of ingredient in weekly menu, 3-unit, 4-totIngredientCost, 5-unit price
     return ingredientsList
@@ -173,6 +175,14 @@ def get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(menu_id):
 def fetch_menu_id_where_name(menu_name):
     session = loadSession()
     res = session.query(WeeklyMenu.idWeeklyMenu).where(WeeklyMenu.name == menu_name).first()
+    session.close()
+    return res
+
+
+def fetch_ingredient_quantity_where_id(ingredient_id, usergroup_id):
+    session = loadSession()
+    res = session.query(UsergroupHasIngredient).filter(
+        and_(UsergroupHasIngredient.ingredient_idingredient == ingredient_id, UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id)).one()
     session.close()
     return res
 
@@ -240,14 +250,27 @@ def check_first_weeklymenu_where_groupId(group_id):
     return res
 
 
+def editIngredientShopping(userGroup, ingredient_id, quantity):
+    currentQuantity = fetch_ingredient_quantity_where_id(ingredient_id, userGroup)
+    print(type(currentQuantity))
+    session = loadSession()
+    field = session.query(UsergroupHasIngredient).filter(
+        and_(UsergroupHasIngredient.userGroup_iduserGroup == userGroup,
+             UsergroupHasIngredient.ingredient_idingredient == ingredient_id)).first()
+    field.quantity = currentQuantity.quantity + quantity
+    session.commit()
+    session.close()
+
+
 if __name__ == '__main__':
-    rec = get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(3)
-    for r in rec:
-        print(r[0])
-        print(r[1])
-        print(r[2])
-        print(r[3])
-        print(r[4])
+    editIngredientShopping(1, 1, 10)
+    # rec = get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(3)
+    # for r in rec:
+    #     print(r[0])
+    #     print(r[1])
+    #     print(r[2])
+    #     print(r[3])
+    #     print(r[4])
     # insert_to_weekly_menu_date(2, 2022, 15)
     # rec = fetch_menu_name_where_menu_id(27)
     # print(rec)

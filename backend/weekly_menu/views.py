@@ -1,5 +1,9 @@
+from unicodedata import decimal
+
 import flask
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for, session
+from numpy import double
+
 import backend.weekly_menu.queries as weekly
 from backend.weekly_menu.forms import RegisterWeeklymenuForm, WeeklyMenuSelector
 
@@ -9,8 +13,8 @@ weeklyMenu = Blueprint('weeklyMenu', __name__, template_folder='templates')
 @weeklyMenu.route('/ukesmeny', methods=['POST', 'GET'])
 def ukesmeny():
     if weekly.check_first_weeklymenu_where_groupId(session.get('group_to_use')) != None:
-    # if not flask.session.get('menuID'):
-    #    session['menuID'] = weekly.fetch_first_weeklymenu_where_groupId(session.get('group_to_use'))
+        # if not flask.session.get('menuID'):
+        #    session['menuID'] = weekly.fetch_first_weeklymenu_where_groupId(session.get('group_to_use'))
         group_id = flask.session.get('group_to_use', 'not set')
         weekly_menu = weekly.fetch_all_weeklymenu_where_groupId(session['group_to_use'])
         recipes_weeklymenu = weekly.fetch_recipesNameQyantity_where_weeklymenu_id(weekly_menu[0].idWeeklyMenu)
@@ -32,7 +36,6 @@ def ukesmeny():
             if i[0] == int(flask.session.get('menuID')):
                 choice.remove(i)
                 choice.insert(0, i)
-
 
         formSelector.weeklyIdName.choices = choice
 
@@ -59,13 +62,13 @@ def ukesmeny():
                 else:
                     flash("Dere har allerede en meny med dette navnet", "warning")
 
-
         weeklyMenus = weekly.fetch_weeklymenu_recipes_where_name_usergroupid(flask.session.get('menuID'))
 
         return render_template('ukesmeny.html', recipes=group_recipes, weeklyMenus=weeklyMenus, activeMenu=activeMenu,
-                           dishes=dishes, form=form, formSelect=formSelector, menuID=flask.session.get('menuID'))
+                               dishes=dishes, form=form, formSelect=formSelector, menuID=flask.session.get('menuID'))
     else:
         return redirect('/legg_til_ukesmeny')
+
 
 @weeklyMenu.route('/legg_til_ukesmeny', methods=['POST', 'GET'])
 def legg_til_ukesmeny():
@@ -103,7 +106,7 @@ def addRecipeToWeeklyMenu(recipe_id: int, quantity: int):
 
 
 @weeklyMenu.route('/weekly_menu/<recipe_id>/<menu_ID>/delete', methods=["GET", "POST"])
-def RemoveRecipeFromWeeklyMenu(recipe_id: int,menu_ID: int):
+def RemoveRecipeFromWeeklyMenu(recipe_id: int, menu_ID: int):
     weekly.remove_from_RecipeHasWeeklyMenu(recipe_id, menu_ID)
     return redirect('/ukesmeny')
 
@@ -116,4 +119,12 @@ def handleliste():
     for ingredient in allIngredientsFromWeekly:
         totalsum += ingredient[4]
 
-    return render_template('handleliste.html',  weekly_menu_name=weekly_menu_name, totalsum=totalsum, ingredients=allIngredientsFromWeekly)
+    return render_template('handleliste.html', weekly_menu_name=weekly_menu_name, totalsum=totalsum,
+                           ingredients=allIngredientsFromWeekly)
+
+
+@weeklyMenu.route('/<ingrediens_id>/<quantity>/update', methods=["GET", "POST"])
+def updateIngredient(ingrediens_id: str, quantity: str):
+    group = flask.session.get('group_to_use')
+    weekly.editIngredientShopping(group, ingrediens_id, decimal(quantity))
+    return redirect('/handleliste')

@@ -184,3 +184,5 @@ def editIngredient(userGroup,ingredient_id,quantity,price):
     session.commit()
     session.close()
 
+if __name__ == '__main__':
+    editIngredient(1, 1, 34, 34)
