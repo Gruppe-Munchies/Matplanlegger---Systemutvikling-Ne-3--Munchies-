@@ -28,7 +28,7 @@ if __name__ == '__main__':
     test()
 
 
-@reports.route('/report', methods=['GET', 'POST'])
+@reports.route('/rapporter', methods=['GET', 'POST'])
 def ingredients_used_per_week():
 
     #groupId = session.get('group_to_use')

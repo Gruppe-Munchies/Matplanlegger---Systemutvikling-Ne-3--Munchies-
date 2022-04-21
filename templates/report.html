@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 {% block title %}Rapporter{% endblock %}
 {% block heading %}Dine rapporter{% endblock %}
-{% block description %}{{ menus[0].groupName }}{% endblock %}
+{% block description %}{{ menus[0][2].groupName }}{% endblock %}
 {% block content %}
 <table class="table table-striped table-hover">
 {% for menu in menus %}

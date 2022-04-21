@@ -59,8 +59,9 @@ def ingredients_used_per_week_per_dish(groupId, year, weeknum):
 def fetch_weekly_menus_for_group(groupId):
     session = loadSession()
 
-    res = session.query(WeeklyMenu, WeeklyMenuDate)\
+    res = session.query(WeeklyMenu, WeeklyMenuDate, Usergroup)\
         .join(WeeklyMenu, WeeklyMenuDate.weeklyMenu_id == WeeklyMenu.idWeeklyMenu)\
+        .join(Usergroup, Usergroup.iduserGroup == WeeklyMenu.userGroup_iduserGroup)\
         .where(WeeklyMenu.userGroup_iduserGroup == groupId)
 
     session.close()
