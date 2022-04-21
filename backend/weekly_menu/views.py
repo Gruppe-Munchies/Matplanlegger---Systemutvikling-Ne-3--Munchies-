@@ -55,7 +55,7 @@ def ukesmeny():
             if weeklymenu_to_date_form.week.data is not None and weeklymenu_to_date_form.year is not None:
                 week = weeklymenu_to_date_form.week.data
                 year = weeklymenu_to_date_form.year.data
-                menu_queries.insert_to_weekly_menu_date(session['menuID'], week, year)
+                menu_queries.insert_to_weekly_menu_date(session['menuID'], year, week)
                 flash(f"Meny knyttet til uke {week}!", "success")
                 return redirect(request.referrer)
 
