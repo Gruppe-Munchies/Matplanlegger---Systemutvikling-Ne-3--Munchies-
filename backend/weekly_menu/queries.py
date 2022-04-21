@@ -1,8 +1,8 @@
 from numpy import double
 
 from local_db.session import loadSession
-from local_db.orm import User, Ingredient, Recipe, RecipeHasIngredient, RecipeHasWeeklyMenu, RecipeAvailability, \
-    Usertype, Usergroup, UsergroupHasIngredient, WeeklyMenu, Base, UserHasUsergroup, WeeklyMenuDate
+from local_db.orm import Ingredient, Recipe, RecipeHasIngredient, RecipeHasWeeklyMenu, \
+    UsergroupHasIngredient, WeeklyMenu, WeeklyMenuDate
 from sqlalchemy import and_
 
 session = loadSession()
@@ -264,21 +264,10 @@ def editIngredientShopping(userGroup, ingredient_id, quantity):
     session.close()
 
 
-if __name__ == '__main__':
-    editIngredientShopping(1, 1, 10)
-    # rec = get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(3)
-    # for r in rec:
-    #     print(r[0])
-    #     print(r[1])
-    #     print(r[2])
-    #     print(r[3])
-    #     print(r[4])
-    # insert_to_weekly_menu_date(2, 2022, 15)
-    # rec = fetch_menu_name_where_menu_id(27)
-    # print(rec)
-#     rec = get_all_ingredients_and_quantities_in_weeklymenu(27)
-#     for r in rec:
-#         print(r[0])
-#         print(r[1])
-#         print(r[2])
-#         print("\n")
+def fetch_menus_with_dates_by_group_id(group_id):
+    session = loadSession()
+    res = session.query(WeeklyMenu, WeeklyMenuDate).join(WeeklyMenuDate,
+                                                         WeeklyMenu.idWeeklyMenu == WeeklyMenuDate.weeklyMenu_id).filter(
+        WeeklyMenu.userGroup_iduserGroup == group_id)
+    session.close()
+    return res

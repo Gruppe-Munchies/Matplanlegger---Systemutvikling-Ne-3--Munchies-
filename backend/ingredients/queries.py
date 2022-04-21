@@ -6,7 +6,7 @@ from local_db.session import loadSession
 from local_db.orm import User, Ingredient, Recipe, RecipeHasIngredient, RecipeHasWeeklyMenu, RecipeAvailability, \
     Usertype, Usergroup, UsergroupHasIngredient, WeeklyMenu, Base, UserHasUsergroup
 
-# TODO: fetch_ingredient_in_current_weekly_menu # Postponed unitil weekly menu done
+# TODO: fetch_ingredient_in_current_weekly_menu # Postponed unitil menu_queries menu done
 # TODO: Queries for report # Will be addressed in separate issue regarding reports
 
 #####################################################
