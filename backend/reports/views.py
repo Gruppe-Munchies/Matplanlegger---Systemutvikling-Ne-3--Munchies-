@@ -35,10 +35,10 @@ def ingredients_used_per_week():
     groupId = 1
     year = 2022
 
-    if 'weekNum' in request.args:
-        weeknum = request.args["weekNum"]
+    if 'weeknum' in request.args:
+        weeknum = request.args["weeknum"]
     else:
-        weeknum = 16
+        weeknum = 0
 
     res = ingredients_used_per_week_total(groupId, year, weeknum)
     menus = fetch_weekly_menus_for_group(groupId)
