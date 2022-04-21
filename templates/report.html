@@ -4,7 +4,10 @@
 {% block description %}{{ report[2].Gruppe }}{% endblock %}
 {% block content %}
 <table class="table table-striped table-hover">
-
+{% for menu in menus %}
+    <h6><a href="{{ url_for('reports.ingredients_used_per_week', weeknum=menu[1].weekNumber) }}">[ {{ menu[1].weekNumber }} - {{ menu[0].name }} ]</a></h6>
+{% endfor %}
+<br>
 <h2>{{ report[1].Ukemeny }}</h2>
 <h5>Forbruk totalt per ingrediens</h5>
     <thead>
