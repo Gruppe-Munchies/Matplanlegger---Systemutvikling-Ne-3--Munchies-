@@ -1,7 +1,7 @@
 import flask
-from flask import Blueprint, abort, flash, redirect, render_template, request, url_for, session
+from flask import Blueprint, flash, redirect, render_template, request, url_for, session
 import backend.weekly_menu.queries as menu_queries
-from backend.weekly_menu.forms import RegisterWeeklymenuForm, WeeklyMenuSelector
+from backend.weekly_menu.forms import RegisterWeeklymenuForm, WeeklyMenuSelector, WeeklyMenuToDateForm
 
 weeklyMenu = Blueprint('weeklyMenu', __name__, template_folder='templates')
 
@@ -11,9 +11,13 @@ def ukesmeny():
     if menu_queries.check_first_weeklymenu_where_groupId(session.get('group_to_use')) != None:
         # if not flask.session.get('menuID'):
         #    session['menuID'] = menu_queries.fetch_first_weeklymenu_where_groupId(session.get('group_to_use'))
+
+        # Basic data collection
+        weeklymenu_to_date_form = WeeklyMenuToDateForm(request.form)
         group_id = flask.session.get('group_to_use', 'not set')
         weekly_menus = menu_queries.fetch_all_weeklymenu_where_groupId(session['group_to_use'])
-        weekly_menus_with_date = menu_queries.fetch_menus_with_dates_by_group_id(weekly_menus.idWeeklyMenu)
+        weekly_menus_with_date = menu_queries.fetch_menus_with_dates_by_group_id(group_id)
+
         for i in weekly_menus:
             print(i.idWeeklyMenu)
         recipes_weeklymenu = menu_queries.fetch_recipesNameQyantity_where_weeklymenu_id(weekly_menus[0].idWeeklyMenu)
@@ -39,10 +43,19 @@ def ukesmeny():
         formSelector.weeklyIdName.choices = choice
 
         if request.method == 'POST':
+
+            # HENT DATA FRA MENY UKE-FORM
             if formSelector.weeklyIdName.data != None:
                 session['menuID'] = formSelector.weeklyIdName.data
                 formSelector.weeklyIdName.data = session['menuID']
+                return redirect(request.referrer)
 
+            # HENT DATA FRA KNYTT-TIL-UKE-FORM
+            if weeklymenu_to_date_form.week.data != None and weeklymenu_to_date_form.year != None:
+                week = weeklymenu_to_date_form.week.data
+                year = weeklymenu_to_date_form.year.data
+                menu_queries.insert_to_weekly_menu_date(session['menuID'], week, year)
+                flash(f"Meny knyttet til uke {week}!", "success")
                 return redirect(request.referrer)
 
             if form.weekly_name.data != None:
@@ -62,8 +75,13 @@ def ukesmeny():
                     flash("Dere har allerede en meny med dette navnet", "warning")
 
         weeklyMenuRecepies = menu_queries.fetch_weeklymenu_recipes_where_name_usergroupid(flask.session.get('menuID'))
+        weeklyMenus = menu_queries.fetch_menus_with_dates_by_group_id(group_id)
+        selectedMenuName = menu_queries.fetch_menu_name_where_menu_id(session['menuID'])
 
-        return render_template('ukesmeny.html', recipes=group_recipes, weeklyMenuRecepies=weeklyMenuRecepies,
+        return render_template('ukesmeny.html', selectedMenuName=selectedMenuName,
+                               weeklymenu_to_date_form=weeklymenu_to_date_form, recipes=group_recipes,
+                               weeklyMenusWithDate=weekly_menus_with_date,
+                               weeklyMenuRecepies=weeklyMenuRecepies,
                                activeMenu=activeMenu,
                                dishes=dishes, form=form, formSelect=formSelector, menuID=flask.session.get('menuID'))
     else:

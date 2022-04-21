@@ -1,6 +1,6 @@
 from local_db.session import loadSession
-from local_db.orm import User, Ingredient, Recipe, RecipeHasIngredient, RecipeHasWeeklyMenu, RecipeAvailability, \
-    Usertype, Usergroup, UsergroupHasIngredient, WeeklyMenu, Base, UserHasUsergroup, WeeklyMenuDate
+from local_db.orm import Ingredient, Recipe, RecipeHasIngredient, RecipeHasWeeklyMenu, \
+    UsergroupHasIngredient, WeeklyMenu, WeeklyMenuDate
 from sqlalchemy import and_
 
 session = loadSession()
@@ -156,11 +156,11 @@ def get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(menu_id):
                 quantity = (ingredient[0] * resQuantity) - ingredient[5]
                 cost = quantity * ingredient[3]
                 ingredientsList[index][2] += ingredient[0] * resQuantity
-                print(ingredientsList[index][4])
-                print(cost)
-                print(ingredientsList[index][4] + cost)
+                # print(ingredientsList[index][4])
+                # print(cost)
+                # print(ingredientsList[index][4] + cost)
                 ingredientsList[index][4] += cost
-                print(ingredientsList[index][4])
+                # print(ingredientsList[index][4])
             else:
                 quantity = (ingredient[0] * resQuantity) - ingredient[5]
                 # print("QUANTITY")
@@ -252,39 +252,10 @@ def check_first_weeklymenu_where_groupId(group_id):
     return res
 
 
-if __name__ == '__main__':
-    rec = get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(3)
-    for r in rec:
-        print(r[0])
-        print(r[1])
-        print(r[2])
-        print(r[3])
-        print(r[4])
-
-    # insert_to_weekly_menu_date(2, 2022, 15)
-    # rec = fetch_menu_name_where_menu_id(27)
-    # print(rec)
-    #     rec = get_all_ingredients_and_quantities_in_weeklymenu(27)
-    #     for r in rec:
-    #         print(r[0])
-    #         print(r[1])
-    #         print(r[2])
-    #         print("\n")
-
-
 def fetch_menus_with_dates_by_group_id(group_id):
     session = loadSession()
-    res = session.query(WeeklyMenu).join(WeeklyMenuDate,
-                                         WeeklyMenu.idWeeklyMenu == WeeklyMenuDate.weeklyMenu_id).filter(
-        WeeklyMenu.userGroup_iduserGroup == group_id).all()
+    res = session.query(WeeklyMenu, WeeklyMenuDate).join(WeeklyMenuDate,
+                                                         WeeklyMenu.idWeeklyMenu == WeeklyMenuDate.weeklyMenu_id).filter(
+        WeeklyMenu.userGroup_iduserGroup == group_id)
     session.close()
     return res
-
-
-if __name__ == '__main__':
-    # ape = fetch_weeklymenu_where_usergroupid(5)
-    # for i in ape:
-    #     print(i.idWeeklyMenu)
-    ape = fetch_menus_with_dates_by_group_id(5)
-    for i in ape:
-        print(ape[0].name)
