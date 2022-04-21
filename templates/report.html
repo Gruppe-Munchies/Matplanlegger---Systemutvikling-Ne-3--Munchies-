@@ -1,12 +1,13 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 {% block title %}Rapporter{% endblock %}
 {% block heading %}Dine rapporter{% endblock %}
 {% block description %}{{ menus[0].groupName }}{% endblock %}
 {% block content %}
 <table class="table table-striped table-hover">
 {% for menu in menus %}
-    <h6><a href="{{ url_for('reports.ingredients_used_per_week', weeknum=menu[1].weekNumber) }}">[ {{ menu[1].weekNumber }} - {{ menu[0].name }} ]</a></h6>
+    <span class="badge badge-secondary"><a href="{{ url_for('reports.ingredients_used_per_week', weeknum=menu[1].weekNumber) }}">{{ menu[1].weekNumber }} - {{ menu[0].name }}</a></span>
 {% endfor %}
+<br>
 <br>
 {% if report[0] %}
 <h2>{{ report[1].Ukemeny }}</h2>
