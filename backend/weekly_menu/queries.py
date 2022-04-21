@@ -137,7 +137,6 @@ def get_all_ingredients_and_quantities_in_weeklymenu(menu_id):
 
 # ikke en query, funksjon som bruker queries, kan sikkert flyttes til der den skal brukes
 def get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(menu_id):
-    session = loadSession()
     recipes = fetch_recipes_where_weeklymenu_id(menu_id)
     ingredientsList = []
     for recipe in recipes:
@@ -154,24 +153,29 @@ def get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(menu_id):
                     index = i
 
             if exist:
+                quantity = (ingredient[0] * resQuantity) - ingredient[5]
                 cost = quantity * ingredient[3]
                 ingredientsList[index][2] += ingredient[0] * resQuantity
-                ingredientsList[index][4] = cost
+                print(ingredientsList[index][4])
+                print(cost)
+                print(ingredientsList[index][4] + cost)
+                ingredientsList[index][4] += cost
+                print(ingredientsList[index][4])
             else:
                 quantity = (ingredient[0] * resQuantity) - ingredient[5]
-                print("QUANTITY")
-                print(ingredient[0])
-                print(resQuantity)
-                print(ingredient[5])
-                print(quantity)
+                # print("QUANTITY")
+                # print(ingredient[0])
+                # print(resQuantity)
+                # print(ingredient[5])
+                # print(quantity)
                 price = ingredient[3]
                 unit = ingredient[4]
                 id = ingredient[2]
                 name = ingredient[1]
                 cost = quantity * ingredient[3]
-                print("COST")
-                print(ingredient[3])
-                print(cost)
+                # print("COST")
+                # print(ingredient[3])
+                # print(cost)
                 ingredientsList.append([id, name, round(quantity), unit, cost, price])
 
     # index: 0-ingredientID, 1-ingredientName, 2-Quantity of ingredient in weekly menu, 3-unit, 4-totIngredientCost, 5-unit price
