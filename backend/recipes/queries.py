@@ -17,11 +17,13 @@ def insert_to_recipeavalilability():
 
 
 # Add recipe
-def insert_to_recipe(name, shortDescription, description, image, userGroup, recipeAvailability, weeklymenu):
+def insert_to_recipe(name, shortDescription, description, image, userGroup):
     session = loadSession()
     new_recipe = Recipe(name=name, shortDescription=shortDescription, description=description, image=image,
-                        userGroup_iduserGroup=userGroup, recipeAvailability_idrecipeAvailability=recipeAvailability,
-                        weeklyMenu_idweeklyMenu=weeklymenu)
+                        userGroup_iduserGroup=userGroup, recipeAvailability_idrecipeAvailability=1,
+                        weeklyMenu_idweeklyMenu=0) #recipeavailability var tenkt som hvilken gruppe som skal se denne.
+    #De to sistnevnte brukes strengt tatt ikke, men ligger i databasen fremdeles.
+
     session.add(new_recipe)
     session.commit()
     session.close()
@@ -36,6 +38,12 @@ def fetch_recipe_where_recipeId_equals(recipeId):
 def fetch_recipeID_where_name_equals(name):
     session = loadSession()
     res = session.query(Recipe.idRecipe).where(Recipe.name == name).first()
+    session.close()
+    return res
+
+def fetch_recipeID_where_name_and_groupID_equals(name, groupID):
+    session = loadSession()
+    res = session.query(Recipe.idRecipe).where(and_(Recipe.name == name, Recipe.userGroup_iduserGroup == groupID)).first()
     session.close()
     return res
 

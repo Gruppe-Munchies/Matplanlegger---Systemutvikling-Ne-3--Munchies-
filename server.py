@@ -33,8 +33,6 @@ app.config['WTF_CSRF_SECRET_KEY'] = "secretkey"
 def index():
     session['group_to_use'] = 0
     session['groupname_to_use'] = ""
-    if current_user:
-        print("ja er en bruker ja")
     return render_template('index.html')
 
 

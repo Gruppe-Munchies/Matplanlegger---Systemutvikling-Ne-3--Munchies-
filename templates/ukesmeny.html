@@ -4,36 +4,156 @@
 {% block description %}Se hvilke matretter du har lagt i ukesmenyen{% endblock %}
 
 {% block content %}
-    <form method="POST" action="{{ url_for('weeklyMenu.ukesmeny') }}" class="row">
+    {% if menuID != None %}
+    <form method="POST" action="{{ url_for('weeklyMenu.ukesmeny',formid=1) }}" class="row">
         {{ form.csrf_token }}
-        <div class="form-group w-25 p-3">{{ form.weeklyIdName(class="form-select", onchange="submit()") }}</div>
+        <div class="form-group w-25 p-3">{{ formSelect.weeklyIdName(class="form-select", onchange="submit()") }}</div>
     </form>
+    <div class="container p-5">
 
-    <form method="post" class="row">
-        <h3 class="display-5">Ukesmeny: {{ name }}</h3>
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
+        <h3>Retter som ligger i ukesmenyen</h3>
+
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Matrett</th>
+                <th>Antall</th>
+
+            </tr>
+            </thead>
+            <tbody>
+
+
+            {% for weeklyMenu in weeklyMenus %}
                 <tr>
-                    <th>Matrett</th>
-                    <th class="w-25 p-3">Antall retter</th>
+                    <td class=" w-50 ">
+                        {{ weeklyMenu.name }}
+                    </td>
+
+                    <td class=" w-50 ">
+                        {{ weeklyMenu.expectedConsumption }}
+                    </td>
+
+                    <td class=" w-auto ">
+                        <a href="#" id="{{ loop.index }}-RemoveFromRecipe" type="button"
+                           class="btn btn-outline-primary btn-sm"><i
+                                class="bi bi-trash"></i></a>
+                    </td>
                 </tr>
-                </thead>
-                <tbody>
-                {% for recipe in recipes %}
+
+                <script>
+                    document.getElementById("{{ loop.index }}-RemoveFromRecipe").onclick = function () {
+                        document.getElementById('{{ loop.index }}-RemoveFromRecipe').href = "/weekly_menu/{{ weeklyMenu.recipe_idRecipe }}/{{ menuID }}/delete";
+                    }
+                </script>
+            {% endfor %}
+            </tbody>
+
+        </table>
+
+        <h3 class="mt-5">Legg til i oppskrift</h3>
+
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Matrett</th>
+                <th>Antall</th>
+
+            </tr>
+            </thead>
+            <tbody>
+
+
+            {% for recipe in recipes %}
+                {% if recipe.name not in dishes %}
                     <tr>
+                        <td class=" w-50 ">
+                            {{ recipe.name }}
+                        </td>
 
-                        <td><a href="/oppskrift/{{ recipe[0] }}">{{ recipe[1] }}</a></td>
-                        <td>{{ recipe[2] }}</td>
+                        <td class=" w-50 ">
+                            <input type="number" id="{{ loop.index }}-quantityFormAdd" value="1"
+                                   class="form-control w-25" min="1"
+                                   steps="0.1"/>
+                        </td>
+
+                        <td class=" w-auto ">
+                            <a href="#" id="{{ loop.index }}-addToRecipe" type="button"
+                               class="btn btn-outline-primary btn-sm"><i
+                                    class="bi bi-plus"></i></a>
+                        </td>
+
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+
+                    <script>
+                        document.getElementById("{{ loop.index }}-addToRecipe").onclick = function () {
+                            var getQuantity = document.getElementById('{{ loop.index }}-quantityFormAdd').value;
+                            document.getElementById('{{ loop.index }}-addToRecipe').href = "/weekly_menu/{{ recipe.idRecipe }}/" + getQuantity + "/add";
+                        }
+                    </script>
+
+                {% endif %}
+            {% endfor %}
+            </tbody>
+
+        </table>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newWeeklyMenuModal">
+            Lag en ny ukesmeny
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="newWeeklyMenuModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="newWeeklyMenuModalLabel">Lag ny ukesmeny</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container mt-5">
+                            <div class="row align-items-center">
+                                <div class="card p-2 m-auto">
+                                    <form method="POST"  action="{{ url_for('weeklyMenu.ukesmeny',formid=2) }}" class="row">
+                                        {{ form.csrf_token }}
+
+                                        <div class="row mb-3 g-2 justify-content-center">
+                                            <div class="col-sm-9">
+                                                {{ form.weekly_name.label(class_="col-form-label") }}
+                                                {{ form.weekly_name(class="form-control") }}
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3 g-2 justify-content-center">
+
+                                            <div class="col-sm-9">
+                                                {{ form.weekly_desc.label(class_="col-form-label") }}
+                                                {{ form.weekly_desc(class="form-control") }}
+                                            </div>
+                                        </div>
+
+
+                                        <div class="modal-footer border-0">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Close
+                                            </button>
+                                            {{ form.submit(class_="btn btn-primary") }}
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
         </div>
-    </form>
-    <div class="card-body">
-        <a href="/legg_til_ukesmeny">Legg til ny ukesmeny</a>
     </div>
+        {% else %}
 
-
+        <p> Du har ingen ukesmenyer</p>
+{% endif %}
 {% endblock %}

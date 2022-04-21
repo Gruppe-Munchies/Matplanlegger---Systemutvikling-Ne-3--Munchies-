@@ -66,7 +66,8 @@ def addIngredientToRecipe(recipe_id: int, ingrediens_id: int,quantity: int):
 
 @recipes.route('/legg-til-rett',  methods=["GET", "POST"])
 def legg_til_rett():
-    group_ingredients = fetch_all_ingredients_where_usergroup_equals(flask.session.get('group_to_use'))
+    group_id = flask.session.get('group_to_use')
+    group_ingredients = fetch_all_ingredients_where_usergroup_equals(group_id)
     # for i in group_ingredients:
     #     print(i[0].ingredientName, i[0].idingredient )
     #     print(i)
@@ -81,8 +82,8 @@ def legg_til_rett():
 
         # Legger til recipe i tabellen
 
-        if fetch_recipeID_where_name_equals(dish) is None:
-            ingr_queries.insert_to_recipe(dish, short_desc, long_desc, 'test', flask.session.get('group_to_use'), '1', '1') #: TODO: Testdata på de siste 4 parametre
+        if fetch_recipeID_where_name_and_groupID_equals(dish, group_id) is None:
+            ingr_queries.insert_to_recipe(dish, short_desc, long_desc, 'IMAGE OF DISH', group_id)
 
             # Henter info fra hidden field, og gjør mening ut av denne(For å få en dynamisk field)
             lst = re.sub("-.*?-", ":o:", ingredienser)
