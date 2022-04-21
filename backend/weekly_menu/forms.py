@@ -22,3 +22,6 @@ class RegisterWeeklymenuForm(FlaskForm):
 
 class WeeklyMenuSelector(FlaskForm):
     weeklyIdName = SelectField(u'Group', choices='', validators=[DataRequired()])
+
+class WeeklyMenuWeekSelector(FlaskForm):
+    weeklyMenuWeekId = SelectField(u'Group', choices='', validators=[DataRequired()])

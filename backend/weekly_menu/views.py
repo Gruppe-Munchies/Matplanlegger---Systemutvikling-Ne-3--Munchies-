@@ -5,7 +5,7 @@ from flask import Blueprint, abort, flash, redirect, render_template, request, u
 from numpy import double
 
 import backend.weekly_menu.queries as weekly
-from backend.weekly_menu.forms import RegisterWeeklymenuForm, WeeklyMenuSelector
+from backend.weekly_menu.forms import RegisterWeeklymenuForm, WeeklyMenuSelector, WeeklyMenuWeekSelector
 
 weeklyMenu = Blueprint('weeklyMenu', __name__, template_folder='templates')
 
@@ -113,14 +113,30 @@ def RemoveRecipeFromWeeklyMenu(recipe_id: int, menu_ID: int):
 
 @weeklyMenu.route('/handleliste', methods=["GET", "POST"])
 def handleliste():
+    # TODO: Instead of weekly menus it should show weekly menus that are sat to a week
+    weekly_menu = weekly.fetch_all_weeklymenu_where_groupId(session['group_to_use'])
+
+    formSelector = WeeklyMenuWeekSelector(request.form)
+    choice = []
+    form = RegisterWeeklymenuForm(request.form)
+
+    for i in weekly_menu:
+        choice.append((i.idWeeklyMenu, i.name))
+    for i in choice:
+        if i[0] == int(flask.session.get('menuID')):
+            choice.remove(i)
+            choice.insert(0, i)
+
+    formSelector.weeklyMenuWeekId.choices = choice
+
     allIngredientsFromWeekly = weekly.get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(11)
     weekly_menu_name = " en konkret hardkodet ukesmeny "
     totalsum = 0
     for ingredient in allIngredientsFromWeekly:
         totalsum += ingredient[4]
 
-    return render_template('handleliste.html', weekly_menu_name=weekly_menu_name, totalsum=totalsum,
-                           ingredients=allIngredientsFromWeekly)
+    return render_template('handleliste.html', weekly_menu_name=weekly_menu_name, form=form, totalsum=totalsum,
+                           ingredients=allIngredientsFromWeekly, formSelect=formSelector)
 
 
 @weeklyMenu.route('/<ingrediens_id>/<quantity>/update', methods=["GET", "POST"])
