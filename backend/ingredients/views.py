@@ -9,7 +9,6 @@ import backend.auth.queries as auth_queries
 from backend.ingredients.forms import RegisterForm
 from backend.ingredients.queries import *
 
-
 ingredient = Blueprint('ingredient', __name__, template_folder='templates', url_prefix='/ingredient')
 
 
@@ -19,17 +18,17 @@ ingredient = Blueprint('ingredient', __name__, template_folder='templates', url_
 #     for ap in ingredienser:
 #         print(f"{ap[0].ingredientName} {round(ap[1].quantity, 2)} {ap[1].unit} {round(ap[1].price, 2)}")
 def new():
-    #print(flask.session.get('group_to_use'))
+    # print(flask.session.get('group_to_use'))
     group_to_use = flask.session.get('group_to_use')
 
     group_ingredients = fetch_all_ingredients_where_usergroup_equals(flask.session.get('group_to_use'))
-    #print(auth_queries.fetchUserGroupById(group_to_use).groupName)
+    # print(auth_queries.fetchUserGroupById(group_to_use).groupName)
     form = RegisterForm(request.form)
 
     if request.method == 'POST' and form.validate():
         ingredientName = form.ingredientName.data
 
-        usergroup = auth_queries.fetchUserGroupById(group_to_use).groupName #form.usergroup.data var det før
+        usergroup = auth_queries.fetchUserGroupById(group_to_use).groupName  # form.usergroup.data var det før
         price = form.price.data
         unit = form.unit.data
 
@@ -46,7 +45,7 @@ def new():
         elif check_ingredient:
 
             fetchedingredientID = ingr_queries.fetch_ingredients_from_all_user_groups_where_ingredient_name_equals(
-                    ingredientName)
+                ingredientName)
             ingredientID = fetchedingredientID.idingredient
 
             ingr_queries.insert_to_usergroup_has_ingredient(fetchedusergroup_ID, ingredientID, price, unit)
@@ -70,6 +69,7 @@ def new():
             flash(f"{error_message}", "danger")
 
     return render_template('newingredient.html', form=form, ingredients=group_ingredients)
+
 
 @ingredient.route('/<ingrediens_id>/<quantity>/<price>/update', methods=["GET", "POST"])
 def updateIngredient(ingrediens_id: str, quantity: str, price: str):
