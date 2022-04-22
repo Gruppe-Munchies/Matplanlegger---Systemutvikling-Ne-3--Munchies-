@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 {% block title %}Ukesmeny{% endblock %}
 {% block heading %}Ukesmeny{% endblock %}
-{% block description %}Se hvilke matretter du har lagt i ukesmenyen{% endblock %}
+{% block description %}Administrer ukesmenyer{% endblock %}
 
 {% block content %}
     {% if menuID != None %}
+        {#        <div class="container p-5">#}
         <form method="POST" action="{{ url_for('weeklyMenu.ukesmeny',formid=1) }}" class="row">
             {{ form.csrf_token }}
             <div class="form-group w-25 p-3">{{ formSelect.weeklyIdName(class="form-select", onchange="submit()") }}</div>
@@ -20,7 +21,8 @@
             {#OPPRETT NY MENY#}
             <br>
             <!-- Button trigger menu modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+            <button style="margin-top: 20px; margin-bottom:40px" type="button" class="btn btn-primary"
+                    data-bs-toggle="modal"
                     data-bs-target="#newWeeklyMenuModal">
                 Ny ukesmeny
             </button>
@@ -28,225 +30,224 @@
 
         {#KNYTT MENY TIL DATO FORM#}
 
-        <div class="container p-5">
+
+        <h5>{{ selectedMenuName }}</h5>
+
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Matrett</th>
+                <th>Antall</th>
+
+            </tr>
+            </thead>
+            <tbody>
 
 
-            <h3>Retter i {{ selectedMenuName }}</h3>
-
-            <table class="table table-striped table-hover">
-                <thead>
+            {% for weeklyMenu in weeklyMenuRecepies %}
                 <tr>
-                    <th>Matrett</th>
-                    <th>Antall</th>
+                    <td class=" w-50 ">
+                        {{ weeklyMenu.name }}
+                    </td>
 
+                    <td class=" w-50 ">
+                        {{ weeklyMenu.expectedConsumption }}
+                    </td>
+
+                    <td class=" w-auto ">
+                        <a href="#" id="{{ loop.index }}-RemoveFromRecipe" type="button"
+                           class="btn btn-outline-primary btn-sm"><i
+                                class="bi bi-trash"></i></a>
+                    </td>
                 </tr>
-                </thead>
-                <tbody>
+
+                <script>
+                    document.getElementById("{{ loop.index }}-RemoveFromRecipe").onclick = function () {
+                        document.getElementById('{{ loop.index }}-RemoveFromRecipe').href = "/weekly_menu/{{ weeklyMenu.recipe_idRecipe }}/{{ menuID }}/delete";
+                    }
+                </script>
+            {% endfor %}
+            </tbody>
+
+        </table>
+
+        <h5 class="mt-5">Legg til i rett i {{ selectedMenuName }}</h5>
+
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Matrett</th>
+                <th>Antall</th>
+
+            </tr>
+            </thead>
+            <tbody>
 
 
-                {% for weeklyMenu in weeklyMenuRecepies %}
+            {% for recipe in recipes %}
+                {% if recipe.name not in dishes %}
                     <tr>
                         <td class=" w-50 ">
-                            {{ weeklyMenu.name }}
+                            {{ recipe.name }}
                         </td>
 
                         <td class=" w-50 ">
-                            {{ weeklyMenu.expectedConsumption }}
+                            <input type="number" id="{{ loop.index }}-quantityFormAdd" value="1"
+                                   class="form-control w-25" min="1"
+                                   steps="0.1"/>
                         </td>
 
                         <td class=" w-auto ">
-                            <a href="#" id="{{ loop.index }}-RemoveFromRecipe" type="button"
+                            <a href="#" id="{{ loop.index }}-addToRecipe" type="button"
                                class="btn btn-outline-primary btn-sm"><i
-                                    class="bi bi-trash"></i></a>
+                                    class="bi bi-plus"></i></a>
                         </td>
+
                     </tr>
 
                     <script>
-                        document.getElementById("{{ loop.index }}-RemoveFromRecipe").onclick = function () {
-                            document.getElementById('{{ loop.index }}-RemoveFromRecipe').href = "/weekly_menu/{{ weeklyMenu.recipe_idRecipe }}/{{ menuID }}/delete";
+                        document.getElementById("{{ loop.index }}-addToRecipe").onclick = function () {
+                            var getQuantity = document.getElementById('{{ loop.index }}-quantityFormAdd').value;
+                            document.getElementById('{{ loop.index }}-addToRecipe').href = "/weekly_menu/{{ recipe.idRecipe }}/" + getQuantity + "/add";
                         }
                     </script>
-                {% endfor %}
-                </tbody>
 
-            </table>
+                {% endif %}
+            {% endfor %}
+            </tbody>
 
-            <h3 class="mt-5">Legg til i rett</h3>
+        </table>
 
-            <table class="table table-striped table-hover">
-                <thead>
+
+        {#UKESMENY KNYTTET TIL UKER BABY#}
+        <h5 class="mt-5">Ukesmenyer knyttet til uke</h5>
+        <table class=" w-25 table table-striped table-hover">
+            <thead>
+            <tr>
+                <th scope="col">År</th>
+                <th scope="col">Uke</th>
+                <th scope="col">Meny</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for weeklyMenu in  weeklyMenusWithDate %}
                 <tr>
-                    <th>Matrett</th>
-                    <th>Antall</th>
-
-                </tr>
-                </thead>
-                <tbody>
-
-
-                {% for recipe in recipes %}
-                    {% if recipe.name not in dishes %}
-                        <tr>
-                            <td class=" w-50 ">
-                                {{ recipe.name }}
-                            </td>
-
-                            <td class=" w-50 ">
-                                <input type="number" id="{{ loop.index }}-quantityFormAdd" value="1"
-                                       class="form-control w-25" min="1"
-                                       steps="0.1"/>
-                            </td>
-
-                            <td class=" w-auto ">
-                                <a href="#" id="{{ loop.index }}-addToRecipe" type="button"
-                                   class="btn btn-outline-primary btn-sm"><i
-                                        class="bi bi-plus"></i></a>
-                            </td>
-
-                        </tr>
-
-                        <script>
-                            document.getElementById("{{ loop.index }}-addToRecipe").onclick = function () {
-                                var getQuantity = document.getElementById('{{ loop.index }}-quantityFormAdd').value;
-                                document.getElementById('{{ loop.index }}-addToRecipe').href = "/weekly_menu/{{ recipe.idRecipe }}/" + getQuantity + "/add";
-                            }
-                        </script>
-
-                    {% endif %}
-                {% endfor %}
-                </tbody>
-
-            </table>
-
-
-            {#UKESMENY KNYTTET TIL UKER BABY#}
-            <h3 class="mt-5">Ukesmenyer Oversikt</h3>
-            <table class="table table-striped table-hover">
-                <thead>
-                <tr>
-                    <th>Meny</th>
-                    <th>Uke</th>
-                    <th>År</th>
-                </tr>
-                </thead>
-
-                <tbody>
-                {% for weeklyMenu in  weeklyMenusWithDate %}
-                    <tr>
-                    <td class=" w-50 ">
-                        {{ weeklyMenu[0].name }}
-                    </td>
-                    <td class=" w-50 ">
-                        {{ weeklyMenu[1].weekNumber }}
-                    </td>
-                    <td class=" w-50 ">
-                        {{ weeklyMenu[1].year }}
-                    </td>
-                {% endfor %}
-                </tbody>
-            </table>
-            {#UKESMENY KNYTTET TIL UKER SLUTT#}
-
-
-            <!-- Modal week -->
-            <div class="modal fade" id="newWeeklyMenuModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="newWeeklyMenuModalLabel">Lag ny ukesmeny</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container mt-5">
-                                <div class="row align-items-center">
-                                    <div class="card p-2 m-auto">
-                                        <form method="POST" action="{{ url_for('weeklyMenu.ukesmeny',formid=2) }}"
-                                              class="row">
-                                            {{ form.csrf_token }}
-
-                                            <div class="row mb-3 g-2 justify-content-center">
-                                                <div class="col-sm-9">
-                                                    {{ form.weekly_name.label(class_="col-form-label") }}
-                                                    {{ form.weekly_name(class="form-control") }}
-                                                </div>
-                                            </div>
-
-                                            <div class="row mb-3 g-2 justify-content-center">
-
-                                                <div class="col-sm-9">
-                                                    {{ form.weekly_desc.label(class_="col-form-label") }}
-                                                    {{ form.weekly_desc(class="form-control") }}
-                                                </div>
-                                            </div>
-
-
-                                            <div class="modal-footer border-0">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                    Close
-                                                </button>
-                                                {{ form.submit(class_="btn btn-primary") }}
-
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Modal week date-->
-            <div class="modal fade" id="newWeeklyMenuDateModal" tabindex="-1" aria-labelledby="exampleModalLabel2"
-                 aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="newWeeklyMenuModalLabel">Knytt meny til uke og år</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container mt-5">
-                                <div class="row align-items-center">
-                                    <div class="card p-2 m-auto">
-                                        <form method="POST" action="{{ url_for('weeklyMenu.ukesmeny',formid=2) }}"
-                                              class="row">
-                                            {#                                            {{ weeklymenu_to_date_form.csrf_token }}#}
-
-                                            <div class="row mb-3 g-2 justify-content-center">
-                                                <div class="col-sm-9">
-                                                    {{ weeklymenu_to_date_form.week.label(class_="col-form-label") }}
-                                                    {{ weeklymenu_to_date_form.week(class="form-control") }}
-                                                </div>
-                                            </div>
-
-                                            <div class="row mb-3 g-2 justify-content-center">
-                                                <div class="col-sm-9">
-                                                    {{ weeklymenu_to_date_form.year.label(class_="col-form-label") }}
-                                                    {{ weeklymenu_to_date_form.year(class="form-control") }}
-                                                </div>
-                                            </div>
-
-
-                                            <div class="modal-footer border-0">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                    Close
-                                                </button>
-                                                {{ form.submit(class_="btn btn-primary") }}
-
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+                <td class=" w-auto ">
+                    {{ weeklyMenu[1].year }}
+                </td>
+                <td class=" w-auto ">
+                    {{ weeklyMenu[1].weekNumber }}
+                </td>
+                <td class=" w-auto ">
+                    {{ weeklyMenu[0].name }}
+                </td>
+            {% endfor %}
+            </tbody>
+        </table>
         </div>
+        {#UKESMENY KNYTTET TIL UKER SLUTT#}
+
+
+        <!-- Modal week -->
+        <div class="modal fade" id="newWeeklyMenuModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="newWeeklyMenuModalLabel">Lag ny ukesmeny</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container mt-5">
+                            <div class="row align-items-center">
+                                <div class="card p-2 m-auto">
+                                    <form method="POST" action="{{ url_for('weeklyMenu.ukesmeny',formid=2) }}"
+                                          class="row">
+                                        {{ form.csrf_token }}
+
+                                        <div class="row mb-3 g-2 justify-content-center">
+                                            <div class="col-sm-9">
+                                                {{ form.weekly_name.label(class_="col-form-label") }}
+                                                {{ form.weekly_name(class="form-control") }}
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3 g-2 justify-content-center">
+
+                                            <div class="col-sm-9">
+                                                {{ form.weekly_desc.label(class_="col-form-label") }}
+                                                {{ form.weekly_desc(class="form-control") }}
+                                            </div>
+                                        </div>
+
+
+                                        <div class="modal-footer border-0">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Close
+                                            </button>
+                                            {{ form.submit(class_="btn btn-primary") }}
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal week date-->
+        <div class="modal fade" id="newWeeklyMenuDateModal" tabindex="-1" aria-labelledby="exampleModalLabel2"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="newWeeklyMenuModalLabel">Knytt meny til uke og år</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container mt-5">
+                            <div class="row align-items-center">
+                                <div class="card p-2 m-auto">
+                                    <form method="POST" action="{{ url_for('weeklyMenu.ukesmeny',formid=2) }}"
+                                          class="row">
+                                        {#                                            {{ weeklymenu_to_date_form.csrf_token }}#}
+
+                                        <div class="row mb-3 g-2 justify-content-center">
+                                            <div class="col-sm-9">
+                                                {{ weeklymenu_to_date_form.week.label(class_="col-form-label") }}
+                                                {{ weeklymenu_to_date_form.week(class="form-control") }}
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3 g-2 justify-content-center">
+                                            <div class="col-sm-9">
+                                                {{ weeklymenu_to_date_form.year.label(class_="col-form-label") }}
+                                                {{ weeklymenu_to_date_form.year(class="form-control") }}
+                                            </div>
+                                        </div>
+
+
+                                        <div class="modal-footer border-0">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Close
+                                            </button>
+                                            {{ form.submit(class_="btn btn-primary") }}
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {#        </div>#}
     {% else %}
 
         <p> Du har ingen ukesmenyer</p>
