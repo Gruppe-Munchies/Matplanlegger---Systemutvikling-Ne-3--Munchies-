@@ -134,8 +134,13 @@ def handleliste():
 
     if menu_queries.check_first_weeklymenu_where_groupId(session.get('group_to_use')) == None:
         print("Gruppa har ingen ukesmenyer")
+        #session['menuID'] = 0 #beskrivelsen under er når denne er kommentert inn.
     else:
         print("Gruppa har ukesmenyer")
+    print(session['menuID'])
+    #dette funker hvertfall ikke rett. Den hopper tilbake i dropdown, etc.
+    #fjerner man det over, så har evt. andre grupper med samme navn som MatMons også den samme handlelista.
+    #tipper dette lar seg løse bedre nedi her.
 
 
     weekly_menu_w_dates = menu_queries.fetch_menus_with_dates_by_group_id(session['group_to_use'])
