@@ -130,6 +130,12 @@ def fetchUserGroup(group_name):
     return res
 
 
+def fetchUserGroupLastOfThisName(group_name):
+    session = loadSession()
+    res = session.query(Usergroup).where(Usergroup.groupName == group_name).order_by(Usergroup.iduserGroup.desc()).first()
+    # res = session.query(Usergroup).filter_by(groupName=group_name).values(text("iduserGroup"))
+    return res
+
 def fetchUserGroupById(group_id):
     session = loadSession()
     res = session.query(Usergroup).where(Usergroup.iduserGroup == group_id).first()
