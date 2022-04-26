@@ -121,7 +121,6 @@ def createGroup():
         #userGroup = fetchUserGroup(createUGForm.usergroup.data) #gammel, vil gjøre at man får tilgang på andre grupper på denne måten
         userGroup = fetchUserGroupLastOfThisName(createUGForm.usergroup.data)
         userGroupId = userGroup.iduserGroup
-        print(userGroupId)
 
         userTypeId = 1
         auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(userTypeId), 2)
