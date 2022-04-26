@@ -131,6 +131,13 @@ def RemoveRecipeFromWeeklyMenu(recipe_id: int, menu_ID: int):
 
 @weeklyMenu.route('/handleliste', methods=["GET", "POST"])
 def handleliste():
+
+    if menu_queries.check_first_weeklymenu_where_groupId(session.get('group_to_use')) == None:
+        print("Gruppa har ingen ukesmenyer")
+    else:
+        print("Gruppa har ukesmenyer")
+
+
     weekly_menu_w_dates = menu_queries.fetch_menus_with_dates_by_group_id(session['group_to_use'])
 
     formSelector = WeeklyMenuWeekSelector(request.form)
