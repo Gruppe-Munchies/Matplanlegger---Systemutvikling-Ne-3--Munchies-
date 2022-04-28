@@ -22,6 +22,7 @@ def new():
     group_to_use = flask.session.get('group_to_use')
 
     group_ingredients = fetch_all_ingredients_where_usergroup_equals(flask.session.get('group_to_use'))
+    print(group_to_use)
     # print(auth_queries.fetchUserGroupById(group_to_use).groupName)
     form = RegisterForm(request.form)
 
@@ -29,6 +30,7 @@ def new():
         ingredientName = form.ingredientName.data
 
         usergroup = auth_queries.fetchUserGroupById(group_to_use).groupName  # form.usergroup.data var det før
+        #print(usergroup.iduserGroup)
         price = form.price.data
         unit = form.unit.data
 
@@ -37,6 +39,8 @@ def new():
 
         fetchedusergroup = auth_queries.fetchUserGroup(usergroup)  # TODO bør være en dropdown der brukeren kan velge
         fetchedusergroup_ID = fetchedusergroup.iduserGroup
+
+
         check_ingredient_in_userGroup = fetch_ingredients_where_usergroup_and_ingredientName_equals(group_to_use,
                                                                                                     ingredientName)
         if check_ingredient_in_userGroup:
