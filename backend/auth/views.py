@@ -65,6 +65,11 @@ def register():
     if request.method == 'POST' and form.validate():
         username = form.username.data
         bruker = fetchUser(username)
+        # add_groupname_checked =
+        if (request.form.get('addGroup') == 'yes'):
+            groupname = form.group_name.data
+            print("nå skal vi opprette bruker")
+
         if bruker:
             flash("Brukernavn er allerede tatt", "warning")
             return render_template('register.html', form=form, heading="Registrer ny bruker")
@@ -112,7 +117,6 @@ def groupadmin():
         invite_form = InviteForm(request.form)
         return render_template('usergroup-administration.html', form=invite_form, ugform=createUGForm)
 
-
     invite_form = InviteForm(request.form)
     createUGForm = createUserGroupForm(request.form)
     deleteForm = RemoveUserFromGroup(request.form)
@@ -126,7 +130,7 @@ def groupadmin():
     # print("brukergruppe: "+session.get('group_to_use'))
     usertype = fetchUserTypeByUserIdAndGroupId(current_user.id,
                                                session.get('group_to_use'))
-    userIsAdmin = False #satte inn
+    userIsAdmin = False  # satte inn
     if usertype == 1:
         userIsAdmin = True
 
@@ -166,7 +170,6 @@ def inviteUser():
     invite_form = InviteForm(request.form)
     activeGroup = session.get('group_to_use')  # Bruk aktiv gruppe
 
-
     # Sjekker om brukeren, i den gitte brukergruppa, har adminrettigheter.
     usertype = fetchUserTypeByUserIdAndGroupId(current_user.id, activeGroup)
     userIsAdmin = False
@@ -181,7 +184,7 @@ def inviteUser():
         if user_to_invite:
             # User exists, check if already member or invited
             if not fetch_user_in_usergroup(user_to_invite.id, activeGroup):
-                #Check if Admin
+                # Check if Admin
                 if userIsAdmin:
                     userId = user_to_invite.id
                     userGroupId = activeGroup
@@ -199,9 +202,9 @@ def inviteUser():
 
         return redirect(url_for("auth.groupadmin"))
 
+
 @auth.route('/groupadmin/inviter/response', methods=['GET', 'POST'])
 def response():
-
     userid = current_user.id
     usergroup = request.args["usergroup"]
     response = request.args["response"]
@@ -216,14 +219,13 @@ def response():
     return redirect(url_for("auth.profil"))
 
 
-
 @auth.route('/profil', methods=['GET', 'POST'])
 def profil():
     groups = fetchAllUserGroupsUserHasAndType(current_user.id)
 
     # TODO:Bør flyttes til nav
 
-    #Fetch pending invitations
+    # Fetch pending invitations
     invitations = fetchPendingInvitations(current_user.id)
 
     form = UserGroupSelector(request.form)
