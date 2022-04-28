@@ -65,23 +65,47 @@ def register():
     if request.method == 'POST' and form.validate():
         username = form.username.data
         bruker = fetchUser(username)
-        # add_groupname_checked =
-        if (request.form.get('addGroup') == 'yes'):
-            groupname = form.group_name.data
-            print("nå skal vi opprette bruker")
+        userTypeId = 1
 
         if bruker:
             flash("Brukernavn er allerede tatt", "warning")
             return render_template('register.html', form=form, heading="Registrer ny bruker")
+
         email = form.email.data
         firstname = form.firstname.data
         lastname = form.lastname.data
         password = form.password.data
 
-        # Insert user to database
-        auth_queries.insert_to_user(username, email, firstname, lastname, password)
-        flash('Registreringen var vellykket!', "success")
-        return redirect(url_for("auth.register"))
+        # Add group
+        if (request.form.get('addGroup') == 'yes'):
+            groupname = form.group_name.data
+            if (auth_queries.fetchUserGroup(groupname) == None):
+
+                # Legg til gruppe
+                auth_queries.insert_to_usergroup(groupname)
+
+                # Få gruppeid
+                userGroupId = auth_queries.fetchUserGroup(groupname).iduserGroup
+
+                # Legg til bruker i database
+                auth_queries.insert_to_user(username, email, firstname, lastname, password)
+
+                # Få brukers id
+                userId = auth_queries.fetchUser(username).id
+
+                # Legg bruker til brukergruppe
+                auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(userTypeId), 2)
+                flash('Registreringen var vellykket!', "success")
+
+                return render_template('index.html')
+            else:
+                flash("Gruppenavnet eksisterer allerede!", "danger")
+        else:
+            # Insert user to database
+            auth_queries.insert_to_user(username, email, firstname, lastname, password)
+            flash('Registreringen var vellykket!', "success")
+
+        return redirect(url_for('index'))
 
     for fieldName, error_messages in form.errors.items():
         for error_message in error_messages:
@@ -97,15 +121,23 @@ def createGroup():
     createUGForm = createUserGroupForm(request.form)
 
     if request.method == 'POST' and createUGForm.validate():
-        userId = current_user.id
-        auth_queries.insert_to_usergroup(createUGForm.usergroup.data)
-        userGroup = fetchUserGroup(createUGForm.usergroup.data)
-        userGroupId = userGroup.iduserGroup
-        userTypeId = 1
-        auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(userTypeId), 2)
-        session['group_to_use'] = userGroupId
-        session['groupname_to_use'] = fetchUserGroupById(userGroupId).groupName
-        flash('Gruppen ble opprettet!', "success")
+        groupname = createUGForm.usergroup.data
+        print(groupname)
+        print(createUGForm.usergroup.data)
+        if (auth_queries.fetchUserGroup(groupname) == None):
+            userId = current_user.id
+
+            # Insert group to db
+            auth_queries.insert_to_usergroup(groupname)
+
+            userGroupId = auth_queries.fetchUserGroup(groupname).iduserGroup
+            userTypeId = 1
+            auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(userTypeId), 2)
+            session['group_to_use'] = userGroupId
+            session['groupname_to_use'] = fetchUserGroupById(userGroupId).groupName
+            flash('Gruppen ble opprettet!', "success")
+        else:
+            flash("Gruppenavnet eksisterer allerede!", "danger")
 
     return redirect(url_for("auth.groupadmin"))
 
