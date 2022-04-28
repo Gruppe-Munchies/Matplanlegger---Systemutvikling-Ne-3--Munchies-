@@ -40,6 +40,22 @@
             <div class="form-group w-50 p-3">
                 {{ form.confirm(class="form-control",placeholder="gjenta passord") }}
             </div>
+            <div class="row">
+                <div class="col-auto">
+                    <div class="form-check mb-2">
+                        <label>
+                            <input type="checkbox" id="cb_group_name_input" class="form-check-input" name="addGroup"
+                                   value="yes">
+                            Opprett ny gruppe
+                        </label>
+                    </div>
+                </div>
+                <div class="col" style="visibility: hidden">
+                    {{ form.group_name(class="form-control", placeholder="gruppenavn") }}
+
+
+                </div>
+            </div>
 
             <div class="form-group w-50 p-3"></div>
 
@@ -49,6 +65,17 @@
 
         </form>
     </div>
+
+    <script>
+        {#function show_group_name_input() {#}
+        {#    document.getElementById("group_name_input_div").style.visibility = "visible";#}
+
+        console.log("ape");
+        let cb_group_name_input = document.getElementById("cb_group_name_input")
+        cb_group_name_input.addEventListener(a => console.log("hei"))
+        console.log(document.getElementById("cb_group_name_input").checked);
+        console.log("katt");
+    </script>
 
 
 {% endblock %}

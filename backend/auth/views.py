@@ -72,32 +72,9 @@ def register():
         firstname = form.firstname.data
         lastname = form.lastname.data
         password = form.password.data
-        #usergroup = form.usergroup.data #
-        # Check if creating usergroup. If not, set group to "ingen" and usertype to 2 (not admin)
-
-       # if (usergroup == ""):
-       #     usertype = 2
-       #     usergroup = "ingen"
-       # else:
-       #     usertype = 1
 
         # Insert user to database
         auth_queries.insert_to_user(username, email, firstname, lastname, password)
-        # Insert userGroup to database
-
-        #auth_queries.insert_to_usergroup(usergroup)
-
-        # Get userID from newly inserted user
-        fetchedUser = fetchUser(username)
-        userID = fetchedUser.id
-        # Fetch userGroupID from newly inserted usergroup
-
-        #fetchedUserGroup = fetchUserGroup(usergroup)
-        #userGroupId = fetchedUserGroup.iduserGroup
-
-        # Insert userID, userGroupID and userType to "user_has_userGroup"
-        #auth_queries.insert_to_user_has_userGroup(int(userID), int(userGroupId), int(usertype), 2)
-
         flash('Registreringen var vellykket!', "success")
         return redirect(url_for("auth.register"))
 
