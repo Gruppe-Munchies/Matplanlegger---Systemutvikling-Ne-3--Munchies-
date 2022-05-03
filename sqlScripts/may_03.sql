@@ -135,7 +135,7 @@ CREATE TABLE munchbase.recipe_has_ingredient
 (
     `recipe_idRecipe`       int NOT NULL,
     ingredient_idingredient int NOT NULL,
-    quantity                decimal(4, 2) NOT NULL,
+    quantity                decimal(7, 2) NOT NULL,
     CONSTRAINT pk_recipe_has_ingredient PRIMARY KEY (`recipe_idRecipe`, ingredient_idingredient),
     CONSTRAINT fk_recipe_has_ingredient_ingredient FOREIGN KEY (ingredient_idingredient)
         REFERENCES munchbase.ingredient (idingredient) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -150,7 +150,7 @@ CREATE TABLE munchbase.recipe_has_weeklyMenu
 (
     `weeklyMenu_idWeeklyMenu` int           NOT NULL,
     `recipe_idRecipe`         int           NOT NULL,
-    `expectedConsumption`     decimal(4, 2) NOT NULL,
+    `expectedConsumption`     decimal(7, 2) NOT NULL,
     CONSTRAINT pk_recipe_has_weeklymenu PRIMARY KEY (`recipe_idRecipe`, weeklyMenu_idWeeklyMenu),
     CONSTRAINT `fk_recipe_has_weeklyMenu_recipe` FOREIGN KEY (`recipe_idRecipe`)
         REFERENCES munchbase.recipe (`idRecipe`) ON DELETE NO ACTION ON UPDATE NO ACTION,
