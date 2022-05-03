@@ -243,6 +243,9 @@ def response():
 
     if response == "1":
         invitationResponse(userid, usergroup, 2)
+        if session.get('group_to_use') == 0:
+            session['group_to_use'] = usergroup
+            session['groupname_to_use'] = fetchUserGroupById(usergroup).groupName
     elif response == "2":
         invitationResponse(userid, usergroup, 3)
     else:
