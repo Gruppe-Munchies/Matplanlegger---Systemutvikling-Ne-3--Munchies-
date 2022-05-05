@@ -2,6 +2,43 @@
 {% block title %}Register ny ingrediens{% endblock %}
 {% block heading %}Ingredienser{% endblock %}
 {% block description %}Registrere ny ingrediens{% endblock %}
+<style>
+* {
+  box-sizing: border-box;
+}
+
+#myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#myTable {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd;
+  font-size: 18px;
+}
+
+#myTable th, #myTable td {
+  text-align: left;
+  padding: 12px;
+}
+
+#myTable tr {
+  border-bottom: 1px solid #ddd;
+}
+
+#myTable tr.header, #myTable tr:hover {
+  background-color: #f1f1f1;
+}
+</style>
+
 {% block content %}
     {% include 'flash_messages.html' %}
     <div class="container mt-5">
@@ -48,8 +85,8 @@
         </div>
     </div>
 
-
-    <table class="table table-striped table-hover">
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+    <table class="table table-striped table-hover header" id="myTable">
         <thead>
         <tr>
             <th>Ingrediens</th>
@@ -58,7 +95,8 @@
             <th>Pris</th>
         </tr>
         </thead>
-        <tbody>
+
+        <tbody class="table-search-body">
 
         {% for ingredient in ingredients %}
             <tr>
@@ -66,58 +104,87 @@
                 <td>{{ ingredient[1].quantity }}</td>
                 <td>{{ ingredient[1].unit }}</td>
                 <td>{{ ingredient[1].price }}</td>
-            <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal{{ingredient[0].ingredientName }}">Rediger</button></td>
+                <td>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#modal{{ ingredient[0].ingredientName }}">Rediger
+                    </button>
+                </td>
             </tr>
 
             <!-- Modal -->
-                        <div class="modal fade" id="modal{{ingredient[0].ingredientName }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                          <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Rediger {{ ingredient.ingredientName }}</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                              </div>
-                              <div class="modal-body row align-items-end">
-
-                                  <div class="form-group col">
-                                         <label>Ingrediens</label>
-                                        <input id="{{ loop.index }}-nameForm" class="form-control" type="text" value="{{ ingredient[0].ingredientName }}" disabled readonly>
-                                    </div>
-
-                                    <div class="form-group col">
-                                         <label>Antall</label>
-                                        <input id="{{ loop.index }}-quantityForm" type="number" min="0" class="form-control" id="exampleFormControlInput1" value="{{ ingredient[1].quantity }}">
-                                    </div>
-                                  <div class="form-group col">
-                                         <label>Enhet</label>
-                                        <input id="{{ loop.index }}-unitForm" class="form-control" type="text" value="{{ ingredient[1].unit }}"disabled readonly>
-                                    </div>
-
-                                  <div class="form-group col">
-                                         <label>Pris</label>
-                                        <input id="{{ loop.index }}-prisForm" type="number" min="0" class="form-control" id="exampleFormControlInput1" value="{{ ingredient[1].quantity }}">
-                                    </div>
-                              </div>
-                                <div class="modal-footer">
-
-                                        <a href="#" id="{{ loop.index }}-myLink" type="button" class="btn btn-primary">Oppdater</a>
-
-                                <script>
-                                    document.getElementById("{{ loop.index }}-myLink").onclick = function() {
-                                        var getQuantity = document.getElementById('{{ loop.index }}-quantityForm').value;
-                                        var getPrice = document.getElementById('{{ loop.index }}-prisForm').value;
-                                    document.getElementById('{{ loop.index }}-myLink').href = '/ingredient/{{ ingredient[1].ingredient_idingredient }}/' +  getQuantity +  '/' + getPrice + '/update';
-                                    }
-                                    </script>
-
-                                </div>
-
-                            </div>
-                          </div>
+            <div class="modal fade" id="modal{{ ingredient[0].ingredientName }}" tabindex="-1"
+                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Rediger {{ ingredient.ingredientName }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
+                        <div class="modal-body row align-items-end">
+
+                            <div class="form-group col">
+                                <label>Ingrediens</label>
+                                <input id="{{ loop.index }}-nameForm" class="form-control" type="text"
+                                       value="{{ ingredient[0].ingredientName }}" disabled readonly>
+                            </div>
+
+                            <div class="form-group col">
+                                <label>Antall</label>
+                                <input id="{{ loop.index }}-quantityForm" type="number" min="0" class="form-control"
+                                       id="exampleFormControlInput1" value="{{ ingredient[1].quantity }}">
+                            </div>
+                            <div class="form-group col">
+                                <label>Enhet</label>
+                                <input id="{{ loop.index }}-unitForm" class="form-control" type="text"
+                                       value="{{ ingredient[1].unit }}" disabled readonly>
+                            </div>
+
+                            <div class="form-group col">
+                                <label>Pris</label>
+                                <input id="{{ loop.index }}-prisForm" type="number" min="0" class="form-control"
+                                       id="exampleFormControlInput1" value="{{ ingredient[1].quantity }}">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+
+                            <a href="#" id="{{ loop.index }}-myLink" type="button" class="btn btn-primary">Oppdater</a>
+
+                            <script>
+                                document.getElementById("{{ loop.index }}-myLink").onclick = function () {
+                                    var getQuantity = document.getElementById('{{ loop.index }}-quantityForm').value;
+                                    var getPrice = document.getElementById('{{ loop.index }}-prisForm').value;
+                                    document.getElementById('{{ loop.index }}-myLink').href = '/ingredient/{{ ingredient[1].ingredient_idingredient }}/' + getQuantity + '/' + getPrice + '/update';
+                                }
+                            </script>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         {% endfor %}
         </tbody>
     </table>
+    <script>
+function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
 
 {% endblock %}
 
