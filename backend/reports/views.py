@@ -38,6 +38,7 @@ def ingredients_used_per_week():
     weeknum = 0
     year = 0
     recipes = []
+    perRecipe = False
 
     menus = fetch_weekly_menus_for_group(groupId)
 
@@ -47,6 +48,7 @@ def ingredients_used_per_week():
         year = request.args["year"]
         recipe = request.args["recipe"]
         res = ingredients_used_per_week_per_dish(groupId, year, weeknum, recipe)
+        perRecipe = True
 
     # Else if menu selected
     elif 'weeknum' in request.args:
@@ -67,4 +69,4 @@ def ingredients_used_per_week():
         for i in res:
            totalcost += res[0].SumBelop
 
-    return render_template('report.html', report=res, menus=menus, recipes=recipes, totalcost=totalcost)
+    return render_template('report.html', report=res, menus=menus, recipes=recipes, totalcost=totalcost, perRecipe=perRecipe)

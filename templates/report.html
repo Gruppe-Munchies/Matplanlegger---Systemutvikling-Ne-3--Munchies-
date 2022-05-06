@@ -4,17 +4,27 @@
 {% block description %}{{ menus[0][2].groupName }}{% endblock %}
 {% block content %}
 <table class="table table-striped table-hover">
+<h4>Forbruk per ingrediens</h4>
+<br>
+<h6>Ukemenyer:</h6>
 {% for menu in menus %}
     <span class="badge badge-secondary"><a href="{{ url_for('reports.ingredients_used_per_week', weeknum=menu[1].weekNumber, year=menu[1].year) }}">{{ menu[1].weekNumber }} - {{ menu[0].name }}</a></span>
 {% endfor %}
 <br>
 <br>
 {% if report[0] %}
-<h2>{{ report[1].Ukemeny }}</h2>
-<h5>Forbruk per ingrediens</h5>
+<h6>Ukens oppskrifter:</h6>
 {% for recipe in recipes %}
     <span class="badge badge-secondary"><a href="{{ url_for('reports.ingredients_used_per_week', weeknum=recipe[2].weekNumber, year=recipe[2].year, recipe=recipe[0].idRecipe) }}">{{ recipe[0].name }}</a></span>
 {% endfor %}
+<br>
+<br>
+<h3>{{ report[1].Ukemeny }} :
+    {% if perRecipe %}
+        {{ report[1].Oppskrift }}
+    {% else %} Sum for uken
+    {% endif %}
+</h3>
     <thead>
     <tr>
         <th>Vare</th>
