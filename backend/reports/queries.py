@@ -64,8 +64,7 @@ def ingredients_used_per_week_per_dish(groupId, year, weeknum, recipeId):
                         UsergroupHasIngredient.price.label("Pris"),
                         RecipeHasIngredient.quantity.label("Mengde"),
                         (RecipeHasWeeklyMenu.expectedConsumption * RecipeHasIngredient.quantity).label("SumMengde"),
-                        (UsergroupHasIngredient.price * func.sum(RecipeHasWeeklyMenu.expectedConsumption * RecipeHasIngredient.quantity)).label("SumBelop"),
-                        func.sum('SumBelop').label("SumTotal")) \
+                        (UsergroupHasIngredient.price * func.sum(RecipeHasWeeklyMenu.expectedConsumption * RecipeHasIngredient.quantity)).label("SumBelop"))\
         .join(WeeklyMenu, WeeklyMenuDate.id_weekly_menu_date == WeeklyMenu.idWeeklyMenu) \
         .join(Usergroup, WeeklyMenu.userGroup_iduserGroup == Usergroup.iduserGroup) \
         .join(RecipeHasWeeklyMenu, RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu == WeeklyMenu.idWeeklyMenu) \
@@ -90,13 +89,24 @@ def fetch_weekly_menus_for_group(groupId):
     session.close()
     return res
 
+def fetch_menu_id(year, weeknum, groupId):
+    session = loadSession()
+
+    res = session.query(WeeklyMenuDate)\
+        .where(WeeklyMenuDate.year == year, WeeklyMenuDate.weekNumber == weeknum)
+
+    session.close()
+    return res
+
 def fetch_recipes_in_weekly_menu(menuId):
     session = loadSession()
 
-    res = session.query(Recipe, RecipeHasWeeklyMenu, WeeklyMenuDate)\
-        .join(Recipe, Recipe.idRecipe == RecipeHasWeeklyMenu.recipe_idRecipe)\
-        .where(RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu == menuId)\
-        .group_by(Recipe.idRecipe)
+    res = session.query(Recipe, RecipeHasWeeklyMenu, WeeklyMenuDate, WeeklyMenu)\
+        .join(RecipeHasWeeklyMenu, Recipe.idRecipe == RecipeHasWeeklyMenu.recipe_idRecipe)\
+        .join(WeeklyMenu, WeeklyMenu.idWeeklyMenu == RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu )\
+        .join(WeeklyMenuDate, WeeklyMenuDate.weeklyMenu_id == WeeklyMenu.idWeeklyMenu)\
+        .where(WeeklyMenu.idWeeklyMenu == menuId)\
+        .group_by(Recipe.name)
 
     session.close()
     return res

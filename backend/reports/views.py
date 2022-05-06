@@ -37,7 +37,9 @@ def ingredients_used_per_week():
 
     weeknum = 0
     year = 0
-    recipe = 0
+    recipes = []
+
+    menus = fetch_weekly_menus_for_group(groupId)
 
     # If recipe specification
     if 'recipe' in request.args:
@@ -54,11 +56,19 @@ def ingredients_used_per_week():
 
     else:
         res = ingredients_used_per_week_total(groupId, year, weeknum)
+        totalcost = 0
 
-    menus = fetch_weekly_menus_for_group(groupId)
-    menuId = menus[0][0].idWeeklyMenu
-    recipes = fetch_recipes_in_weekly_menu(menuId)
+    if 'weeknum' in request.args:
+        menu = fetch_menu_id(year, weeknum, groupId)
+        for i in menu:
+            print(i)
+        menuId = menu[0].weeklyMenu_id
+        recipes = fetch_recipes_in_weekly_menu(menuId)
+        for i in recipes:
+            print(i)
 
-    print(recipes[0][0].name)
+        totalcost = 0
+        for i in res:
+           totalcost += res[0].SumBelop
 
-    return render_template('report.html', report=res, menus=menus, recipes=recipes)
+    return render_template('report.html', report=res, menus=menus, recipes=recipes, totalcost=totalcost)
