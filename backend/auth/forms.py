@@ -4,6 +4,7 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo
 from backend.auth.queries import *  # fetchAllUserGroups, fetchUser, fetchUserGroup
 from flask_login import login_required, login_user, logout_user, current_user
 
+
 class LoginForm(FlaskForm):
     username = StringField(label='Brukernavn')
     password = PasswordField(label='Password')
@@ -43,6 +44,9 @@ class RegisterForm(FlaskForm):
         validators=[DataRequired(message='*Required'),
                     EqualTo('password',
                             message='Passordene må være like')])
+    group_name = StringField(
+        label=('Gruppenavn')
+    )
 
     submit = SubmitField(label=('Registrer'))
 

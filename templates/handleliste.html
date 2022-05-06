@@ -12,96 +12,96 @@
         <div class="form-group w-25 p-3">{{ formSelect.weeklyMenuWeekId(class="form-select", onchange="submit()") }}</div>
     </form>
 
-        <form method="post" class="row">
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                    <tr style="color:rgb(0,0,0);">
-                        <th>Produkt</th>
-                        <th class="justify-content-end">Enhet</th>
-                        <th>Antall</th>
-                        <th>Enhets Pris</th>
-                        <th>Sum Pris</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for ingredient in ingredients %}
-                        {% if ingredient[5] > 0 %}
-                            <tr style="color:rgb(11,11,11);">
-                                {#                            <td>#}
-                                {#                                <div class="form-check"><input class="form-check-input" type="checkbox"#}
-                                {#                                                               id="formCheck-1"><label class="form-check-label"#}
-                                {#                                                                                       for="formCheck-1">{{ ingredient[1] }}</label>#}
-                                {#                                </div>#}
-                                {#                            </td>#}
-                                <td>{{ ingredient[1] }}</td>
-                                <td>{{ ingredient[3] }}</td>
-                                <td>{{ ingredient[2] }}</td>
-                                <td>{{ ingredient[5] }}</td>
-                                <td>{{ ingredient[4] }}</td>
-                                <td>
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#modal{{ ingredient[1] }}">Kjøp
-                                    </button>
-                                </td>
+    <form method="post" class="row">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr style="color:rgb(0,0,0);">
+                    <th>Produkt</th>
+                    <th class="justify-content-end">Enhet</th>
+                    <th>Antall</th>
+                    <th>Enhets Pris</th>
+                    <th>Sum Pris</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ingredient in ingredients %}
+                    {% if ingredient[5] > 0 %}
+                        <tr style="color:rgb(11,11,11);">
+                            {#                            <td>#}
+                            {#                                <div class="form-check"><input class="form-check-input" type="checkbox"#}
+                            {#                                                               id="formCheck-1"><label class="form-check-label"#}
+                            {#                                                                                       for="formCheck-1">{{ ingredient[1] }}</label>#}
+                            {#                                </div>#}
+                            {#                            </td>#}
+                            <td>{{ ingredient[1] }}</td>
+                            <td>{{ ingredient[3] }}</td>
+                            <td>{{ ingredient[2] }}</td>
+                            <td>{{ ingredient[5] }}</td>
+                            <td>{{ ingredient[4] }}</td>
+                            <td>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#modal{{ ingredient[1] }}">Kjøp
+                                </button>
+                            </td>
 
-                            </tr>
-                            <!-- Modal -->
-                            <div class="modal fade" id="modal{{ ingredient[1] }}" tabindex="-1"
-                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">
-                                                Rediger {{ ingredient.ingredientName }}</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
+                        </tr>
+                        <!-- Modal -->
+                        <div class="modal fade" id="modal{{ ingredient[1] }}" tabindex="-1"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">
+                                            Rediger {{ ingredient.ingredientName }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body row align-items-end">
+
+                                        <div class="form-group col">
+                                            <label>Ingrediens</label>
+                                            <input id="{{ loop.index }}-nameForm" class="form-control" type="text"
+                                                   value="{{ ingredient[1] }}" disabled readonly>
                                         </div>
-                                        <div class="modal-body row align-items-end">
 
-                                            <div class="form-group col">
-                                                <label>Ingrediens</label>
-                                                <input id="{{ loop.index }}-nameForm" class="form-control" type="text"
-                                                       value="{{ ingredient[1] }}" disabled readonly>
-                                            </div>
-
-                                            <div class="form-group col">
-                                                <label>Antall</label>
-                                                <input id="{{ loop.index }}-quantityForm" type="number" min="0"
-                                                       class="form-control" id="exampleFormControlInput1"
-                                                       value="{{ ingredient[2] }}">
-                                            </div>
-                                            <div class="form-group col">
-                                                <label>Enhet</label>
-                                                <input id="{{ loop.index }}-unitForm" class="form-control" type="text"
-                                                       value="{{ ingredient[3] }}" disabled readonly>
-                                            </div>
-
+                                        <div class="form-group col">
+                                            <label>Antall</label>
+                                            <input id="{{ loop.index }}-quantityForm" type="number" min="0"
+                                                   class="form-control" id="exampleFormControlInput1"
+                                                   value="{{ ingredient[2] }}">
                                         </div>
-                                        <div class="modal-footer">
-
-                                            <a href="#" id="{{ loop.index }}-myLink" type="button"
-                                               class="btn btn-primary">Oppdater</a>
-
-                                            <script>
-                                                document.getElementById("{{ loop.index }}-myLink").onclick = function () {
-                                                    var getQuantity = document.getElementById('{{ loop.index }}-quantityForm').value;
-                                                    document.getElementById('{{ loop.index }}-myLink').href = '/{{ ingredient[0] }}/' + getQuantity + '/update';
-                                                }
-                                            </script>
-
+                                        <div class="form-group col">
+                                            <label>Enhet</label>
+                                            <input id="{{ loop.index }}-unitForm" class="form-control" type="text"
+                                                   value="{{ ingredient[3] }}" disabled readonly>
                                         </div>
 
                                     </div>
+                                    <div class="modal-footer">
+
+                                        <a href="#" id="{{ loop.index }}-myLink" type="button"
+                                           class="btn btn-primary">Oppdater</a>
+
+                                        <script>
+                                            document.getElementById("{{ loop.index }}-myLink").onclick = function () {
+                                                var getQuantity = document.getElementById('{{ loop.index }}-quantityForm').value;
+                                                document.getElementById('{{ loop.index }}-myLink').href = '/{{ ingredient[0] }}/' + getQuantity + '/update';
+                                            }
+                                        </script>
+
+                                    </div>
+
                                 </div>
                             </div>
-                        {% endif %}
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <h5 style="height:45px;color:rgb(3,3,3);font-family:'Source Sans Pro', sans-serif;margin-top:20px;">Totalt
-                : {{ totalsum }} ,-</h5>
-        </form>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <h5 style="height:45px;color:rgb(3,3,3);font-family:'Source Sans Pro', sans-serif;margin-top:20px;">Totalt
+            : {{ totalsum }} ,-</h5>
+    </form>
 
 {% endblock %}

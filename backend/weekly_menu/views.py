@@ -1,3 +1,5 @@
+import string
+
 import flask
 from flask import Blueprint, flash, redirect, render_template, request, url_for, session
 import backend.weekly_menu.queries as menu_queries
@@ -10,9 +12,6 @@ weeklyMenu = Blueprint('weeklyMenu', __name__, template_folder='templates')
 @weeklyMenu.route('/ukesmeny', methods=['POST', 'GET'])
 def ukesmeny():
     if menu_queries.check_first_weeklymenu_where_groupId(session.get('group_to_use')) != None:
-        # if not flask.session.get('menuID'):
-        #    session['menuID'] = menu_queries.fetch_first_weeklymenu_where_groupId(session.get('group_to_use'))
-
         # Basic data collection
         weeklymenu_to_date_form = WeeklyMenuToDateForm(request.form)
         group_id = flask.session.get('group_to_use', 'not set')
@@ -132,31 +131,29 @@ def RemoveRecipeFromWeeklyMenu(recipe_id: int, menu_ID: int):
 
 @weeklyMenu.route('/handleliste', methods=["GET", "POST"])
 def handleliste():
-    # TODO: Instead of weekly menus it should show weekly menus that are sat to a week
-    weekly_menu_w_dates = menu_queries.fetch_all_weeklymenu_where_groupId(session['group_to_use'])
+    weekly_menu_w_dates = menu_queries.fetch_menus_with_dates_by_group_id(session['group_to_use'])
 
     formSelector = WeeklyMenuWeekSelector(request.form)
-    choice = []
+    weekly_menus_with_dates_choices = []
     form = RegisterWeeklymenuForm(request.form)
 
     for i in weekly_menu_w_dates:
-        choice.append((i.idWeeklyMenu, i.name))
-    for i in choice:
+        yearWeek = "År: " + str(i[1].year) + "              Uke: " + str(i[1].weekNumber)
+        weekly_menus_with_dates_choices.append((i[0].idWeeklyMenu, yearWeek))
+    for i in weekly_menus_with_dates_choices:
         if i[0] == int(flask.session.get('menuID')):
-            choice.remove(i)
-            choice.insert(0, i)
+            weekly_menus_with_dates_choices.remove(i)
+            weekly_menus_with_dates_choices.insert(0, i)
 
-    formSelector.weeklyMenuWeekId.choices = choice
+    weekly_menus_with_dates_choices.sort(key=lambda tup: tup[1])
+    formSelector.weeklyMenuWeekId.choices = weekly_menus_with_dates_choices
     # id = formSelector.weeklyMenuWeekId
     # print(id.data)
 
     if request.method == 'POST':
-        print("1")
         if formSelector.weeklyMenuWeekId.data is not None:
-            print("2")
             session['menuID'] = formSelector.weeklyMenuWeekId.data
             formSelector.weeklyMenuWeekId.data = session['menuID']
-            print(formSelector.data)
 
             return redirect(request.referrer)
         # TODO: number passed in to method ikke hardkoda
