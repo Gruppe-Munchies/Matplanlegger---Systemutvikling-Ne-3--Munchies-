@@ -60,12 +60,8 @@ def ingredients_used_per_week():
 
     if 'weeknum' in request.args:
         menu = fetch_menu_id(year, weeknum, groupId)
-        for i in menu:
-            print(i)
         menuId = menu[0].weeklyMenu_id
         recipes = fetch_recipes_in_weekly_menu(menuId)
-        for i in recipes:
-            print(i)
 
         totalcost = 0
         for i in res:
