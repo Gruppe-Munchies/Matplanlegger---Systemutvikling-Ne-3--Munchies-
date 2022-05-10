@@ -31,7 +31,7 @@ def ingredients_used_per_week_total(groupId, year, weeknum):
                         func.sum(RecipeHasWeeklyMenu.expectedConsumption * RecipeHasIngredient.quantity).label("SumMengde"),
                         (UsergroupHasIngredient.price * func.sum(RecipeHasWeeklyMenu.expectedConsumption * RecipeHasIngredient.quantity)).label("SumBelop"),
                         func.sum('SumBelop').label("SumTotal"))\
-        .join(WeeklyMenu, WeeklyMenuDate.id_weekly_menu_date == WeeklyMenu.idWeeklyMenu)\
+        .join(WeeklyMenu, WeeklyMenuDate.weeklyMenu_id == WeeklyMenu.idWeeklyMenu)\
         .join(Usergroup, WeeklyMenu.userGroup_iduserGroup == Usergroup.iduserGroup)\
         .join(RecipeHasWeeklyMenu, RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu == WeeklyMenu.idWeeklyMenu)\
         .join(Recipe, Recipe.idRecipe == RecipeHasWeeklyMenu.recipe_idRecipe)\
@@ -65,7 +65,7 @@ def ingredients_used_per_week_per_dish(groupId, year, weeknum, recipeId):
                         RecipeHasIngredient.quantity.label("Mengde"),
                         (RecipeHasWeeklyMenu.expectedConsumption * RecipeHasIngredient.quantity).label("SumMengde"),
                         (UsergroupHasIngredient.price * func.sum(RecipeHasWeeklyMenu.expectedConsumption * RecipeHasIngredient.quantity)).label("SumBelop"))\
-        .join(WeeklyMenu, WeeklyMenuDate.id_weekly_menu_date == WeeklyMenu.idWeeklyMenu) \
+        .join(WeeklyMenu, WeeklyMenuDate.weeklyMenu_id == WeeklyMenu.idWeeklyMenu) \
         .join(Usergroup, WeeklyMenu.userGroup_iduserGroup == Usergroup.iduserGroup) \
         .join(RecipeHasWeeklyMenu, RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu == WeeklyMenu.idWeeklyMenu) \
         .join(Recipe, Recipe.idRecipe == RecipeHasWeeklyMenu.recipe_idRecipe) \

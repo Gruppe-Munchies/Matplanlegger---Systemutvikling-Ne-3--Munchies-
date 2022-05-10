@@ -10,19 +10,19 @@ def test():
     pd.set_option('display.max_columns', None)
     pd.set_option('display.expand_frame_repr', False)
 
-    res2 = pd.read_sql(ingredients_used_per_week_total(1,2022,16).statement, engine)
+    res2 = pd.read_sql(ingredients_used_per_week_total(3,2022,19).statement, engine)
     print(res2[['Ukemeny','Gruppe', 'Ingrediens', 'SumMengde', 'Enhet', 'SumBelop']])
 
     print("")
     print("")
 
-    res = pd.read_sql(ingredients_used_per_week_per_dish(1,2022,16,2).statement, engine)
+    res = pd.read_sql(ingredients_used_per_week_per_dish(3,2022,19,4).statement, engine)
     print(res[['Ukemeny','Gruppe', 'Oppskrift', 'Ingrediens', 'Mengde', 'Prognose', 'SumMengde', 'Enhet']])
 
     print("")
     print("")
 
-    res3 = pd.read_sql(fetch_weekly_menus_for_group(1).statement, engine)
+    res3 = pd.read_sql(fetch_weekly_menus_for_group(3).statement, engine)
     print(res3)
 
 if __name__ == '__main__':
