@@ -99,14 +99,17 @@ def fetch_ingrdients_where_recipe_id(recipe_id):
     return res
 
 
-def fetch_ingrdients_with_costs_where_recipe_id(recipe_id):
+if __name__ == '__main__':
+    print(fetch_ingrdients_where_recipe_id(6))
+
+def fetch_ingrdients_with_costs_where_recipe_id(recipe_id, usergroup_id):
     session = loadSession()
     res = session.query(RecipeHasIngredient.quantity, Ingredient.ingredientName, Ingredient.idingredient,
                         UsergroupHasIngredient.price, UsergroupHasIngredient.unit,
                         UsergroupHasIngredient.quantity).join(RecipeHasIngredient,
                                                               RecipeHasIngredient.ingredient_idingredient == Ingredient.idingredient).join(
         UsergroupHasIngredient, UsergroupHasIngredient.ingredient_idingredient == Ingredient.idingredient).filter(
-        RecipeHasIngredient.recipe_idRecipe == recipe_id).all()
+        RecipeHasIngredient.recipe_idRecipe == recipe_id, UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id).all()
     session.close()
     return res
 
@@ -138,12 +141,12 @@ def get_all_ingredients_and_quantities_in_weeklymenu(menu_id):
 
 
 # ikke en query, funksjon som bruker queries, kan sikkert flyttes til der den skal brukes
-def get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(menu_id):
+def get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(menu_id, usergroup_id):
     recipes = fetch_recipes_where_weeklymenu_id(menu_id)
     ingredientsList = []
     for recipe in recipes:
         resQuantity = recipe[1]
-        ingredients = fetch_ingrdients_with_costs_where_recipe_id(recipe[0])
+        ingredients = fetch_ingrdients_with_costs_where_recipe_id(recipe[0], usergroup_id)
 
         for ingredient in ingredients:
             exist = False

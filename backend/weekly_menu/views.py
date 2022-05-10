@@ -157,7 +157,7 @@ def handleliste():
 
             return redirect(request.referrer)
         # TODO: number passed in to method ikke hardkoda
-    allIngredientsFromWeekly = menu_queries.get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(session['menuID'])
+    allIngredientsFromWeekly = menu_queries.get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(session['menuID'], session['group_to_use'])
     totalsum = 0
     for ingredient in allIngredientsFromWeekly:
         totalsum += ingredient[4]
