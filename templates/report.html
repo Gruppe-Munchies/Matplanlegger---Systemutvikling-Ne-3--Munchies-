@@ -38,15 +38,15 @@
     {% for i in report %}
         <tr>
             <td>{{ i.Ingrediens }}</td>
-            <td>{{ i.SumMengde }}</td>
+            <td>{{ "kr {:,.2f}".format(i.SumMengde) }}</td>
             <td>{{ i.Enhet }}</td>
-            <td>{{ i.Pris }}</td>
-            <td>{{ i.SumBelop }}</td>
+            <td>{{ "kr {:,.2f}".format(i.Pris)}}</td>
+            <td>{{ "kr {:,.2f}".format(i.SumBelop) }}</td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
-<h5>Total kostnad: {{ totalcost }} </h5>
+<h5>Total kostnad: {{ "kr {:,.2f}".format(totalcost) }} </h5>
     {% else %}
     <h2>Velg en ukemeny for å se rapporter</h2>
     {% endif %}
