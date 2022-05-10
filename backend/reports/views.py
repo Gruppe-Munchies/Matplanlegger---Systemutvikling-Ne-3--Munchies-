@@ -50,15 +50,15 @@ def ingredients_used_per_week():
     # If recipe specification
     if 'recipe' in request.args:
         recipeId = request.args["recipe"]
-        res = ingredients_used_per_week_per_dish(menuId, recipeId)
+        res = ingredients_used_per_week_per_dish(menuId, recipeId, groupId)
         perRecipe = True
 
     # Else if menu selected
     elif 'menu' in request.args:
-        res = ingredients_used_per_week_total(menuId)
+        res = ingredients_used_per_week_total(menuId, groupId)
 
     else:
-        res = ingredients_used_per_week_total(0)
+        res = ingredients_used_per_week_total(0, groupId)
 
     if 'weeknum' in request.args:
         recipes = fetch_recipes_in_weekly_menu(menuId)

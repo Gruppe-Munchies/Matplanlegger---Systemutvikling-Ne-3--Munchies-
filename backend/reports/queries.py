@@ -11,7 +11,7 @@ from sqlalchemy import *
 
 
 # Ingredients used per week
-def ingredients_used_per_week_total(menuId):
+def ingredients_used_per_week_total(menuId, groupId):
     session = loadSession()
 
     res = session.query(WeeklyMenuDate.id_weekly_menu_date,
@@ -38,7 +38,7 @@ def ingredients_used_per_week_total(menuId):
         .join(RecipeHasIngredient, RecipeHasIngredient.recipe_idRecipe == Recipe.idRecipe)\
         .join(Ingredient, Ingredient.idingredient == RecipeHasIngredient.ingredient_idingredient)\
         .join(UsergroupHasIngredient, UsergroupHasIngredient.ingredient_idingredient == Ingredient.idingredient)\
-        .where(WeeklyMenuDate.weeklyMenu_id == menuId)\
+        .where(WeeklyMenuDate.weeklyMenu_id == menuId, UsergroupHasIngredient.userGroup_iduserGroup == groupId)\
         .group_by(Usergroup.iduserGroup, Ingredient.idingredient)
 
     session.close()
@@ -78,7 +78,7 @@ def ingredients_used_per_week_total_BACKUP(groupId, year, weeknum):
     session.close()
     return res
 
-def ingredients_used_per_week_per_dish(menuId, recipeId):
+def ingredients_used_per_week_per_dish(menuId, recipeId, groupId):
     session = loadSession()
 
     res = session.query(WeeklyMenuDate.id_weekly_menu_date,
@@ -105,7 +105,7 @@ def ingredients_used_per_week_per_dish(menuId, recipeId):
         .join(RecipeHasIngredient, RecipeHasIngredient.recipe_idRecipe == Recipe.idRecipe) \
         .join(Ingredient, Ingredient.idingredient == RecipeHasIngredient.ingredient_idingredient) \
         .join(UsergroupHasIngredient, UsergroupHasIngredient.ingredient_idingredient == Ingredient.idingredient) \
-        .where(WeeklyMenuDate.weeklyMenu_id == menuId, Recipe.idRecipe == recipeId ) \
+        .where(WeeklyMenuDate.weeklyMenu_id == menuId, Recipe.idRecipe == recipeId, UsergroupHasIngredient.userGroup_iduserGroup == groupId) \
         .group_by(Usergroup.iduserGroup, Ingredient.idingredient)
 
     session.close()
