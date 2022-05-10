@@ -34,9 +34,12 @@ if __name__ == '__main__':
 def ingredients_used_per_week():
 
     groupId = session.get('group_to_use')
+    menuId = session.get('menuId')
 
-    weeknum = 0
-    year = 0
+    if 'menu' in request.args:
+        session['menuId'] = request.args["menu"]
+        menuId = session.get('menuId')
+
     recipes = []
     perRecipe = False
 
@@ -44,27 +47,20 @@ def ingredients_used_per_week():
 
     # If recipe specification
     if 'recipe' in request.args:
-        weeknum = request.args["weeknum"]
-        year = request.args["year"]
-        recipe = request.args["recipe"]
-        res = ingredients_used_per_week_per_dish(groupId, year, weeknum, recipe)
+        recipeId = request.args["recipe"]
+        res = ingredients_used_per_week_per_dish(menuId, recipeId)
         perRecipe = True
 
     # Else if menu selected
-    elif 'weeknum' in request.args:
-        weeknum = request.args["weeknum"]
-        year = request.args["year"]
-        res = ingredients_used_per_week_total(groupId, year, weeknum)
+    elif 'menu' in request.args:
+        res = ingredients_used_per_week_total(menuId)
 
     else:
-        res = ingredients_used_per_week_total(groupId, year, weeknum)
+        res = ingredients_used_per_week_total(0)
         totalcost = 0
 
     if 'weeknum' in request.args:
-        menu = fetch_menu_id(year, weeknum, groupId)
-        menuId = menu[0].weeklyMenu_id
         recipes = fetch_recipes_in_weekly_menu(menuId)
-
         totalcost = 0
         for i in res:
            totalcost += res[0].SumBelop
