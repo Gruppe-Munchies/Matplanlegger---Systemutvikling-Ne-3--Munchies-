@@ -7,6 +7,7 @@
 <h4>Forbruk per ingrediens</h4>
 <br>
 <h6>Ukemenyer:</h6>
+{% if menus %}
 {% for menu in menus %}
     <span class="badge badge-secondary"><a href="{{ url_for('reports.ingredients_used_per_week', weeknum=menu[1].weekNumber, year=menu[1].year) }}">{{ menu[1].weekNumber }} - {{ menu[0].name }}</a></span>
 {% endfor %}
@@ -50,4 +51,7 @@
     {% else %}
     <h2>Velg en ukemeny for å se rapporter</h2>
     {% endif %}
+{% else %}
+    <h2>Du har ingen ukesmenyer</h2>
+{% endif %}
 {% endblock %}
