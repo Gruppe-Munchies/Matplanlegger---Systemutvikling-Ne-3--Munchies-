@@ -4,8 +4,13 @@
 {% block description %}{{rec.shortDescription}} {% endblock %}
 {% block content %}
 
+<h2>Kort beskrivelse: </h2>
+<h4>{{rec.shortDescription}}</h4>
 
-
+<h2>Framgangsmåte: </h2>
+<h4>{{rec.description}}</h4>
+<br>
+<h2>Ingredienser: </h2>
         <form method="post" class="row">
             <div class="table-responsive">
                 <table class="table">
@@ -72,7 +77,7 @@
         </form>
         <div class="container">
 
-            <button class="btn btn-dark float-right" type="button">Legg til i ukesmeny</button>
+
             <button class="btn btn-dark float-right" type="button" data-bs-toggle="modal" data-bs-target="#addIngredient">Legg til ingrediens</button>
         </div>
 
