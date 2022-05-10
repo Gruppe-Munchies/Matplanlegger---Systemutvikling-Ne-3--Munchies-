@@ -82,7 +82,7 @@ def fetch_weekly_menus_for_group(groupId):
     session = loadSession()
 
     res = session.query(WeeklyMenu, WeeklyMenuDate, Usergroup)\
-        .join(WeeklyMenu, WeeklyMenuDate.weeklyMenu_id == WeeklyMenu.idWeeklyMenu)\
+        .join(WeeklyMenuDate, WeeklyMenuDate.weeklyMenu_id == WeeklyMenu.idWeeklyMenu)\
         .join(Usergroup, Usergroup.iduserGroup == WeeklyMenu.userGroup_iduserGroup)\
         .where(WeeklyMenu.userGroup_iduserGroup == groupId)
 
