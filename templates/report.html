@@ -38,7 +38,7 @@
     {% for i in report %}
         <tr>
             <td>{{ i.Ingrediens }}</td>
-            <td>{{ "kr {:,.2f}".format(i.SumMengde) }}</td>
+            <td>{{ "{:,.2f}".format(i.SumMengde) }}</td>
             <td>{{ i.Enhet }}</td>
             <td>{{ "kr {:,.2f}".format(i.Pris)}}</td>
             <td>{{ "kr {:,.2f}".format(i.SumBelop) }}</td>
