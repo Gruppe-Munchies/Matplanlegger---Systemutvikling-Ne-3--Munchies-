@@ -6,6 +6,7 @@ import backend.main.views as mainpage
 import backend.auth.views as auth
 import backend.recipes.views as recipes
 import backend.ingredients.views as ingredients
+import backend.reports.views as reports
 import backend.weekly_menu.views as weekly_menu
 #from backend import weekly_menu
 
@@ -20,6 +21,7 @@ app.register_blueprint(auth.auth)
 app.register_blueprint(recipes.recipes)
 app.register_blueprint(ingredients.ingredient)
 app.register_blueprint(weekly_menu.weeklyMenu)
+app.register_blueprint(reports.reports)
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{username}:{password}@localhost/{DB_NAME}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # stops warning
 app.config['SECRET_KEY'] = "secretkey"
