@@ -258,7 +258,6 @@ def response():
 def profil():
     groups = fetchAllUserGroupsUserHasAndType(current_user.id)
 
-    # TODO:Bør flyttes til nav
 
     # Fetch pending invitations
     invitations = fetchPendingInvitations(current_user.id)
