@@ -145,7 +145,7 @@ def handleliste():
             weekly_menus_with_dates_choices.remove(i)
             weekly_menus_with_dates_choices.insert(0, i)
 
-    weekly_menus_with_dates_choices.sort(key=lambda tup: tup[1])
+    #weekly_menus_with_dates_choices.sort(key=lambda tup: tup[1])
     formSelector.weeklyMenuWeekId.choices = weekly_menus_with_dates_choices
     # id = formSelector.weeklyMenuWeekId
     # print(id.data)
