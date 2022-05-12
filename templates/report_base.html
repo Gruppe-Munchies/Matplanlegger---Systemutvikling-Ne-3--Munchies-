@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Rapporter{% endblock %}
+{% block heading %}Dine rapporter{% endblock %}
+{% block content %}
+
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<h4>Rapporter:</h4>
+<h4><span class="badge badge-light"><a href="{{ url_for('reports.ingredients_used_per_week')}}">Mest brukte ingredienser</a></span>
+<span class="badge badge-light"><a href="{{ url_for('reports.most_used_dishes')}}">Mest brukte oppskrifter</a></span></h4>
+
+{% block report %}
+{% endblock %}
+{% endblock %}
