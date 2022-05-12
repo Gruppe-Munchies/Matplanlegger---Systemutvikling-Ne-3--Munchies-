@@ -40,7 +40,6 @@ def ukesmeny():
                 choice.remove(i)
                 choice.insert(0, i)
 
-
         formSelector.weeklyIdName.choices = choice
 
         if request.method == 'POST':
@@ -86,6 +85,7 @@ def ukesmeny():
                                dishes=dishes, form=form, formSelect=formSelector, menuID=flask.session.get('menuID'))
     else:
         return redirect('/legg_til_ukesmeny')
+
 
 @weeklyMenu.route('/legg_til_ukesmeny', methods=['POST', 'GET'])
 def legg_til_ukesmeny():
@@ -157,7 +157,8 @@ def handleliste():
 
             return redirect(request.referrer)
         # TODO: number passed in to method ikke hardkoda
-    allIngredientsFromWeekly = menu_queries.get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(session['menuID'])
+    allIngredientsFromWeekly = menu_queries.get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(
+        session['menuID'], session['group_to_use'])
     totalsum = 0
     for ingredient in allIngredientsFromWeekly:
         totalsum += ingredient[4]
