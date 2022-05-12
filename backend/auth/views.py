@@ -55,7 +55,6 @@ def logout():
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm(request.form)
-    # TODO fjern utkommenterte saker og ubrukte variabler.
     user_group = fetchAllUserGroups()
     all_users = fetchAllUsers()
     usergroup = userGroup()
@@ -97,7 +96,7 @@ def register():
                 auth_queries.insert_to_user_has_userGroup(int(userId), int(userGroupId), int(userTypeId), 2)
                 flash('Registreringen var vellykket!', "success")
 
-                return render_template('index.html')
+                return redirect(url_for('index'))
             else:
                 flash("Gruppenavnet eksisterer allerede!", "danger")
         else:
