@@ -11,13 +11,13 @@ def test():
     pd.set_option('display.max_columns', None)
     pd.set_option('display.expand_frame_repr', False)
 
-    res2 = pd.read_sql(ingredients_used_per_week_total(3, 2022, 19).statement, engine)
+    res2 = pd.read_sql(ingredients_used_per_week_total(1,1).statement, engine)
     print(res2[['Ukemeny', 'Gruppe', 'Ingrediens', 'SumMengde', 'Enhet', 'SumBelop']])
 
     print("")
     print("")
 
-    res = pd.read_sql(ingredients_used_per_week_per_dish(3, 2022, 19, 4).statement, engine)
+    res = pd.read_sql(ingredients_used_per_week_per_dish(1,1,1).statement, engine)
     print(res[['Ukemeny', 'Gruppe', 'Oppskrift', 'Ingrediens', 'Mengde', 'Prognose', 'SumMengde', 'Enhet']])
 
     print("")
@@ -26,12 +26,32 @@ def test():
     res3 = pd.read_sql(fetch_weekly_menus_for_group(3).statement, engine)
     print(res3)
 
+    print("### MOST USED DISHES ###")
+    res4 = pd.read_sql(recipes_most_used(1).statement, engine)
+    print(res4[['name', 'SumRetter']])
+
 
 if __name__ == '__main__':
     test()
 
+@reports.route('/rapporter')
+@login_required
+def reports_base():
 
-@reports.route('/rapporter', methods=['GET', 'POST'])
+    return render_template('report_base.html')
+
+
+@reports.route('/rapporter/oppskrifter')
+@login_required
+def most_used_dishes():
+    groupId = session.get('group_to_use')
+
+    recipes = recipes_most_used(groupId)
+
+    return render_template('report_recipes.html', recipes=recipes)
+
+
+@reports.route('/rapporter/ingredienser', methods=['GET', 'POST'])
 @login_required
 def ingredients_used_per_week():
     groupId = session.get('group_to_use')
@@ -65,5 +85,5 @@ def ingredients_used_per_week():
         for i in res:
             totalcost += i.SumBelop
 
-    return render_template('report.html', report=res, menus=menus, recipes=recipes, totalcost=totalcost,
+    return render_template('report_ingredients.html', report=res, menus=menus, recipes=recipes, totalcost=totalcost,
                            perRecipe=perRecipe)

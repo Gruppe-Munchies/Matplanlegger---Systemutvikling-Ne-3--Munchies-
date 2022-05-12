@@ -1,23 +1,21 @@
-{% extends 'index.html' %}
-{% block title %}Rapporter{% endblock %}
-{% block heading %}Dine rapporter{% endblock %}
-{% block content %}
+{% extends 'report_base.html' %}
+{% block report %}
 <table class="table table-striped table-hover">
 {% if menus[0] %}
-<h4>Forbruk per ingrediens</h4>
 <br>
 <h6>Ukemenyer:</h6>
+<h5>
 {% for menu in menus %}
-    <span class="badge badge-secondary"><a href="{{ url_for('reports.ingredients_used_per_week', weeknum=menu[1].weekNumber, year=menu[1].year , menu=menu[0].idWeeklyMenu) }}">{{ menu[1].weekNumber }} - {{ menu[0].name }}</a></span>
+    <span class="badge badge-light"><a href="{{ url_for('reports.ingredients_used_per_week', weeknum=menu[1].weekNumber, year=menu[1].year , menu=menu[0].idWeeklyMenu) }}">{{ menu[1].weekNumber }} - {{ menu[0].name }}</a></span>
 {% endfor %}
-<br>
-<br>
+</h5>
 {% if report[0] %}
 <h6>Ukens oppskrifter:</h6>
+<h5>
 {% for recipe in recipes %}
-    <span class="badge badge-secondary"><a href="{{ url_for('reports.ingredients_used_per_week', weeknum=recipe[2].weekNumber, year=recipe[2].year, recipe=recipe[0].idRecipe) }}">{{ recipe[0].name }}</a></span>
+    <span class="badge badge-light"><a href="{{ url_for('reports.ingredients_used_per_week', weeknum=recipe[2].weekNumber, year=recipe[2].year, recipe=recipe[0].idRecipe) }}">{{ recipe[0].name }}</a></span>
 {% endfor %}
-<br>
+</h5>
 <br>
 <h3>{{ report[1].Ukemeny }} :
     {% if perRecipe %}
@@ -48,6 +46,8 @@
 </table>
 <h5>Total kostnad: {{ "kr {:,.2f}".format(totalcost) }} </h5>
     {% else %}
+    <br>
+    <br>
     <h2>Velg en ukemeny for å se rapporter</h2>
     {% endif %}
 {% else %}

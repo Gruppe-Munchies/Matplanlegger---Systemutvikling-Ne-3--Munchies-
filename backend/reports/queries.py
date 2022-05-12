@@ -9,6 +9,22 @@ from sqlalchemy import *
         # Ingredients used, totalt and per dish
         # Costs, total and per dish
 
+def recipes_most_used(groupId):
+    session = loadSession()
+
+    res = session.query(Recipe.name.label("RecipeName"),
+                        RecipeHasWeeklyMenu,
+                        WeeklyMenu,
+                        func.sum(RecipeHasWeeklyMenu.expectedConsumption).label("SumRetter"),
+                        func.count(WeeklyMenu.idWeeklyMenu).label("SumMenyer"))\
+        .join(RecipeHasWeeklyMenu, RecipeHasWeeklyMenu.recipe_idRecipe == Recipe.idRecipe)\
+        .join(WeeklyMenu, WeeklyMenu.idWeeklyMenu == RecipeHasWeeklyMenu.weeklyMenu_idWeeklyMenu)\
+        .where(Recipe.userGroup_iduserGroup == groupId)\
+        .group_by(Recipe.idRecipe)\
+        .order_by(desc("SumRetter"))
+
+    session.close()
+    return res
 
 # Ingredients used per week
 def ingredients_used_per_week_total(menuId, groupId):
