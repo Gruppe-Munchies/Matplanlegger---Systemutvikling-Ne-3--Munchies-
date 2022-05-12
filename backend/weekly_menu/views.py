@@ -40,7 +40,6 @@ def ukesmeny():
                 choice.remove(i)
                 choice.insert(0, i)
 
-
         formSelector.weeklyIdName.choices = choice
 
         if request.method == 'POST':
@@ -86,6 +85,7 @@ def ukesmeny():
                                dishes=dishes, form=form, formSelect=formSelector, menuID=flask.session.get('menuID'))
     else:
         return redirect('/legg_til_ukesmeny')
+
 
 @weeklyMenu.route('/legg_til_ukesmeny', methods=['POST', 'GET'])
 def legg_til_ukesmeny():
@@ -145,7 +145,7 @@ def handleliste():
             weekly_menus_with_dates_choices.remove(i)
             weekly_menus_with_dates_choices.insert(0, i)
 
-    weekly_menus_with_dates_choices.sort(key=lambda tup: tup[1])
+    #weekly_menus_with_dates_choices.sort(key=lambda tup: tup[1])
     formSelector.weeklyMenuWeekId.choices = weekly_menus_with_dates_choices
     # id = formSelector.weeklyMenuWeekId
     # print(id.data)
@@ -156,12 +156,18 @@ def handleliste():
             formSelector.weeklyMenuWeekId.data = session['menuID']
 
             return redirect(request.referrer)
-        # TODO: number passed in to method ikke hardkoda
-    allIngredientsFromWeekly = menu_queries.get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(session['menuID'])
+
+    allIngredientsFromWeekly = menu_queries.get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(session['menuID'], session['group_to_use'])
     totalsum = 0
+    if allIngredientsFromWeekly == []:
+        weekly_menu_name = "Det er ingen ukesmeny her fordi ingen er registrert på uke."
+    else:
+        weekly_menu_name = menu_queries.fetch_menu_name_where_menu_id(session['menuID'])
+
     for ingredient in allIngredientsFromWeekly:
         totalsum += ingredient[4]
-    weekly_menu_name = "***"
+
+
 
     return render_template('handleliste.html', weekly_menu_name=weekly_menu_name, form=form, totalsum=totalsum,
                            ingredients=allIngredientsFromWeekly, formSelect=formSelector)
