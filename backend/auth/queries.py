@@ -15,6 +15,7 @@ def fetchUser(user_name):
     res = session.query(User).where(User.username == user_name).first()
     return res
 
+
 def fetchPendingInvitations(userid):
     session = loadSession()
     res = session.query(Usergroup, UserHasUsergroup, Usertype).join(
@@ -23,12 +24,14 @@ def fetchPendingInvitations(userid):
         UserHasUsergroup.user_userId == userid, UserHasUsergroup.memberStatus_idStatus == 1).all()
     return res
 
+
 def invitationResponse(userid, usergroupid, response):
     session = loadSession()
     session.query(UserHasUsergroup).where(UserHasUsergroup.user_userId == userid,
                                           UserHasUsergroup.userGroup_iduserGroup == usergroupid).update(
         {UserHasUsergroup.memberStatus_idStatus: response})
     session.commit()
+
 
 def fetchUserTypeByUserIdAndGroupId(user_id, user_group):
     session = loadSession()
@@ -68,18 +71,6 @@ def insert_to_user(name, email, firstname, lastname, password):
     session.commit()
 
 
-# fetch_usergroups_associated_with_user(user_id) - to be used in ingredients
-# fetch_role_in_usergroup(user_id, usergroup) - to see which role the user has in a certain group.
-
-# fetch_firstname_user(user_id) - or should we use username? user_id is primary key. This is for showing who's logged in.
-# fetch_lasttname_user(user_id)
-# compare hashed password  (login)
-
-# optional: change email, firstname, lastname, password. - one function, or many? Have to be reviewed
-# this could be a form for the user to administrate own settings.
-# when updated, use session.commit( values..?)
-
-
 #############
 # Usergroup #
 #############
@@ -106,20 +97,22 @@ def fetchAllUserGroupsUserHas(user_id):
     session = loadSession()
     res = session.query(Usergroup).join(UserHasUsergroup,
                                         Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(User,
-                                        User.id == UserHasUsergroup.user_userId).join(
-                                        Usertype,
-                                        Usertype.iduserType == UserHasUsergroup.userType_iduserType).filter(
-                                        User.id == user_id).filter(UserHasUsergroup.memberStatus_idStatus == 2).all()
+                                                                                                              User.id == UserHasUsergroup.user_userId).join(
+        Usertype,
+        Usertype.iduserType == UserHasUsergroup.userType_iduserType).filter(
+        User.id == user_id).filter(UserHasUsergroup.memberStatus_idStatus == 2).all()
     return res
+
 
 def fetchAllUserGroupsUserHasAndType(user_id):
     session = loadSession()
     res = session.query(Usergroup.groupName, Usertype.userTypeName).join(UserHasUsergroup,
-                                        Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(User,
-                                        User.id == UserHasUsergroup.user_userId).join(
-                                        Usertype,
-                                        Usertype.iduserType == UserHasUsergroup.userType_iduserType).filter(
-                                        User.id == user_id).filter(UserHasUsergroup.memberStatus_idStatus == 2).all()
+                                                                         Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(
+        User,
+        User.id == UserHasUsergroup.user_userId).join(
+        Usertype,
+        Usertype.iduserType == UserHasUsergroup.userType_iduserType).filter(
+        User.id == user_id).filter(UserHasUsergroup.memberStatus_idStatus == 2).all()
     return res
 
 
@@ -133,17 +126,10 @@ def fetchUserGroup(group_name):
 def fetchUserGroupById(group_id):
     session = loadSession()
     res = session.query(Usergroup).where(Usergroup.iduserGroup == group_id).first()
-    # res = session.query(Usergroup).filter_by(groupName=group_name).values(text("iduserGroup"))
     return res
 
 
-def fetchGroupsWhereUserHaveAdmin(username):
-    # TODO: Query for fetching groups where user have Admin-type
-    pass
-
-
 def fetchUsersInUsergroup(group_name):
-    # TODO: Query for fetching all users belonging to a group
     session = loadSession()
     res = session.query(Usergroup, User, Usertype).join(UserHasUsergroup,
                                                         Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(
@@ -155,14 +141,15 @@ def fetchUsersInUsergroup(group_name):
 
 
 def fetchUsersInUsergroupById(group_id):
-    # TODO: Query for fetching all users belonging to a group
     session = loadSession()
     res = session.query(Usergroup, User, Usertype, MemberStatus).join(UserHasUsergroup,
-                                                        Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(User,
-                                                        User.id == UserHasUsergroup.user_userId).join(Usertype,
-                                                        Usertype.iduserType == UserHasUsergroup.userType_iduserType).join(MemberStatus,
-                                                        MemberStatus.idStatus == UserHasUsergroup.memberStatus_idStatus).filter(
-                                                        Usergroup.iduserGroup == group_id).all()
+                                                                      Usergroup.iduserGroup == UserHasUsergroup.userGroup_iduserGroup).join(
+        User,
+        User.id == UserHasUsergroup.user_userId).join(Usertype,
+                                                      Usertype.iduserType == UserHasUsergroup.userType_iduserType).join(
+        MemberStatus,
+        MemberStatus.idStatus == UserHasUsergroup.memberStatus_idStatus).filter(
+        Usergroup.iduserGroup == group_id).all()
     return res
 
 
@@ -193,6 +180,7 @@ def fetch_all_usergroups_for_user(userId):
         UserHasUsergroup.user_userId == userId).all()
     return usergroups
 
+
 def fetch_first_usergroups_for_user(userId):
     session = loadSession()
     usergroups = session.query(Usergroup).join(UserHasUsergroup,
@@ -200,20 +188,13 @@ def fetch_first_usergroups_for_user(userId):
         UserHasUsergroup.user_userId == userId, UserHasUsergroup.memberStatus_idStatus == 2).first()
     return usergroups
 
+
 def fetch_user_in_usergroup(userid, groupid):
     session = loadSession()
-    res = session.query(UserHasUsergroup).where(UserHasUsergroup.user_userId == userid, UserHasUsergroup.userGroup_iduserGroup == groupid).first()
+    res = session.query(UserHasUsergroup).where(UserHasUsergroup.user_userId == userid,
+                                                UserHasUsergroup.userGroup_iduserGroup == groupid).first()
 
     return res
-
-
-# # Add to usergroup_has_ingredient
-# def insert_to_usergroup_has_ingredient(userGroup, ingredient, price, unit):
-#     session = loadSession()
-#     new_userGroupIngredient = UsergroupHasIngredient(userGroup_iduserGroup=userGroup,
-#                                                      ingredient_idingredient=ingredient, price=price, unit=unit)
-#     session.add(new_userGroupIngredient)
-#     session.commit()
 
 
 ############

@@ -1,13 +1,8 @@
-from local_db.session import loadSession
-
-from local_db.orm import User, Ingredient, Recipe, RecipeHasIngredient, RecipeHasWeeklyMenu, RecipeAvailability, \
-    Usertype, Usergroup, UsergroupHasIngredient, WeeklyMenu, Base, UserHasUsergroup, WeeklyMenuDate
 from sqlalchemy import *
 
-# Queries needed:
-    # Per week
-        # Ingredients used, totalt and per dish
-        # Costs, total and per dish
+from local_db.orm import Ingredient, Recipe, RecipeHasIngredient, RecipeHasWeeklyMenu, Usergroup, \
+    UsergroupHasIngredient, WeeklyMenu, WeeklyMenuDate
+from local_db.session import loadSession
 
 def recipes_most_used(groupId):
     session = loadSession()

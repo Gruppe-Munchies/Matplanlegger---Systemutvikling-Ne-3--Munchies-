@@ -7,8 +7,6 @@ import backend.auth.views as auth
 import backend.recipes.views as recipes
 import backend.ingredients.views as ingredients
 import backend.reports.views as reports
-import backend.weekly_menu.views as weekly_menu
-#from backend import weekly_menu
 
 import backend.weekly_menu.views
 from backend import weekly_menu
@@ -28,7 +26,6 @@ app.config['SECRET_KEY'] = "secretkey"
 app.config['WTF_CSRF_SECRET_KEY'] = "secretkey"
 
 
-
 @app.route('/')
 def index():
     session['group_to_use'] = 0
@@ -41,7 +38,6 @@ def ingredienser():
     return render_template('ingredienser.html')
 
 
-
 @app.route('/ukesmeny')
 def ukesmeny():
     return render_template('ukesmeny.html')
@@ -51,14 +47,15 @@ def ukesmeny():
 def userAdministration():
     return render_template('user-administration.html')
 
+
 @app.route('/leggtilmeny')
 def nyUkesmeny():
     return render_template('newWeeklyMenu.html')
 
 
-
 login_manager = LoginManager(app)
 login_manager.init_app(app)
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -67,5 +64,4 @@ def load_user(user_id):
 
 
 if __name__ == '__main__':
-
     app.run()

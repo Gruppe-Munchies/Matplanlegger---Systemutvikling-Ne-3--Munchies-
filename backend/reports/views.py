@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, session, request, redirect, url_for
-from backend.reports.queries import *
 import pandas as pd
-from flask_alchemy_db_creation.local_db_create import engine
+from flask import Blueprint, render_template, session, request
 from flask_login import login_required
+
+from backend.reports.queries import *
+from flask_alchemy_db_creation.local_db_create import engine
 
 reports = Blueprint('reports', __name__, template_folder='templates')
 

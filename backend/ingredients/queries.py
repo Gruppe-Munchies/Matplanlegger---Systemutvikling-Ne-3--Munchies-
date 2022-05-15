@@ -1,13 +1,8 @@
-from sqlalchemy.orm import Query
 from sqlalchemy import and_
 
+from local_db.orm import Ingredient, RecipeHasIngredient, UsergroupHasIngredient
 from local_db.session import loadSession
 
-from local_db.orm import User, Ingredient, Recipe, RecipeHasIngredient, RecipeHasWeeklyMenu, RecipeAvailability, \
-    Usertype, Usergroup, UsergroupHasIngredient, WeeklyMenu, Base, UserHasUsergroup
-
-# TODO: fetch_ingredient_in_current_weekly_menu # Postponed unitil menu_queries menu done
-# TODO: Queries for report # Will be addressed in separate issue regarding reports
 
 #####################################################
 # OBS RETURTYPER ER AV OBJEKT QUERY                 #
@@ -66,11 +61,6 @@ def fetch_all_ingredients_where_usergroup_equals(usergroup_id):
         UsergroupHasIngredient.userGroup_iduserGroup == usergroup_id)).all()
     session.close()
     return res
-
-    # if __name__ == '__main__':
-    #     ingredienser = fetch_all_ingredients_where_usergroup_equals(1)
-    #     for ap in ingredienser:
-    #         print(f"{ap[0].ingredientName} {round(ap[1].quantity, 2)} {ap[1].unit} {round(ap[1].price, 2)}")
 
 
 def fetch_ingredients_where_usergroup_and_unit_equals(usergroup_id: int, unit: str):
@@ -143,7 +133,6 @@ def fetch_ingredients_where_group_id_equals_and_quantity_greater_than(usergroup_
     return res
 
 
-# TODO: IKKE OK  NOEN SOM KAN REGEX? :(((((
 def fetch_ingredients_where_name_contains_and_group_equals(usergroup_id: int, name: str, ):
     session = loadSession()
     res = session.query(Ingredient).join(UsergroupHasIngredient,

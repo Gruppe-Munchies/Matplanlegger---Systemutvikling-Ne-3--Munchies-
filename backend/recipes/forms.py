@@ -1,11 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, SelectField, IntegerField, FloatField, HiddenField
+from wtforms import StringField, SubmitField, TextAreaField, HiddenField
 from wtforms.validators import DataRequired
 
 class RegisterRecipeForm(FlaskForm):
-    # dishId = StringField(
-    #     label=('ID'),
-    #     validators=[DataRequired()])
 
     dish = StringField(
         label=('Navn på rett'),

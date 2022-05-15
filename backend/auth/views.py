@@ -55,11 +55,7 @@ def logout():
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm(request.form)
-    user_group = fetchAllUserGroups()
     all_users = fetchAllUsers()
-    usergroup = userGroup()
-
-    # adminCheck = fetchUserTypeByUserIdAndGroupId(6, 1) # Relatert til issue NR:139
 
     if request.method == 'POST' and form.validate():
         username = form.username.data
@@ -152,13 +148,11 @@ def groupadmin():
     createUGForm = createUserGroupForm(request.form)
     deleteForm = RemoveUserFromGroup(request.form)
 
-    # TODO: get usergroup the user's currently in(in session)
     users_in_group = fetchUsersInUsergroupById(
         session.get(
             'group_to_use'))  # Fetch users in group
 
     # sjekker om brukeren, i den gitte brukergruppa, har adminrettigheter.
-    # print("brukergruppe: "+session.get('group_to_use'))
     usertype = fetchUserTypeByUserIdAndGroupId(current_user.id,
                                                session.get('group_to_use'))
     userIsAdmin = False  # satte inn
@@ -166,7 +160,7 @@ def groupadmin():
         userIsAdmin = True
 
     usertypes = fetchAllUserTypes()
-    owner = "Username for gruppeeier"  # TODO: Get username for logged in user
+    owner = "Username for gruppeeier"
 
     groups_with_admin = fetchGroupsWhereUserHaveAdmin(owner)
 
@@ -187,7 +181,6 @@ def removeUserFromGroup():
     userId = deleteForm.username.data
     groupId = deleteForm.userGroupName.data
 
-    # TODO: Handle error when deleting oneself or have a setup where a user can't delete remove themself from the group on the group admin page.
     if userId != current_user.id:
         auth_queries.remove_row_from_UserHasUsergroup(int(userId), int(groupId))
     else:
@@ -257,8 +250,6 @@ def response():
 def profil():
     groups = fetchAllUserGroupsUserHasAndType(current_user.id)
 
-    # TODO:Bør flyttes til nav
-
     # Fetch pending invitations
     invitations = fetchPendingInvitations(current_user.id)
 
@@ -277,7 +268,7 @@ def profil():
         session['group_to_use'] = selectFieldGroup
         session['groupname_to_use'] = fetchUserGroupById(selectFieldGroup).groupName
         return redirect(request.referrer)
-    #########   Slutt valg av group    #############
+
     form.idOgNavn.data = session.get('group_to_use', 0)  # setter standard til den aktive
 
     return render_template('profilepage.html', form=form, groups=groups, invitations=invitations)

@@ -16,35 +16,12 @@ def insert_to_weeklymenu(name, description, usergroup):
     session.close()
 
 
-# def insert_to_recipe_has_weeklymenu(menu_id, recipe_id, quantity):
-#     session = loadSession()
-#     new_weekly_menu_recipe = RecipeHasWeeklyMenu(weeklyMenu_idWeeklyMenu=menu_id, recipe_idRecipe=recipe_id,
-#                                                  expectedConsumption=quantity)
-#     session.add(new_weekly_menu_recipe)
-#     session.commit()
-#     session.close()
-
-
 def insert_to_weekly_menu_date(menu_id, year, week):
     session = loadSession()
     new_week_for_weeklyMenu = WeeklyMenuDate(weeklyMenu_id=menu_id, year=year, weekNumber=week)
     session.add(new_week_for_weeklyMenu)
     session.commit()
     session.close()
-
-
-def fetch_all_weeklymenu_where_groupId(group_id):
-    session = loadSession()
-    res = session.query(WeeklyMenu).where(WeeklyMenu.userGroup_iduserGroup == group_id).all()
-    session.close()
-    return
-
-
-def fetch_recipes_where_usergroupid(usergroupId):
-    session = loadSession()
-    res = session.query(Recipe).where(Recipe.userGroup_iduserGroup == usergroupId).all()
-    session.close()
-    return res
 
 
 def insert_to_recipe_has_weeklymenu(menu_id, recipe_id, quantity):
@@ -54,14 +31,6 @@ def insert_to_recipe_has_weeklymenu(menu_id, recipe_id, quantity):
     session.add(new_weekly_menu_recipe)
     session.commit()
     session.close()
-
-
-def fetch_weeklymenu_where_name_and_usergroupid(usergroup_id, menu_name):
-    session = loadSession()
-    res = session.query(WeeklyMenu).filter(
-        and_(WeeklyMenu.userGroup_iduserGroup == usergroup_id, WeeklyMenu.name == menu_name)).all()
-    session.close()
-    return res
 
 
 def fetch_menu_name_where_menu_id(menu_id):
@@ -112,7 +81,6 @@ def fetch_ingrdients_with_costs_where_recipe_id(recipe_id, usergroup_id):
     return res
 
 
-# ikke en query, funksjon som bruker queries, kan sikkert flyttes til der den skal brukes
 def get_all_ingredients_and_quantities_in_weeklymenu(menu_id):
     session = loadSession()
     recipes = fetch_recipes_where_weeklymenu_id(menu_id)
@@ -133,12 +101,10 @@ def get_all_ingredients_and_quantities_in_weeklymenu(menu_id):
                 ingredientsList[index][2] += ingredient[0] * resQuantity
             else:
                 ingredientsList.append([ingredient[2], ingredient[1], ingredient[0] * resQuantity])
-    # index: 0-ingredientID, 1-ingredientName, 2-Quantity of ingredient in weekly menu
     session.close()
     return ingredientsList
 
 
-# ikke en query, funksjon som bruker queries, kan sikkert flyttes til der den skal brukes
 def get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(menu_id, usergroup_id):
     recipes = fetch_recipes_where_weeklymenu_id(menu_id)
     ingredientsList = []
@@ -171,7 +137,6 @@ def get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(menu_id, 
                     cost = quantity * ingredient[3]
                     ingredientsList.append([id, name, double(quantity), unit, double(cost), price])
 
-    # index: 0-ingredientID, 1-ingredientName, 2-Quantity of ingredient in weekly menu, 3-unit, 4-totIngredientCost, 5-unit price
     return ingredientsList
 
 

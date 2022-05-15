@@ -20,7 +20,6 @@ def ukesmeny():
 
         for i in weekly_menus:
             print(i.idWeeklyMenu)
-        recipes_weeklymenu = menu_queries.fetch_recipesNameQyantity_where_weeklymenu_id(weekly_menus[0].idWeeklyMenu)
 
         # hent ut i liste alle recepies i den gitte ukesmenyen.  hardkod ukesmenyen først.
         group_recipes = menu_queries.fetch_recipes_where_usergroupid(flask.session.get('group_to_use'))
@@ -66,8 +65,6 @@ def ukesmeny():
 
                     menu_queries.insert_to_weeklymenu(weeklymanu_name, weeklymenu_desc, group_id)
 
-                    # TODO: Legg til oppskrifter ---RECIPES
-
                     flash("Meny lagt til!", "success")
                     return redirect(url_for("weeklyMenu.ukesmeny"))
                 else:
@@ -100,8 +97,6 @@ def legg_til_ukesmeny():
                                                                         weeklymanu_name):
 
             menu_queries.insert_to_weeklymenu(weeklymanu_name, weeklymenu_desc, flask.session.get('group_to_use'))
-
-            # TODO: Legg til oppskrifter ---RECIPES
 
             flash("Meny lagt til!", "success")
             return redirect(url_for("index"))
@@ -145,10 +140,7 @@ def handleliste():
             weekly_menus_with_dates_choices.remove(i)
             weekly_menus_with_dates_choices.insert(0, i)
 
-    #weekly_menus_with_dates_choices.sort(key=lambda tup: tup[1])
     formSelector.weeklyMenuWeekId.choices = weekly_menus_with_dates_choices
-    # id = formSelector.weeklyMenuWeekId
-    # print(id.data)
 
     if request.method == 'POST':
         if formSelector.weeklyMenuWeekId.data is not None:
@@ -157,7 +149,8 @@ def handleliste():
 
             return redirect(request.referrer)
 
-    allIngredientsFromWeekly = menu_queries.get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(session['menuID'], session['group_to_use'])
+    allIngredientsFromWeekly = menu_queries.get_all_ingredients_and_quantities_cost_etc_shopping_in_weeklymenu(
+        session['menuID'], session['group_to_use'])
     totalsum = 0
     if allIngredientsFromWeekly == []:
         weekly_menu_name = "Det er ingen ukesmeny her fordi ingen er registrert på uke."
@@ -166,8 +159,6 @@ def handleliste():
 
     for ingredient in allIngredientsFromWeekly:
         totalsum += ingredient[4]
-
-
 
     return render_template('handleliste.html', weekly_menu_name=weekly_menu_name, form=form, totalsum=totalsum,
                            ingredients=allIngredientsFromWeekly, formSelect=formSelector)
